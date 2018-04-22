@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.plat.PlatAssetDAO">
+    
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.plat.MexcPlatAsset">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="vcoin_Id" jdbcType="VARCHAR" property="vcoinId" />
+        <result column="balance_amount" jdbcType="DECIMAL" property="balanceAmount" />
+        <result column="frozen_amount" jdbcType="DECIMAL" property="frozenAmount" />
+        <result column="total_amount" jdbcType="DECIMAL" property="totalAmount" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_by_name" jdbcType="VARCHAR" property="updateByName" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_by_name" jdbcType="VARCHAR" property="createByName" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                 ${criteria.condition} 
+                <if test=" criteria.haveValue ">
+                     #{criteria.value} 
+                </if>
+            </foreach>
+        </if>
+    </sql>
+    
+    <sql id="Base_Column_List">
+        id, vcoin_Id, balance_amount, frozen_amount, total_amount, update_by, update_by_name, 
+        update_time, create_by, create_by_name, create_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_mexc_plat_asset
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_plat_asset
+    </select>
+    
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_plat_asset
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_mexc_plat_asset
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    
+    <insert id="insert" parameterType="com.mexc.dao.model.plat.MexcPlatAsset">
+        insert into t_mexc_plat_asset (id, vcoin_Id, balance_amount, 
+            frozen_amount, total_amount, update_by, 
+            update_by_name, update_time, create_by, 
+            create_by_name, create_time)
+        values (#{id,jdbcType=VARCHAR}, #{vcoinId,jdbcType=VARCHAR}, #{balanceAmount,jdbcType=DECIMAL}, 
+            #{frozenAmount,jdbcType=DECIMAL}, #{totalAmount,jdbcType=DECIMAL}, #{updateBy,jdbcType=VARCHAR}, 
+            #{updateByName,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+            #{createByName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.plat.MexcPlatAsset">
+        insert into t_mexc_plat_asset
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="vcoinId != null">
+                vcoin_Id,
+            </if>
+            <if test="balanceAmount != null">
+                balance_amount,
+            </if>
+            <if test="frozenAmount != null">
+                frozen_amount,
+            </if>
+            <if test="totalAmount != null">
+                total_amount,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateByName != null">
+                update_by_name,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createByName != null">
+                create_by_name,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="vcoinId != null">
+                #{vcoinId,jdbcType=VARCHAR},
+            </if>
+            <if test="balanceAmount != null">
+                #{balanceAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="frozenAmount != null">
+                #{frozenAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="totalAmount != null">
+                #{totalAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateByName != null">
+                #{updateByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.plat.MexcPlatAsset">
+        update t_mexc_plat_asset
+        <set>
+            <if test="vcoinId != null">
+                vcoin_Id = #{vcoinId,jdbcType=VARCHAR},
+            </if>
+            <if test="balanceAmount != null">
+                balance_amount = #{balanceAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="frozenAmount != null">
+                frozen_amount = #{frozenAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="totalAmount != null">
+                total_amount = #{totalAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateByName != null">
+                update_by_name = #{updateByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                create_by_name = #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.plat.MexcPlatAsset">
+        update t_mexc_plat_asset
+        set vcoin_Id = #{vcoinId,jdbcType=VARCHAR},
+            balance_amount = #{balanceAmount,jdbcType=DECIMAL},
+            frozen_amount = #{frozenAmount,jdbcType=DECIMAL},
+            total_amount = #{totalAmount,jdbcType=DECIMAL},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_by_name = #{updateByName,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_by_name = #{createByName,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_plat_asset
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_plat_asset (id, vcoin_Id, balance_amount, 
+            frozen_amount, total_amount, 
+            update_by, update_by_name, update_time, 
+            create_by, create_by_name, create_time
+            )
+         values 
+        <foreach  collection="list" index="index" item="item" separator=",">
+             (#{item.id,jdbcType=VARCHAR}, #{item.vcoinId,jdbcType=VARCHAR}, #{item.balanceAmount,jdbcType=DECIMAL}, 
+                #{item.frozenAmount,jdbcType=DECIMAL}, #{item.totalAmount,jdbcType=DECIMAL}, 
+                #{item.updateBy,jdbcType=VARCHAR}, #{item.updateByName,jdbcType=VARCHAR}, #{item.updateTime,jdbcType=TIMESTAMP}, 
+                #{item.createBy,jdbcType=VARCHAR}, #{item.createByName,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}
+                
+            )
+        </foreach >
+    </insert>
+    
+    <update id="updateByParam">
+        update t_mexc_plat_asset
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.vcoinId != null">
+                vcoin_Id = #{record.vcoinId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.balanceAmount != null">
+                balance_amount = #{record.balanceAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.frozenAmount != null">
+                frozen_amount = #{record.frozenAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.totalAmount != null">
+                total_amount = #{record.totalAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.updateBy != null">
+                update_by = #{record.updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateByName != null">
+                update_by_name = #{record.updateByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createBy != null">
+                create_by = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createByName != null">
+                create_by_name = #{record.createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause" />
+    </update>
+    
+    <delete id="deleteByParam">
+        delete from t_mexc_plat_asset
+        <include refid="Param_Base_Clause" />
+    </delete>
+    
+    <update id="truncate">
+        truncate t_mexc_plat_asset
+    </update>
+    
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_plat_asset
+    </select>
+    
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_plat_asset
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_plat_asset
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.vcoinId != null">
+                 and vcoin_Id = #{record.vcoinId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.balanceAmount != null">
+                 and balance_amount = #{record.balanceAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.frozenAmount != null">
+                 and frozen_amount = #{record.frozenAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.totalAmount != null">
+                 and total_amount = #{record.totalAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.updateBy != null">
+                 and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateByName != null">
+                 and update_by_name = #{record.updateByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                 and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                 and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                 and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                 and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+         limit 1
+    </select>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_plat_asset
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.vcoinId != null">
+                 and vcoin_Id = #{record.vcoinId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.balanceAmount != null">
+                 and balance_amount = #{record.balanceAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.frozenAmount != null">
+                 and frozen_amount = #{record.frozenAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.totalAmount != null">
+                 and total_amount = #{record.totalAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.updateBy != null">
+                 and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateByName != null">
+                 and update_by_name = #{record.updateByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                 and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                 and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                 and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                 and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+
+    <!--进账-->
+    <update id="assetIncome">
+        update t_mexc_plat_asset asset
+        set asset.total_amount=asset.total_amount+#{incomeValue},asset.balance_amount=asset.balance_amount+#{incomeValue}
+        WHERE asset.id=#{platAssetId}
+    </update>
+
+    <!--出账-->
+    <update id="assetOutcome">
+        update t_mexc_plat_asset asset
+        set asset.total_amount=asset.total_amount-#{outcomeValue},asset.balance_amount=asset.balance_amount-#{outcomeValue}
+        WHERE asset.id=#{platAssetId}
+        <![CDATA[ and asset.balance_amount-#{outcomeValue}>=0
+        ]]>
+    </update>
+</mapper>

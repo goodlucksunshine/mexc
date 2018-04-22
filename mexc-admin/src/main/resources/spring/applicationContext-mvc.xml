@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/mvc
+     	http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+     	http://www.springframework.org/schema/aop
+     	http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <mvc:default-servlet-handler/>
+
+    <!--<mvc:annotation-driven />-->
+    <mvc:annotation-driven conversion-service="conversionService">
+    </mvc:annotation-driven>
+
+    <aop:config proxy-target-class="true"></aop:config>
+
+    <context:component-scan base-package="com.mexc">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!-- 对静态资源文件的访问  restful-->
+    <mvc:resources mapping="/static/**" location="/static/"/>
+
+    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <!-- 以路径扩展名确定请求的媒体类型, 如 info.json -> application/json, 默认为 true -->
+        <property name="favorPathExtension" value="false"/>
+        <!-- 以参数确定请求的媒体类型, 如 info?format=json -> application/json, 默认为 false -->
+        <property name="favorParameter" value="true"/>
+        <!-- 定义参数名, 默认的参数名为 format -->
+        <property name="parameterName" value="format"/>
+        <!-- 是否忽略 Http Accept Header, 默认为 false -->
+        <property name="ignoreAcceptHeader" value="false"/>
+        <!-- 请求的媒体类型映射 -->
+        <property name="mediaTypes">
+            <map>
+                <entry key="html" value="text/html"/>
+                <entry key="xml" value="application/xml"/>
+                <entry key="json" value="application/json"/>
+            </map>
+        </property>
+        <!-- 设置默认的 content type -->
+        <property name="defaultContentType" value="text/html"/>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="order" value="2"/>
+        <property name="prefix" value="/WEB-INF/view/"/>
+        <property name="suffix" value=".jsp"/>
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 请求编码格式 -->
+        <property name="defaultEncoding" value="utf-8"></property>
+        <!-- 上传文件大小(单位:字节) -->
+        <property name="maxUploadSize" value="50000000"></property>
+        <!-- 缓冲区大小(单位:KB) -->
+        <property name="maxInMemorySize" value="2048"></property>
+    </bean>
+
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="com.mexc.common.converter.DateConvert" />
+            </set>
+        </property>
+    </bean>
+
+</beans>

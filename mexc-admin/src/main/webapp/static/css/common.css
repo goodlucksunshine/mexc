@@ -1,0 +1,14 @@
+.data_search{ padding:10px 10px; }
+.layui-table,.layui-table th{ text-align:center; }
+.data_list .layui-form-switch{ margin-top:0; }
+
+/*分页*/
+#page{ text-align:right; }
+
+#pic{
+    width:100px;
+    height:150px;
+    border-radius:50% ;
+    margin:10px auto;
+    cursor: pointer;
+}

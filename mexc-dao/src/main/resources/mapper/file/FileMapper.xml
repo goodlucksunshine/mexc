@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.file.FileDAO">
+    
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.file.File">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="virtual_id" jdbcType="VARCHAR" property="virtualId" />
+        <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+        <result column="file_md5" jdbcType="VARCHAR" property="fileMd5" />
+        <result column="suffix" jdbcType="VARCHAR" property="suffix" />
+        <result column="file_type" jdbcType="INTEGER" property="fileType" />
+        <result column="file_size" jdbcType="INTEGER" property="fileSize" />
+        <result column="source_type" jdbcType="INTEGER" property="sourceType" />
+        <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+        <result column="svr_addr" jdbcType="VARCHAR" property="svrAddr" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="use_count" jdbcType="INTEGER" property="useCount" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                 ${criteria.condition} 
+                <if test=" criteria.haveValue ">
+                     #{criteria.value} 
+                </if>
+            </foreach>
+        </if>
+    </sql>
+    
+    <sql id="Base_Column_List">
+        id, virtual_id, file_name, file_md5, suffix, file_type, file_size, source_type, file_path, 
+        svr_addr, status, use_count, update_by, update_time, create_by, create_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_file
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_file
+    </select>
+    
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_file
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_file
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    
+    <insert id="insert" parameterType="com.mexc.dao.model.file.File">
+        insert into t_file (id, virtual_id, file_name, 
+            file_md5, suffix, file_type, 
+            file_size, source_type, file_path, 
+            svr_addr, status, use_count, 
+            update_by, update_time, create_by, 
+            create_time)
+        values (#{id,jdbcType=VARCHAR}, #{virtualId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, 
+            #{fileMd5,jdbcType=VARCHAR}, #{suffix,jdbcType=VARCHAR}, #{fileType,jdbcType=INTEGER}, 
+            #{fileSize,jdbcType=INTEGER}, #{sourceType,jdbcType=INTEGER}, #{filePath,jdbcType=VARCHAR}, 
+            #{svrAddr,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{useCount,jdbcType=INTEGER}, 
+            #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+            #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.file.File">
+        insert into t_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="virtualId != null">
+                virtual_id,
+            </if>
+            <if test="fileName != null">
+                file_name,
+            </if>
+            <if test="fileMd5 != null">
+                file_md5,
+            </if>
+            <if test="suffix != null">
+                suffix,
+            </if>
+            <if test="fileType != null">
+                file_type,
+            </if>
+            <if test="fileSize != null">
+                file_size,
+            </if>
+            <if test="sourceType != null">
+                source_type,
+            </if>
+            <if test="filePath != null">
+                file_path,
+            </if>
+            <if test="svrAddr != null">
+                svr_addr,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="useCount != null">
+                use_count,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="virtualId != null">
+                #{virtualId,jdbcType=VARCHAR},
+            </if>
+            <if test="fileName != null">
+                #{fileName,jdbcType=VARCHAR},
+            </if>
+            <if test="fileMd5 != null">
+                #{fileMd5,jdbcType=VARCHAR},
+            </if>
+            <if test="suffix != null">
+                #{suffix,jdbcType=VARCHAR},
+            </if>
+            <if test="fileType != null">
+                #{fileType,jdbcType=INTEGER},
+            </if>
+            <if test="fileSize != null">
+                #{fileSize,jdbcType=INTEGER},
+            </if>
+            <if test="sourceType != null">
+                #{sourceType,jdbcType=INTEGER},
+            </if>
+            <if test="filePath != null">
+                #{filePath,jdbcType=VARCHAR},
+            </if>
+            <if test="svrAddr != null">
+                #{svrAddr,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="useCount != null">
+                #{useCount,jdbcType=INTEGER},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.file.File">
+        update t_file
+        <set>
+            <if test="virtualId != null">
+                virtual_id = #{virtualId,jdbcType=VARCHAR},
+            </if>
+            <if test="fileName != null">
+                file_name = #{fileName,jdbcType=VARCHAR},
+            </if>
+            <if test="fileMd5 != null">
+                file_md5 = #{fileMd5,jdbcType=VARCHAR},
+            </if>
+            <if test="suffix != null">
+                suffix = #{suffix,jdbcType=VARCHAR},
+            </if>
+            <if test="fileType != null">
+                file_type = #{fileType,jdbcType=INTEGER},
+            </if>
+            <if test="fileSize != null">
+                file_size = #{fileSize,jdbcType=INTEGER},
+            </if>
+            <if test="sourceType != null">
+                source_type = #{sourceType,jdbcType=INTEGER},
+            </if>
+            <if test="filePath != null">
+                file_path = #{filePath,jdbcType=VARCHAR},
+            </if>
+            <if test="svrAddr != null">
+                svr_addr = #{svrAddr,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="useCount != null">
+                use_count = #{useCount,jdbcType=INTEGER},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.file.File">
+        update t_file
+        set virtual_id = #{virtualId,jdbcType=VARCHAR},
+            file_name = #{fileName,jdbcType=VARCHAR},
+            file_md5 = #{fileMd5,jdbcType=VARCHAR},
+            suffix = #{suffix,jdbcType=VARCHAR},
+            file_type = #{fileType,jdbcType=INTEGER},
+            file_size = #{fileSize,jdbcType=INTEGER},
+            source_type = #{sourceType,jdbcType=INTEGER},
+            file_path = #{filePath,jdbcType=VARCHAR},
+            svr_addr = #{svrAddr,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            use_count = #{useCount,jdbcType=INTEGER},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_file
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_file (id, virtual_id, file_name, 
+            file_md5, suffix, file_type, 
+            file_size, source_type, file_path, 
+            svr_addr, status, use_count, 
+            update_by, update_time, create_by, 
+            create_time)
+         values 
+        <foreach  collection="list" index="index" item="item" separator=",">
+             (#{item.id,jdbcType=VARCHAR}, #{item.virtualId,jdbcType=VARCHAR}, #{item.fileName,jdbcType=VARCHAR}, 
+                #{item.fileMd5,jdbcType=VARCHAR}, #{item.suffix,jdbcType=VARCHAR}, #{item.fileType,jdbcType=INTEGER}, 
+                #{item.fileSize,jdbcType=INTEGER}, #{item.sourceType,jdbcType=INTEGER}, #{item.filePath,jdbcType=VARCHAR}, 
+                #{item.svrAddr,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, #{item.useCount,jdbcType=INTEGER}, 
+                #{item.updateBy,jdbcType=VARCHAR}, #{item.updateTime,jdbcType=TIMESTAMP}, #{item.createBy,jdbcType=VARCHAR}, 
+                #{item.createTime,jdbcType=TIMESTAMP}
+            )
+        </foreach >
+    </insert>
+    
+    <update id="updateByParam">
+        update t_file
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.virtualId != null">
+                virtual_id = #{record.virtualId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.fileName != null">
+                file_name = #{record.fileName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.fileMd5 != null">
+                file_md5 = #{record.fileMd5,jdbcType=VARCHAR},
+            </if>
+            <if test="record.suffix != null">
+                suffix = #{record.suffix,jdbcType=VARCHAR},
+            </if>
+            <if test="record.fileType != null">
+                file_type = #{record.fileType,jdbcType=INTEGER},
+            </if>
+            <if test="record.fileSize != null">
+                file_size = #{record.fileSize,jdbcType=INTEGER},
+            </if>
+            <if test="record.sourceType != null">
+                source_type = #{record.sourceType,jdbcType=INTEGER},
+            </if>
+            <if test="record.filePath != null">
+                file_path = #{record.filePath,jdbcType=VARCHAR},
+            </if>
+            <if test="record.svrAddr != null">
+                svr_addr = #{record.svrAddr,jdbcType=VARCHAR},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.useCount != null">
+                use_count = #{record.useCount,jdbcType=INTEGER},
+            </if>
+            <if test="record.updateBy != null">
+                update_by = #{record.updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createBy != null">
+                create_by = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause" />
+    </update>
+    
+    <delete id="deleteByParam">
+        delete from t_file
+        <include refid="Param_Base_Clause" />
+    </delete>
+    
+    <update id="truncate">
+        truncate t_file
+    </update>
+    
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_file
+    </select>
+    
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_file
+        <include refid="Param_Base_Clause" />
+    </select>
+
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_file
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.virtualId != null">
+                and virtual_id = #{record.virtualId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.fileName != null">
+                and file_name = #{record.fileName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.fileMd5 != null">
+                and file_md5 = #{record.fileMd5,jdbcType=VARCHAR}
+            </if>
+            <if test="record.suffix != null">
+                and suffix = #{record.suffix,jdbcType=VARCHAR}
+            </if>
+            <if test="record.fileType != null">
+                and file_type = #{record.fileType,jdbcType=INTEGER}
+            </if>
+            <if test="record.fileSize != null">
+                and file_size = #{record.fileSize,jdbcType=INTEGER}
+            </if>
+            <if test="record.sourceType != null">
+                and source_type = #{record.sourceType,jdbcType=INTEGER}
+            </if>
+            <if test="record.filePath != null">
+                and file_path = #{record.filePath,jdbcType=VARCHAR}
+            </if>
+            <if test="record.svrAddr != null">
+                and svr_addr = #{record.svrAddr,jdbcType=VARCHAR}
+            </if>
+            <if test="record.status != null">
+                and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.useCount != null">
+                and use_count = #{record.useCount,jdbcType=INTEGER}
+            </if>
+            <if test="record.updateBy != null">
+                and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_file
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.virtualId != null">
+                and virtual_id = #{record.virtualId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.fileName != null">
+                and file_name = #{record.fileName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.fileMd5 != null">
+                and file_md5 = #{record.fileMd5,jdbcType=VARCHAR}
+            </if>
+            <if test="record.suffix != null">
+                and suffix = #{record.suffix,jdbcType=VARCHAR}
+            </if>
+            <if test="record.fileType != null">
+                and file_type = #{record.fileType,jdbcType=INTEGER}
+            </if>
+            <if test="record.fileSize != null">
+                and file_size = #{record.fileSize,jdbcType=INTEGER}
+            </if>
+            <if test="record.sourceType != null">
+                and source_type = #{record.sourceType,jdbcType=INTEGER}
+            </if>
+            <if test="record.filePath != null">
+                and file_path = #{record.filePath,jdbcType=VARCHAR}
+            </if>
+            <if test="record.svrAddr != null">
+                and svr_addr = #{record.svrAddr,jdbcType=VARCHAR}
+            </if>
+            <if test="record.status != null">
+                and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.useCount != null">
+                and use_count = #{record.useCount,jdbcType=INTEGER}
+            </if>
+            <if test="record.updateBy != null">
+                and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+</mapper>

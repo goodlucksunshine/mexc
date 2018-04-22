@@ -1,0 +1,695 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.wallet.MexcAssetCashDAO">
+
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.wallet.MexcAssetCash">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="member_id" jdbcType="VARCHAR" property="memberId"/>
+        <result column="asset_id" jdbcType="VARCHAR" property="assetId"/>
+        <result column="asset_address" jdbcType="VARCHAR" property="assetAddress"/>
+        <result column="tx_apply_time" jdbcType="TIMESTAMP" property="txApplyTime"/>
+        <result column="tx_apply_status" jdbcType="INTEGER" property="txApplyStatus"/>
+        <result column="tx_trans_code" jdbcType="VARCHAR" property="txTransCode"/>
+        <result column="tx_apply_value" jdbcType="DECIMAL" property="txApplyValue"/>
+        <result column="tx_apply_token" jdbcType="VARCHAR" property="txApplyToken"/>
+        <result column="tx_google_auth" jdbcType="VARCHAR" property="txGoogleAuth"/>
+        <result column="tx_cash_address" jdbcType="VARCHAR" property="txCashAddress"/>
+        <result column="tx_hash" jdbcType="VARCHAR" property="txHash"/>
+        <result column="tx_receipt" jdbcType="VARCHAR" property="txReceipt"/>
+        <result column="tx_gaslimit" jdbcType="DECIMAL" property="txGaslimit"/>
+        <result column="tx_gasprice" jdbcType="DECIMAL" property="txGasprice"/>
+        <result column="tx_amount" jdbcType="VARCHAR" property="txAmount"/>
+        <result column="cash_fee" jdbcType="DECIMAL" property="cashFee"/>
+        <result column="cash_status" jdbcType="INTEGER" property="cashStatus"/>
+        <result column="actual_amount" jdbcType="DECIMAL" property="actualAmount"/>
+        <result column="vcoin_id" jdbcType="VARCHAR" property="vcoinId"/>
+    </resultMap>
+
+    <resultMap id="ResultMapWithVcoin" extends="BaseResultMap" type="com.mexc.dao.model.wallet.MexcAssetCashVcoin">
+        <result column="vcoin_token" jdbcType="VARCHAR" property="vcoinToken"/>
+        <result column="vcoin_name" jdbcType="VARCHAR" property="vcoinName"/>
+        <result column="vcoin_name_en" jdbcType="VARCHAR" property="vcoinNameEn"/>
+        <result column="vcoin_name_full" jdbcType="VARCHAR" property="vcoinNameFull"/>
+        <result column="main_coin" jdbcType="INTEGER" property="mainCoin"/>
+    </resultMap>
+
+
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                ${criteria.condition}
+                <if test=" criteria.haveValue ">
+                    #{criteria.value}
+                </if>
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="Base_Column_List">
+        id, member_id, asset_id, asset_address, tx_apply_time, tx_apply_status, tx_trans_code,
+        tx_apply_value, tx_apply_token, tx_google_auth, tx_cash_address, tx_hash, tx_receipt,
+        tx_gaslimit, tx_gasprice, tx_amount, cash_fee, cash_status, actual_amount,vcoin_id
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_asset_cash
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_asset_cash
+    </select>
+
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_asset_cash
+        <include refid="Param_Base_Clause"/>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_mexc_asset_cash
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.mexc.dao.model.wallet.MexcAssetCash">
+        insert into t_mexc_asset_cash (id, member_id, asset_id,
+        asset_address, tx_apply_time, tx_apply_status,
+        tx_trans_code, tx_apply_value, tx_apply_token,
+        tx_google_auth, tx_cash_address, tx_hash,
+        tx_receipt, tx_gaslimit, tx_gasprice,
+        tx_amount, cash_fee, cash_status,
+        actual_amount,vcoin_id)
+        values (#{id,jdbcType=VARCHAR}, #{memberId,jdbcType=VARCHAR}, #{assetId,jdbcType=VARCHAR},
+        #{assetAddress,jdbcType=VARCHAR}, #{txApplyTime,jdbcType=TIMESTAMP}, #{txApplyStatus,jdbcType=INTEGER},
+        #{txTransCode,jdbcType=VARCHAR}, #{txApplyValue,jdbcType=DECIMAL}, #{txApplyToken,jdbcType=VARCHAR},
+        #{txGoogleAuth,jdbcType=VARCHAR}, #{txCashAddress,jdbcType=VARCHAR}, #{txHash,jdbcType=VARCHAR},
+        #{txReceipt,jdbcType=VARCHAR}, #{txGaslimit,jdbcType=DECIMAL}, #{txGasprice,jdbcType=DECIMAL},
+        #{txAmount,jdbcType=VARCHAR}, #{cashFee,jdbcType=DECIMAL}, #{cashStatus,jdbcType=INTEGER},
+        #{actualAmount,jdbcType=DECIMAL},#{vcoinId,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.wallet.MexcAssetCash">
+        insert into t_mexc_asset_cash
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="assetId != null">
+                asset_id,
+            </if>
+            <if test="assetAddress != null">
+                asset_address,
+            </if>
+            <if test="txApplyTime != null">
+                tx_apply_time,
+            </if>
+            <if test="txApplyStatus != null">
+                tx_apply_status,
+            </if>
+            <if test="txTransCode != null">
+                tx_trans_code,
+            </if>
+            <if test="txApplyValue != null">
+                tx_apply_value,
+            </if>
+            <if test="txApplyToken != null">
+                tx_apply_token,
+            </if>
+            <if test="txGoogleAuth != null">
+                tx_google_auth,
+            </if>
+            <if test="txCashAddress != null">
+                tx_cash_address,
+            </if>
+            <if test="txHash != null">
+                tx_hash,
+            </if>
+            <if test="txReceipt != null">
+                tx_receipt,
+            </if>
+            <if test="txGaslimit != null">
+                tx_gaslimit,
+            </if>
+            <if test="txGasprice != null">
+                tx_gasprice,
+            </if>
+            <if test="txAmount != null">
+                tx_amount,
+            </if>
+            <if test="cashFee != null">
+                cash_fee,
+            </if>
+            <if test="cashStatus != null">
+                cash_status,
+            </if>
+            <if test="actualAmount != null">
+                actual_amount,
+            </if>
+            <if test="vcoinId != null">
+                vcoin_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="memberId != null">
+                #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="assetId != null">
+                #{assetId,jdbcType=VARCHAR},
+            </if>
+            <if test="assetAddress != null">
+                #{assetAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="txApplyTime != null">
+                #{txApplyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="txApplyStatus != null">
+                #{txApplyStatus,jdbcType=INTEGER},
+            </if>
+            <if test="txTransCode != null">
+                #{txTransCode,jdbcType=VARCHAR},
+            </if>
+            <if test="txApplyValue != null">
+                #{txApplyValue,jdbcType=DECIMAL},
+            </if>
+            <if test="txApplyToken != null">
+                #{txApplyToken,jdbcType=VARCHAR},
+            </if>
+            <if test="txGoogleAuth != null">
+                #{txGoogleAuth,jdbcType=VARCHAR},
+            </if>
+            <if test="txCashAddress != null">
+                #{txCashAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="txHash != null">
+                #{txHash,jdbcType=VARCHAR},
+            </if>
+            <if test="txReceipt != null">
+                #{txReceipt,jdbcType=VARCHAR},
+            </if>
+            <if test="txGaslimit != null">
+                #{txGaslimit,jdbcType=DECIMAL},
+            </if>
+            <if test="txGasprice != null">
+                #{txGasprice,jdbcType=DECIMAL},
+            </if>
+            <if test="txAmount != null">
+                #{txAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="cashFee != null">
+                #{cashFee,jdbcType=DECIMAL},
+            </if>
+            <if test="cashStatus != null">
+                #{cashStatus,jdbcType=INTEGER},
+            </if>
+            <if test="actualAmount != null">
+                #{actualAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="vcoinId != null">
+                #{vcoinId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.wallet.MexcAssetCash">
+        update t_mexc_asset_cash
+        <set>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="assetId != null">
+                asset_id = #{assetId,jdbcType=VARCHAR},
+            </if>
+            <if test="assetAddress != null">
+                asset_address = #{assetAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="txApplyTime != null">
+                tx_apply_time = #{txApplyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="txApplyStatus != null">
+                tx_apply_status = #{txApplyStatus,jdbcType=INTEGER},
+            </if>
+            <if test="txTransCode != null">
+                tx_trans_code = #{txTransCode,jdbcType=VARCHAR},
+            </if>
+            <if test="txApplyValue != null">
+                tx_apply_value = #{txApplyValue,jdbcType=DECIMAL},
+            </if>
+            <if test="txApplyToken != null">
+                tx_apply_token = #{txApplyToken,jdbcType=VARCHAR},
+            </if>
+            <if test="txGoogleAuth != null">
+                tx_google_auth = #{txGoogleAuth,jdbcType=VARCHAR},
+            </if>
+            <if test="txCashAddress != null">
+                tx_cash_address = #{txCashAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="txHash != null">
+                tx_hash = #{txHash,jdbcType=VARCHAR},
+            </if>
+            <if test="txReceipt != null">
+                tx_receipt = #{txReceipt,jdbcType=VARCHAR},
+            </if>
+            <if test="txGaslimit != null">
+                tx_gaslimit = #{txGaslimit,jdbcType=DECIMAL},
+            </if>
+            <if test="txGasprice != null">
+                tx_gasprice = #{txGasprice,jdbcType=DECIMAL},
+            </if>
+            <if test="txAmount != null">
+                tx_amount = #{txAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="cashFee != null">
+                cash_fee = #{cashFee,jdbcType=DECIMAL},
+            </if>
+            <if test="cashStatus != null">
+                cash_status = #{cashStatus,jdbcType=INTEGER},
+            </if>
+            <if test="actualAmount != null">
+                actual_amount = #{actualAmount,jdbcType=DECIMAL},
+            </if>
+
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.wallet.MexcAssetCash">
+        update t_mexc_asset_cash
+        set member_id = #{memberId,jdbcType=VARCHAR},
+        asset_id = #{assetId,jdbcType=VARCHAR},
+        asset_address = #{assetAddress,jdbcType=VARCHAR},
+        tx_apply_time = #{txApplyTime,jdbcType=TIMESTAMP},
+        tx_apply_status = #{txApplyStatus,jdbcType=INTEGER},
+        tx_trans_code = #{txTransCode,jdbcType=VARCHAR},
+        tx_apply_value = #{txApplyValue,jdbcType=DECIMAL},
+        tx_apply_token = #{txApplyToken,jdbcType=VARCHAR},
+        tx_google_auth = #{txGoogleAuth,jdbcType=VARCHAR},
+        tx_cash_address = #{txCashAddress,jdbcType=VARCHAR},
+        tx_hash = #{txHash,jdbcType=VARCHAR},
+        tx_receipt = #{txReceipt,jdbcType=VARCHAR},
+        tx_gaslimit = #{txGaslimit,jdbcType=DECIMAL},
+        tx_gasprice = #{txGasprice,jdbcType=DECIMAL},
+        tx_amount = #{txAmount,jdbcType=VARCHAR},
+        cash_fee = #{cashFee,jdbcType=DECIMAL},
+        cash_status = #{cashStatus,jdbcType=INTEGER},
+        actual_amount = #{actualAmount,jdbcType=DECIMAL}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_asset_cash
+        <include refid="Param_Base_Clause"/>
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_asset_cash (id, member_id, asset_id,
+        asset_address, tx_apply_time,
+        tx_apply_status, tx_trans_code,
+        tx_apply_value, tx_apply_token,
+        tx_google_auth, tx_cash_address,
+        tx_hash, tx_receipt, tx_gaslimit,
+        tx_gasprice, tx_amount, cash_fee,
+        cash_status, actual_amount)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=VARCHAR}, #{item.memberId,jdbcType=VARCHAR}, #{item.assetId,jdbcType=VARCHAR},
+            #{item.assetAddress,jdbcType=VARCHAR}, #{item.txApplyTime,jdbcType=TIMESTAMP},
+            #{item.txApplyStatus,jdbcType=INTEGER}, #{item.txTransCode,jdbcType=VARCHAR},
+            #{item.txApplyValue,jdbcType=DECIMAL}, #{item.txApplyToken,jdbcType=VARCHAR},
+            #{item.txGoogleAuth,jdbcType=VARCHAR}, #{item.txCashAddress,jdbcType=VARCHAR},
+            #{item.txHash,jdbcType=VARCHAR}, #{item.txReceipt,jdbcType=VARCHAR}, #{item.txGaslimit,jdbcType=DECIMAL},
+            #{item.txGasprice,jdbcType=DECIMAL}, #{item.txAmount,jdbcType=VARCHAR}, #{item.cashFee,jdbcType=DECIMAL},
+            #{item.cashStatus,jdbcType=INTEGER}, #{item.actualAmount,jdbcType=DECIMAL}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateByParam">
+        update t_mexc_asset_cash
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.memberId != null">
+                member_id = #{record.memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.assetId != null">
+                asset_id = #{record.assetId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.assetAddress != null">
+                asset_address = #{record.assetAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.txApplyTime != null">
+                tx_apply_time = #{record.txApplyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.txApplyStatus != null">
+                tx_apply_status = #{record.txApplyStatus,jdbcType=INTEGER},
+            </if>
+            <if test="record.txTransCode != null">
+                tx_trans_code = #{record.txTransCode,jdbcType=VARCHAR},
+            </if>
+            <if test="record.txApplyValue != null">
+                tx_apply_value = #{record.txApplyValue,jdbcType=DECIMAL},
+            </if>
+            <if test="record.txApplyToken != null">
+                tx_apply_token = #{record.txApplyToken,jdbcType=VARCHAR},
+            </if>
+            <if test="record.txGoogleAuth != null">
+                tx_google_auth = #{record.txGoogleAuth,jdbcType=VARCHAR},
+            </if>
+            <if test="record.txCashAddress != null">
+                tx_cash_address = #{record.txCashAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.txHash != null">
+                tx_hash = #{record.txHash,jdbcType=VARCHAR},
+            </if>
+            <if test="record.txReceipt != null">
+                tx_receipt = #{record.txReceipt,jdbcType=VARCHAR},
+            </if>
+            <if test="record.txGaslimit != null">
+                tx_gaslimit = #{record.txGaslimit,jdbcType=DECIMAL},
+            </if>
+            <if test="record.txGasprice != null">
+                tx_gasprice = #{record.txGasprice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.txAmount != null">
+                tx_amount = #{record.txAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="record.cashFee != null">
+                cash_fee = #{record.cashFee,jdbcType=DECIMAL},
+            </if>
+            <if test="record.cashStatus != null">
+                cash_status = #{record.cashStatus,jdbcType=INTEGER},
+            </if>
+            <if test="record.actualAmount != null">
+                actual_amount = #{record.actualAmount,jdbcType=DECIMAL},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause"/>
+    </update>
+
+    <delete id="deleteByParam">
+        delete from t_mexc_asset_cash
+        <include refid="Param_Base_Clause"/>
+    </delete>
+
+    <update id="truncate">
+        truncate t_mexc_asset_cash
+    </update>
+
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_asset_cash
+    </select>
+
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_asset_cash
+        <include refid="Param_Base_Clause"/>
+    </select>
+
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_asset_cash
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.memberId != null">
+                and member_id = #{record.memberId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.assetId != null">
+                and asset_id = #{record.assetId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.assetAddress != null">
+                and asset_address = #{record.assetAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txApplyTime != null">
+                and tx_apply_time = #{record.txApplyTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.txApplyStatus != null">
+                and tx_apply_status = #{record.txApplyStatus,jdbcType=INTEGER}
+            </if>
+            <if test="record.txTransCode != null">
+                and tx_trans_code = #{record.txTransCode,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txApplyValue != null">
+                and tx_apply_value = #{record.txApplyValue,jdbcType=DECIMAL}
+            </if>
+            <if test="record.txApplyToken != null">
+                and tx_apply_token = #{record.txApplyToken,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txGoogleAuth != null">
+                and tx_google_auth = #{record.txGoogleAuth,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txCashAddress != null">
+                and tx_cash_address = #{record.txCashAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txHash != null">
+                and tx_hash = #{record.txHash,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txReceipt != null">
+                and tx_receipt = #{record.txReceipt,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txGaslimit != null">
+                and tx_gaslimit = #{record.txGaslimit,jdbcType=DECIMAL}
+            </if>
+            <if test="record.txGasprice != null">
+                and tx_gasprice = #{record.txGasprice,jdbcType=DECIMAL}
+            </if>
+            <if test="record.txAmount != null">
+                and tx_amount = #{record.txAmount,jdbcType=VARCHAR}
+            </if>
+            <if test="record.cashFee != null">
+                and cash_fee = #{record.cashFee,jdbcType=DECIMAL}
+            </if>
+            <if test="record.cashStatus != null">
+                and cash_status = #{record.cashStatus,jdbcType=INTEGER}
+            </if>
+            <if test="record.actualAmount != null">
+                and actual_amount = #{record.actualAmount,jdbcType=DECIMAL}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_asset_cash
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.memberId != null">
+                and member_id = #{record.memberId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.assetId != null">
+                and asset_id = #{record.assetId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.assetAddress != null">
+                and asset_address = #{record.assetAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txApplyTime != null">
+                and tx_apply_time = #{record.txApplyTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.txApplyStatus != null">
+                and tx_apply_status = #{record.txApplyStatus,jdbcType=INTEGER}
+            </if>
+            <if test="record.txTransCode != null">
+                and tx_trans_code = #{record.txTransCode,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txApplyValue != null">
+                and tx_apply_value = #{record.txApplyValue,jdbcType=DECIMAL}
+            </if>
+            <if test="record.txApplyToken != null">
+                and tx_apply_token = #{record.txApplyToken,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txGoogleAuth != null">
+                and tx_google_auth = #{record.txGoogleAuth,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txCashAddress != null">
+                and tx_cash_address = #{record.txCashAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txHash != null">
+                and tx_hash = #{record.txHash,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txReceipt != null">
+                and tx_receipt = #{record.txReceipt,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txGaslimit != null">
+                and tx_gaslimit = #{record.txGaslimit,jdbcType=DECIMAL}
+            </if>
+            <if test="record.txGasprice != null">
+                and tx_gasprice = #{record.txGasprice,jdbcType=DECIMAL}
+            </if>
+            <if test="record.txAmount != null">
+                and tx_amount = #{record.txAmount,jdbcType=VARCHAR}
+            </if>
+            <if test="record.cashFee != null">
+                and cash_fee = #{record.cashFee,jdbcType=DECIMAL}
+            </if>
+            <if test="record.cashStatus != null">
+                and cash_status = #{record.cashStatus,jdbcType=INTEGER}
+            </if>
+            <if test="record.actualAmount != null">
+                and actual_amount = #{record.actualAmount,jdbcType=DECIMAL}
+            </if>
+        </where>
+    </select>
+
+
+    <update id="cashFail">
+        update t_mexc_asset_cash cash set cash.cash_status=-1 where cash.id=#{cashId}
+    </update>
+
+    <update id="cashAutoFailed">
+        update t_mexc_asset_cash cash set cash.cash_status=-2 where cash.id=#{cashId} and cash.cash_status=2
+    </update>
+
+    <update id="cashSuccess">
+        update t_mexc_asset_cash cash set cash.cash_status=1 where cash.id=#{cashId} and cash.cash_status=2
+    </update>
+
+    <update id="cashConfirm">
+        update t_mexc_asset_cash cash set cash.cash_status=2 where cash.id=#{cashId} and cash_status=0
+    </update>
+
+
+    <update id="resendCash">
+        update t_mexc_asset_cash cash set cash.cash_status=2 where cash.id=#{cashId} and cash.cash_status=-2
+    </update>
+
+    <!--查询提现-->
+    <select id="queryAssetCash" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_asset_cash
+        where member_id = #{memberId,jdbcType=VARCHAR}
+
+    </select>
+
+    <!--查询币种提现-->
+    <select id="queryAssetCashVcoin" resultMap="ResultMapWithVcoin">
+        SELECT
+        a.id, member_id, asset_id, asset_address, tx_apply_time, tx_apply_status, tx_trans_code,
+        tx_apply_value, tx_apply_token, tx_google_auth, tx_cash_address, tx_hash, tx_receipt,
+        tx_gaslimit, tx_gasprice, tx_amount, cash_fee, cash_status, actual_amount,vcoin_id,
+        vcoin_token,vcoin_name,vcoin_name_full,main_coin
+        from t_mexc_asset_cash a left join t_mexc_vcoin b
+        on a.vcoin_id=b.id
+        where member_id = #{memberId,jdbcType=VARCHAR}
+    </select>
+
+
+    <resultMap id="AssetCashHistory" type="com.mexc.dao.vo.asset.AssetCashHistoryVo">
+        <result column="vcoinId" jdbcType="VARCHAR" property="vcoinId"/>
+        <result column="cashAmountSum" jdbcType="DECIMAL" property="cashAmountSum"/>
+    </resultMap>
+
+    <!--当天每个币种已经提现了的额度-->
+    <select id="checkLevelCashLimit" resultMap="AssetCashHistory">
+        SELECT
+            asset.vcoin_id as vcoinId,
+            sum(cash.tx_apply_value) as cashAmountSum
+        from t_mexc_asset_cash cash,t_mexc_member_asset asset
+        where cash.asset_id = asset.id
+        and cash.cash_status in (0,1,2)
+        and cash.member_id=#{memberId}
+        <![CDATA[ and str_to_date(cash.tx_apply_time,'%Y-%m-%d %H:%i:%s') >= (NOW() -  interval 24 hour)]]>
+        group by cash.asset_id
+    </select>
+
+    <resultMap id="AssetCashVo" type="com.mexc.dao.vo.asset.AssetCashVo">
+        <result column="account" jdbcType="VARCHAR" property="account"/>
+        <result column="tx_apply_token" jdbcType="VARCHAR" property="txApplyToken"/>
+        <result column="tx_apply_time" jdbcType="TIMESTAMP" property="txApplyTime"/>
+        <result column="tx_cash_address" jdbcType="VARCHAR" property="txCashAddress"/>
+        <result column="tx_apply_value" jdbcType="DECIMAL" property="txApplyValue"/>
+        <result column="cash_fee" jdbcType="DECIMAL" property="cashFee"/>
+        <result column="cash_status" jdbcType="INTEGER" property="cashStatus"/>
+        <result column="cash_Id" jdbcType="VARCHAR" property="cashId"/>
+    </resultMap>
+
+    <select id="queryAssetCashPage" resultMap="AssetCashVo">
+        select
+        member.account as account,
+        cash.tx_apply_token,
+        cash.tx_apply_time,
+        cash.tx_cash_address,
+        cash.tx_apply_value,
+        cash.cash_fee,
+        cash.cash_status,
+        cash.id as cash_Id
+        from t_mexc_asset_cash cash,t_mexc_member member
+        <where>
+            and cash.member_id=member.id
+            <if test="query.account != null and query.account != ''">
+                and member.account like CONCAT('%', #{query.account}, '%')
+            </if>
+            <if test="query.txApplyToken != null and query.txApplyToken != ''">
+                and tx_apply_token like CONCAT('%', #{query.txApplyToken}, '%')
+            </if>
+            <if test="query.cashStatus != null and query.cashStatus != ''">
+                and tx_apply_status = #{query.cashStatus,jdbcType=VARCHAR}
+            </if>
+
+            <if test="(query.startTime != null and query.startTime != '') and (query.endTime == null or query.endTime == '')">
+                and cash.tx_apply_time >= #{query.startTime}
+            </if>
+            <if test="(query.startTime != null and query.startTime != '') and (query.endTime != null and query.endTime != '')">
+                and cash.tx_apply_time >= #{query.startTime} and #{query.endTime} >= cash.tx_apply_time
+            </if>
+            <if test="(query.startTime == null or query.startTime == '') and (query.endTime != null and query.endTime != '')">
+                and #{query.endTime} >= cash.tx_apply_time
+            </if>
+
+        </where>
+        ORDER BY cash.tx_apply_time desc
+    </select>
+
+    <select id="queryAssetCashPageByCondition" resultMap="AssetCashVo">
+        select sum(cash.tx_apply_value) tx_apply_value,
+        sum(cash.cash_fee) cash_fee,
+        cash.tx_apply_token
+        from t_mexc_asset_cash cash,t_mexc_member member
+        where 1=1
+        <if test="query.account != null and query.account !=''">
+            and member.account = #{query.account,jdbcType=VARCHAR}
+            and cash.member_id = member.id
+        </if>
+        <if test="query.cashStatus != null and query.cashStatus !=''">
+            and cash.cash_status = #{query.cashStatus,jdbcType=INTEGER}
+        </if>
+        <if test="query.txApplyToken != null and query.txApplyToken !=''">
+            and cash.tx_apply_token = #{query.txApplyToken,jdbcType=INTEGER}
+        </if>
+        <if test="query.startTime != null and query.startTime !=''">
+            and date_format(cash.tx_apply_time,'%Y-%m-%d') <![CDATA[>=]]> #{query.startTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="query.endTime != null and query.endTime !=''">
+            and date_format(cash.tx_apply_time,'%Y-%m-%d') <![CDATA[<=]]> #{query.endTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="query.month != null and query.month !=''">
+            and date_format(cash.tx_apply_time,'%m') = #{query.month,jdbcType=VARCHAR}
+        </if>
+        GROUP BY cash.tx_apply_token
+    </select>
+
+
+    <update id="updateCashHash">
+        update t_mexc_asset_cash set tx_hash=#{txid} where id=#{cashId}
+    </update>
+
+</mapper>

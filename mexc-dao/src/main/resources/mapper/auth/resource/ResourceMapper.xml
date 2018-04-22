@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.auth.resource.ResourceDAO">
+    
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.auth.resource.Resource">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+        <result column="code" jdbcType="VARCHAR" property="code" />
+        <result column="name" jdbcType="INTEGER" property="name" />
+        <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="type" jdbcType="INTEGER" property="type" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="sort" jdbcType="INTEGER" property="sort" />
+        <result column="icon" jdbcType="VARCHAR" property="icon" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                 ${criteria.condition} 
+                <if test=" criteria.haveValue ">
+                     #{criteria.value} 
+                </if>
+            </foreach>
+        </if>
+    </sql>
+    
+    <sql id="Base_Column_List">
+        id, parent_id, code, name, url, type, status, sort,icon, create_time,
+        create_by, update_time, update_by
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_resource
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="queryResource" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+          res.id,
+          res.parent_id,
+          res.code,
+          res.name,
+          res.url,
+          res.type,
+          res.status,
+          res.sort,
+          res.icon,
+          res.create_time,
+          res.create_by,
+          res.update_time,
+          res.update_by
+        from t_resource res,t_role role,t_role_resource rrs,t_admin_role ar
+        where res.id=rrs.resource_id
+          and role.id=rrs.role_id
+          and ar.role_id=role.id
+          and ar.admin_id = #{id,jdbcType=INTEGER} order by sort
+    </select>
+
+    <select id="queryAllResourceCodes" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select
+        rs.code
+        from t_resource rs
+    </select>
+
+    <select id="queryResourceCodes" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select
+        rs.code
+        from t_resource rs,t_role_resource rr,t_role ro,t_admin_role ar
+        where rs.id = rr.resource_id
+            and rr.role_id=ro.id
+            and ro.id=ar.role_id
+            and ar.admin_id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_resource
+    </select>
+    
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_resource
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_resource
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.mexc.dao.model.auth.resource.Resource">
+        insert into t_resource (id, parent_id, code, 
+            name, url, type, 
+            status, sort,
+            icon,create_time,
+            create_by, update_time, update_by
+            )
+        values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, 
+            #{name,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+            #{status,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER},
+            #{icon,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+            #{createBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.auth.resource.Resource">
+        insert into t_resource
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="code != null">
+                code,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+            <if test="icon != null">
+                icon,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=INTEGER},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="sort != null">
+                #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="icon != null">
+                #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.auth.resource.Resource">
+        update t_resource
+        <set>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=INTEGER},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="icon != null">
+                icon = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.auth.resource.Resource">
+        update t_resource
+        set parent_id = #{parentId,jdbcType=INTEGER},
+            code = #{code,jdbcType=VARCHAR},
+            name = #{name,jdbcType=INTEGER},
+            url = #{url,jdbcType=VARCHAR},
+            type = #{type,jdbcType=INTEGER},
+            status = #{status,jdbcType=INTEGER},
+            sort = #{sort,jdbcType=INTEGER},
+            icon = #{icon,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_resource
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_resource (id, parent_id, code, 
+            name, url, type, 
+            status, sort,
+            icon,create_time,
+            create_by, update_time, update_by
+            )
+         values 
+        <foreach  collection="list" index="index" item="item" separator=",">
+             (#{item.id,jdbcType=INTEGER}, #{item.parentId,jdbcType=INTEGER}, #{item.code,jdbcType=VARCHAR}, 
+                #{item.name,jdbcType=INTEGER}, #{item.url,jdbcType=VARCHAR}, #{item.type,jdbcType=INTEGER}, 
+                #{item.status,jdbcType=INTEGER}, #{item.sort,jdbcType=INTEGER},
+                #{item.icon,jdbcType=VARCHAR},#{item.createTime,jdbcType=TIMESTAMP},
+                #{item.createBy,jdbcType=VARCHAR}, #{item.updateTime,jdbcType=TIMESTAMP}, #{item.updateBy,jdbcType=VARCHAR}
+                
+            )
+        </foreach >
+    </insert>
+    
+    <update id="updateByParam">
+        update t_resource
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.parentId != null">
+                parent_id = #{record.parentId,jdbcType=INTEGER},
+            </if>
+            <if test="record.code != null">
+                code = #{record.code,jdbcType=VARCHAR},
+            </if>
+            <if test="record.name != null">
+                name = #{record.name,jdbcType=INTEGER},
+            </if>
+            <if test="record.url != null">
+                url = #{record.url,jdbcType=VARCHAR},
+            </if>
+            <if test="record.type != null">
+                type = #{record.type,jdbcType=INTEGER},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.sort != null">
+                sort = #{record.sort,jdbcType=INTEGER},
+            </if>
+            <if test="record.icon != null">
+                icon = #{record.icon,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createBy != null">
+                create_by = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateBy != null">
+                update_by = #{record.updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause" />
+    </update>
+    
+    <delete id="deleteByParam">
+        delete from t_resource
+        <include refid="Param_Base_Clause" />
+    </delete>
+    
+    <update id="truncate">
+        truncate t_resource
+    </update>
+    
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_resource
+    </select>
+    
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_resource
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_resource
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER}
+            </if>
+            <if test="record.parentId != null">
+                 and parent_id = #{record.parentId,jdbcType=INTEGER}
+            </if>
+            <if test="record.code != null">
+                 and code = #{record.code,jdbcType=VARCHAR}
+            </if>
+            <if test="record.name != null">
+                 and name = #{record.name,jdbcType=INTEGER}
+            </if>
+            <if test="record.url != null">
+                 and url = #{record.url,jdbcType=VARCHAR}
+            </if>
+            <if test="record.type != null">
+                 and type = #{record.type,jdbcType=INTEGER}
+            </if>
+            <if test="record.status != null">
+                 and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.sort != null">
+                 and sort = #{record.sort,jdbcType=INTEGER}
+            </if>
+            <if test="record.icon != null">
+                 and icon = #{record.icon,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                 and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                 and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                 and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.updateBy != null">
+                 and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+        </where>
+         limit 1
+    </select>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_resource
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER}
+            </if>
+            <if test="record.parentId != null">
+                 and parent_id = #{record.parentId,jdbcType=INTEGER}
+            </if>
+            <if test="record.code != null">
+                 and code = #{record.code,jdbcType=VARCHAR}
+            </if>
+            <if test="record.name != null">
+                 and name = #{record.name,jdbcType=INTEGER}
+            </if>
+            <if test="record.url != null">
+                 and url = #{record.url,jdbcType=VARCHAR}
+            </if>
+            <if test="record.type != null">
+                 and type = #{record.type,jdbcType=INTEGER}
+            </if>
+            <if test="record.status != null">
+                 and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.sort != null">
+                 and sort = #{record.sort,jdbcType=INTEGER}
+            </if>
+            <if test="record.icon != null">
+                 and icon = #{record.icon,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                 and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                 and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                 and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.updateBy != null">
+                 and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>

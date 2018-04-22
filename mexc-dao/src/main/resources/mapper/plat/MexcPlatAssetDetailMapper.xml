@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.plat.PlatAssetDetailDAO">
+    
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.plat.MexcPlatAssetDetail">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="plat_id" jdbcType="VARCHAR" property="platId" />
+        <result column="amount" jdbcType="DECIMAL" property="amount" />
+        <result column="balance" jdbcType="DECIMAL" property="balance" />
+        <result column="trade_fee" jdbcType="DECIMAL" property="tradeFee" />
+        <result column="trade_rate" jdbcType="DECIMAL" property="tradeRate" />
+        <result column="opt_type" jdbcType="INTEGER" property="optType" />
+        <result column="opt_time" jdbcType="TIMESTAMP" property="optTime" />
+    </resultMap>
+    
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                 ${criteria.condition} 
+                <if test=" criteria.haveValue ">
+                     #{criteria.value} 
+                </if>
+            </foreach>
+        </if>
+    </sql>
+    
+    <sql id="Base_Column_List">
+        id, plat_id, amount, balance, trade_fee, trade_rate, opt_type, opt_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_mexc_plat_asset_detail
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_plat_asset_detail
+    </select>
+    
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_plat_asset_detail
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_mexc_plat_asset_detail
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    
+    <insert id="insert" parameterType="com.mexc.dao.model.plat.MexcPlatAssetDetail" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            select replace(uuid(),'-','') from dual
+        </selectKey>
+        insert into t_mexc_plat_asset_detail (id, plat_id, amount, 
+            balance, trade_fee, trade_rate, 
+            opt_type, opt_time)
+        values (#{id,jdbcType=VARCHAR}, #{platId,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
+            #{balance,jdbcType=DECIMAL}, #{tradeFee,jdbcType=DECIMAL}, #{tradeRate,jdbcType=DECIMAL}, 
+            #{optType,jdbcType=INTEGER}, #{optTime,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.plat.MexcPlatAssetDetail">
+        insert into t_mexc_plat_asset_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="platId != null">
+                plat_id,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="balance != null">
+                balance,
+            </if>
+            <if test="tradeFee != null">
+                trade_fee,
+            </if>
+            <if test="tradeRate != null">
+                trade_rate,
+            </if>
+            <if test="optType != null">
+                opt_type,
+            </if>
+            <if test="optTime != null">
+                opt_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="platId != null">
+                #{platId,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null">
+                #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="balance != null">
+                #{balance,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeFee != null">
+                #{tradeFee,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeRate != null">
+                #{tradeRate,jdbcType=DECIMAL},
+            </if>
+            <if test="optType != null">
+                #{optType,jdbcType=INTEGER},
+            </if>
+            <if test="optTime != null">
+                #{optTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.plat.MexcPlatAssetDetail">
+        update t_mexc_plat_asset_detail
+        <set>
+            <if test="platId != null">
+                plat_id = #{platId,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null">
+                amount = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="balance != null">
+                balance = #{balance,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeFee != null">
+                trade_fee = #{tradeFee,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeRate != null">
+                trade_rate = #{tradeRate,jdbcType=DECIMAL},
+            </if>
+            <if test="optType != null">
+                opt_type = #{optType,jdbcType=INTEGER},
+            </if>
+            <if test="optTime != null">
+                opt_time = #{optTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.plat.MexcPlatAssetDetail">
+        update t_mexc_plat_asset_detail
+        set plat_id = #{platId,jdbcType=VARCHAR},
+            amount = #{amount,jdbcType=DECIMAL},
+            balance = #{balance,jdbcType=DECIMAL},
+            trade_fee = #{tradeFee,jdbcType=DECIMAL},
+            trade_rate = #{tradeRate,jdbcType=DECIMAL},
+            opt_type = #{optType,jdbcType=INTEGER},
+            opt_time = #{optTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_plat_asset_detail
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_plat_asset_detail (id, plat_id, amount, 
+            balance, trade_fee, trade_rate, 
+            opt_type, opt_time)
+         values 
+        <foreach  collection="list" index="index" item="item" separator=",">
+             (#{item.id,jdbcType=VARCHAR}, #{item.platId,jdbcType=VARCHAR}, #{item.amount,jdbcType=DECIMAL}, 
+                #{item.balance,jdbcType=DECIMAL}, #{item.tradeFee,jdbcType=DECIMAL}, #{item.tradeRate,jdbcType=DECIMAL}, 
+                #{item.optType,jdbcType=INTEGER}, #{item.optTime,jdbcType=TIMESTAMP}
+            )
+        </foreach >
+    </insert>
+    
+    <update id="updateByParam">
+        update t_mexc_plat_asset_detail
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.platId != null">
+                plat_id = #{record.platId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.amount != null">
+                amount = #{record.amount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.balance != null">
+                balance = #{record.balance,jdbcType=DECIMAL},
+            </if>
+            <if test="record.tradeFee != null">
+                trade_fee = #{record.tradeFee,jdbcType=DECIMAL},
+            </if>
+            <if test="record.tradeRate != null">
+                trade_rate = #{record.tradeRate,jdbcType=DECIMAL},
+            </if>
+            <if test="record.optType != null">
+                opt_type = #{record.optType,jdbcType=INTEGER},
+            </if>
+            <if test="record.optTime != null">
+                opt_time = #{record.optTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause" />
+    </update>
+    
+    <delete id="deleteByParam">
+        delete from t_mexc_plat_asset_detail
+        <include refid="Param_Base_Clause" />
+    </delete>
+    
+    <update id="truncate">
+        truncate t_mexc_plat_asset_detail
+    </update>
+    
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_plat_asset_detail
+    </select>
+    
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_plat_asset_detail
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_plat_asset_detail
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.platId != null">
+                 and plat_id = #{record.platId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.amount != null">
+                 and amount = #{record.amount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.balance != null">
+                 and balance = #{record.balance,jdbcType=DECIMAL}
+            </if>
+            <if test="record.tradeFee != null">
+                 and trade_fee = #{record.tradeFee,jdbcType=DECIMAL}
+            </if>
+            <if test="record.tradeRate != null">
+                 and trade_rate = #{record.tradeRate,jdbcType=DECIMAL}
+            </if>
+            <if test="record.optType != null">
+                 and opt_type = #{record.optType,jdbcType=INTEGER}
+            </if>
+            <if test="record.optTime != null">
+                 and opt_time = #{record.optTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+         limit 1
+    </select>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_plat_asset_detail
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.platId != null">
+                 and plat_id = #{record.platId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.amount != null">
+                 and amount = #{record.amount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.balance != null">
+                 and balance = #{record.balance,jdbcType=DECIMAL}
+            </if>
+            <if test="record.tradeFee != null">
+                 and trade_fee = #{record.tradeFee,jdbcType=DECIMAL}
+            </if>
+            <if test="record.tradeRate != null">
+                 and trade_rate = #{record.tradeRate,jdbcType=DECIMAL}
+            </if>
+            <if test="record.optType != null">
+                 and opt_type = #{record.optType,jdbcType=INTEGER}
+            </if>
+            <if test="record.optTime != null">
+                 and opt_time = #{record.optTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+</mapper>

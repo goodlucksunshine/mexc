@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.banner.BannerDAO">
+    
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.banner.MexcBanner">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="sort" jdbcType="INTEGER" property="sort" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_by_name" jdbcType="VARCHAR" property="createByName" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_by_name" jdbcType="VARCHAR" property="updateByName" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+    
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.mexc.dao.model.banner.MexcBanner">
+        <result column="description" jdbcType="LONGVARCHAR" property="description" />
+    </resultMap>
+    
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                 ${criteria.condition} 
+                <if test=" criteria.haveValue ">
+                     #{criteria.value} 
+                </if>
+            </foreach>
+        </if>
+    </sql>
+    
+    <sql id="Base_Column_List">
+        id, name, title, url, image_url, status, sort, create_by, create_by_name, create_time, 
+        update_by, update_by_name, update_time
+    </sql>
+    
+    <sql id="Blob_Column_List">
+        description
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_banner
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectAll" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_banner
+    </select>
+    
+    <select id="selectPagination" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_banner
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_mexc_banner
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    
+    <insert id="insert" parameterType="com.mexc.dao.model.banner.MexcBanner">
+        insert into t_mexc_banner (id, name, title, 
+            url, image_url, status, 
+            sort, create_by, create_by_name, 
+            create_time, update_by, update_by_name, 
+            update_time, description)
+        values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+            #{url,jdbcType=VARCHAR}, #{imageUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+            #{sort,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createByName,jdbcType=VARCHAR}, 
+            #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateByName,jdbcType=VARCHAR}, 
+            #{updateTime,jdbcType=TIMESTAMP}, #{description,jdbcType=LONGVARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.banner.MexcBanner">
+        insert into t_mexc_banner
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="imageUrl != null">
+                image_url,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createByName != null">
+                create_by_name,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateByName != null">
+                update_by_name,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="imageUrl != null">
+                #{imageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="sort != null">
+                #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateByName != null">
+                #{updateByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.banner.MexcBanner">
+        update t_mexc_banner
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="imageUrl != null">
+                image_url = #{imageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                create_by_name = #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateByName != null">
+                update_by_name = #{updateByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mexc.dao.model.banner.MexcBanner">
+        update t_mexc_banner
+        set name = #{name,jdbcType=VARCHAR},
+            title = #{title,jdbcType=VARCHAR},
+            url = #{url,jdbcType=VARCHAR},
+            image_url = #{imageUrl,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            sort = #{sort,jdbcType=INTEGER},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_by_name = #{createByName,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_by_name = #{updateByName,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            description = #{description,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.banner.MexcBanner">
+        update t_mexc_banner
+        set name = #{name,jdbcType=VARCHAR},
+            title = #{title,jdbcType=VARCHAR},
+            url = #{url,jdbcType=VARCHAR},
+            image_url = #{imageUrl,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            sort = #{sort,jdbcType=INTEGER},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_by_name = #{createByName,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_by_name = #{updateByName,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <select id="selectByCondition" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_banner
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_banner (id, name, title, 
+            url, image_url, status, 
+            sort, create_by, create_by_name, 
+            create_time, update_by, update_by_name, 
+            update_time, description
+            )
+         values 
+        <foreach  collection="list" index="index" item="item" separator=",">
+             (#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, #{item.title,jdbcType=VARCHAR}, 
+                #{item.url,jdbcType=VARCHAR}, #{item.imageUrl,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
+                #{item.sort,jdbcType=INTEGER}, #{item.createBy,jdbcType=VARCHAR}, #{item.createByName,jdbcType=VARCHAR}, 
+                #{item.createTime,jdbcType=TIMESTAMP}, #{item.updateBy,jdbcType=VARCHAR}, #{item.updateByName,jdbcType=VARCHAR}, 
+                #{item.updateTime,jdbcType=TIMESTAMP}, #{item.description,jdbcType=LONGVARCHAR}
+                
+            )
+        </foreach >
+    </insert>
+    
+    <update id="updateByParam">
+        update t_mexc_banner
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.name != null">
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.title != null">
+                title = #{record.title,jdbcType=VARCHAR},
+            </if>
+            <if test="record.url != null">
+                url = #{record.url,jdbcType=VARCHAR},
+            </if>
+            <if test="record.imageUrl != null">
+                image_url = #{record.imageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.sort != null">
+                sort = #{record.sort,jdbcType=INTEGER},
+            </if>
+            <if test="record.createBy != null">
+                create_by = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createByName != null">
+                create_by_name = #{record.createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateBy != null">
+                update_by = #{record.updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateByName != null">
+                update_by_name = #{record.updateByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.description != null">
+                description = #{record.description,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause" />
+    </update>
+    
+    <delete id="deleteByParam">
+        delete from t_mexc_banner
+        <include refid="Param_Base_Clause" />
+    </delete>
+    
+    <update id="truncate">
+        truncate t_mexc_banner
+    </update>
+    
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_banner
+    </select>
+    
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_banner
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <select id="selectOne" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_banner
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.name != null">
+                 and name = #{record.name,jdbcType=VARCHAR}
+            </if>
+            <if test="record.title != null">
+                 and title = #{record.title,jdbcType=VARCHAR}
+            </if>
+            <if test="record.url != null">
+                 and url = #{record.url,jdbcType=VARCHAR}
+            </if>
+            <if test="record.imageUrl != null">
+                 and image_url = #{record.imageUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="record.status != null">
+                 and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.sort != null">
+                 and sort = #{record.sort,jdbcType=INTEGER}
+            </if>
+            <if test="record.createBy != null">
+                 and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                 and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                 and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.updateBy != null">
+                 and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateByName != null">
+                 and update_by_name = #{record.updateByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                 and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.description != null">
+                 and description = #{record.description,jdbcType=LONGVARCHAR}
+            </if>
+        </where>
+         limit 1
+    </select>
+    
+    <select id="selectList" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_banner
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.name != null">
+                 and name = #{record.name,jdbcType=VARCHAR}
+            </if>
+            <if test="record.title != null">
+                 and title = #{record.title,jdbcType=VARCHAR}
+            </if>
+            <if test="record.url != null">
+                 and url = #{record.url,jdbcType=VARCHAR}
+            </if>
+            <if test="record.imageUrl != null">
+                 and image_url = #{record.imageUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="record.status != null">
+                 and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.sort != null">
+                 and sort = #{record.sort,jdbcType=INTEGER}
+            </if>
+            <if test="record.createBy != null">
+                 and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                 and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                 and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.updateBy != null">
+                 and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateByName != null">
+                 and update_by_name = #{record.updateByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                 and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.description != null">
+                 and description = #{record.description,jdbcType=LONGVARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryBannerPage" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_banner banner
+        <where>
+            <if test="searchKey != null">
+                and banner.name like CONCAT('%','${searchKey}','%')
+            </if>
+        </where>
+    </select>
+
+    <select id="queryBannerLimit" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_banner banner where status = 1 limit #{limit}
+    </select>
+
+</mapper>

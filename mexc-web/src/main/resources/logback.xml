@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<substitutionProperty name="logger.appname" value="${config.logger.appname}" />
+	<substitutionProperty name="logger.dir" value="${config.log.dir}" />
+	<substitutionProperty name="logger.level" value="info" />
+	<substitutionProperty name="logger.rootLevel" value="info" />
+	<substitutionProperty name="logger.packageName" value="${config.logger.packageName}" />
+	<substitutionProperty name="logger.maxsize" value="1GB" /><!-- 文件拆分大小 -->
+	<substitutionProperty name="logger.queueSize" value="1024" /><!-- 异步写日志文件队列event数量上限 -->
+
+	<contextName>${logger.appname}</contextName>
+	<jmxConfigurator />
+	
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date{yyyy-MM-dd HH:mm:ss.SSS}|%-5level|${logger.appname}|%X{channel}|%X{requestNo}|NA|NA|NA|%thread|%X{consumerIp}|%logger{36}.%method\(\):%L|%msg%n</pattern>
+		</layout>
+	</appender>
+
+	<appender name="file.all" class="ch.qos.logback.core.rolling.RollingFileAppender"><!-- All Log Info -->
+		<File>${logger.dir}/${logger.appname}.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${logger.dir}/${logger.appname}-all-%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${logger.maxsize}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date{yyyy-MM-dd HH:mm:ss.SSS}|%-5level|${logger.appname}|%X{channel}|%X{requestNo}|NA|NA|NA|%thread|%X{consumerIp}|%logger{36}.%method\(\):%L|%msg%n</pattern>
+		</layout>
+	</appender>
+
+	<!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+	<!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+	<!-- 添加附加的appender,最多只能添加一个 -->
+	<appender name="file.async" class="ch.qos.logback.classic.AsyncAppender">
+		<discardingThreshold>0</discardingThreshold>
+		<queueSize>${logger.queueSize}</queueSize>
+		<includeCallerData>true</includeCallerData>
+		<appender-ref ref="file.all" />
+	</appender>
+
+	<appender name="file.error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${logger.dir}/${logger.appname}-error.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${logger.dir}/${logger.appname}-error-%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${logger.maxsize}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date{yyyy-MM-dd HH:mm:ss.SSS}|%-5level|${logger.appname}|%X{channel}|%X{requestNo}|NA|NA|NA|%thread|%X{consumerIp}|%logger{36}.%method\(\):%L|%msg%n</pattern>
+		</layout>
+
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+
+	<appender name="trade" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${logger.dir}/${logger.appname}-trade.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logger.dir}/${logger.appname}-trade-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${logger.maxsize}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date{yyyy-MM-dd HH:mm:ss.SSS}|%-5level|${logger.appname}|%X{channel}|%X{requestNo}|%msg%n</pattern>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+	</appender>
+	
+	<appender name="userBehavior" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${logger.dir}/${logger.appname}-behavior.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logger.dir}/${logger.appname}-behavior-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${logger.maxsize}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date{yyyy-MM-dd HH:mm:ss.SSS}|%-5level|${logger.appname}|%X{channel}|%X{requestNo}|%msg%n</pattern>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+	</appender>
+
+	<appender name="assetCashConsumer" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${logger.dir}/${logger.appname}-assetCashConsumer.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logger.dir}/${logger.appname}-btcBlockSync-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${logger.maxsize}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date{yyyy-MM-dd HH:mm:ss.SSS}|%-5level|${logger.appname}|%X{channel}|%X{requestNo}|%msg%n</pattern>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+	</appender>
+
+
+
+	<appender name="btcBlockSync" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${logger.dir}/${logger.appname}-btcBlockSync.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logger.dir}/${logger.appname}-btcBlockSync-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${logger.maxsize}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date{yyyy-MM-dd HH:mm:ss.SSS}|%-5level|${logger.appname}|%X{channel}|%X{requestNo}|%msg%n</pattern>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+	</appender>
+
+	<appender name="ethBlockSync" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${logger.dir}/${logger.appname}-ethBlockSync.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logger.dir}/${logger.appname}-ethBlockSync-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${logger.maxsize}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date{yyyy-MM-dd HH:mm:ss.SSS}|%-5level|${logger.appname}|%X{channel}|%X{requestNo}|%msg%n</pattern>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+	</appender>
+
+	<appender name="balanceCheckTask" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${logger.dir}/${logger.appname}-ethBlockSync.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logger.dir}/${logger.appname}-ethBlockSync-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>${logger.maxsize}</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date{yyyy-MM-dd HH:mm:ss.SSS}|%-5level|${logger.appname}|%X{channel}|%X{requestNo}|%msg%n</pattern>
+		</layout>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+	</appender>
+	
+	<logger name="trade" additivity="false" level="INFO">
+		<appender-ref ref="trade" />
+	</logger>
+	
+	<logger name="userBehavior" additivity="false" level="INFO">
+		<appender-ref ref="userBehavior" />
+	</logger>
+
+
+	<logger name="btcBlockSync" additivity="false" level="INFO">
+		<appender-ref ref="btcBlockSync" />
+	</logger>
+
+	<logger name="ethBlockSync" additivity="false" level="INFO">
+		<appender-ref ref="ethBlockSync" />
+	</logger>
+
+	<logger name="balanceCheckTask" additivity="false" level="INFO">
+		<appender-ref ref="balanceCheckTask" />
+	</logger>
+
+
+
+
+	<logger name="${logger.packageName}" additivity="false">
+		<level value="${logger.level}" />
+		${static.logger.stdout}
+		<appender-ref ref="file.async" />
+		<appender-ref ref="file.error" />
+	</logger>
+
+	<logger name="stdout" additivity="false" level="DEBUG">
+		<appender-ref ref="stdout"/>
+	</logger>
+
+	<root level="${logger.rootLevel}">
+		${static.logger.stdout}
+		<appender-ref ref="file.async" />
+		<appender-ref ref="file.error" />
+	</root>
+	
+</configuration>

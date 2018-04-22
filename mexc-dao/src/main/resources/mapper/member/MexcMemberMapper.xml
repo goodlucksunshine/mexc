@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.member.MexcMemberDAO">
+
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.member.MexcMember">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="account" jdbcType="VARCHAR" property="account"/>
+        <result column="account_pwd" jdbcType="VARCHAR" property="accountPwd"/>
+        <result column="second_pwd" jdbcType="VARCHAR" property="secondPwd"/>
+        <result column="trans_pwd" jdbcType="VARCHAR" property="transPwd"/>
+        <result column="second_auth_type" jdbcType="INTEGER" property="secondAuthType"/>
+        <result column="auth_acc" jdbcType="VARCHAR" property="authAcc"/>
+        <result column="auth_level" jdbcType="INTEGER" property="authLevel"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="recommender" jdbcType="VARCHAR" property="recommender"/>
+        <result column="note" jdbcType="VARCHAR" property="note"/>
+        <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp"/>
+        <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="updare_by_name" jdbcType="VARCHAR" property="updareByName"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_by_name" jdbcType="VARCHAR" property="createByName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="member_seq" jdbcType="INTEGER" property="memberSeq"/>
+    </resultMap>
+
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                ${criteria.condition}
+                <if test=" criteria.haveValue ">
+                    #{criteria.value}
+                </if>
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="Base_Column_List">
+        id, account, account_pwd, second_pwd, trans_pwd, second_auth_type, auth_acc, auth_level, 
+        status, recommender, note, last_login_ip, last_login_time, update_by, updare_by_name, 
+        update_time, create_by, create_by_name, create_time,member_seq
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_member
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_member
+    </select>
+
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_member
+        <include refid="Param_Base_Clause"/>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_mexc_member
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.mexc.dao.model.member.MexcMember" useGeneratedKeys="true" keyProperty="id">
+        insert into t_mexc_member (id, account, account_pwd, 
+            second_pwd, trans_pwd, second_auth_type, 
+            auth_acc, auth_level, status, 
+            recommender, note, last_login_ip, 
+            last_login_time, update_by, updare_by_name, 
+            update_time, create_by, create_by_name, 
+            create_time,member_seq)
+        values (#{id,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{accountPwd,jdbcType=VARCHAR}, 
+            #{secondPwd,jdbcType=VARCHAR}, #{transPwd,jdbcType=VARCHAR}, #{secondAuthType,jdbcType=INTEGER}, 
+            #{authAcc,jdbcType=VARCHAR}, #{authLevel,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+            #{recommender,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, #{lastLoginIp,jdbcType=VARCHAR}, 
+            #{lastLoginTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updareByName,jdbcType=VARCHAR}, 
+            #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{createByName,jdbcType=VARCHAR}, 
+            #{createTime,jdbcType=TIMESTAMP},#{memberSeq,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.member.MexcMember" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_mexc_member
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="accountPwd != null">
+                account_pwd,
+            </if>
+            <if test="secondPwd != null">
+                second_pwd,
+            </if>
+            <if test="transPwd != null">
+                trans_pwd,
+            </if>
+            <if test="secondAuthType != null">
+                second_auth_type,
+            </if>
+            <if test="authAcc != null">
+                auth_acc,
+            </if>
+            <if test="authLevel != null">
+                auth_level,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="recommender != null">
+                recommender,
+            </if>
+            <if test="note != null">
+                note,
+            </if>
+            <if test="lastLoginIp != null">
+                last_login_ip,
+            </if>
+            <if test="lastLoginTime != null">
+                last_login_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updareByName != null">
+                updare_by_name,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createByName != null">
+                create_by_name,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="memberSeq != null">
+                member_seq,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="accountPwd != null">
+                #{accountPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="secondPwd != null">
+                #{secondPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="transPwd != null">
+                #{transPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="secondAuthType != null">
+                #{secondAuthType,jdbcType=INTEGER},
+            </if>
+            <if test="authAcc != null">
+                #{authAcc,jdbcType=VARCHAR},
+            </if>
+            <if test="authLevel != null">
+                #{authLevel,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="recommender != null">
+                #{recommender,jdbcType=VARCHAR},
+            </if>
+            <if test="note != null">
+                #{note,jdbcType=VARCHAR},
+            </if>
+            <if test="lastLoginIp != null">
+                #{lastLoginIp,jdbcType=VARCHAR},
+            </if>
+            <if test="lastLoginTime != null">
+                #{lastLoginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updareByName != null">
+                #{updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="memberSeq != null">
+                #{memberSeq,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.member.MexcMember">
+        update t_mexc_member
+        <set>
+            <if test="account != null">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="accountPwd != null">
+                account_pwd = #{accountPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="secondPwd != null">
+                second_pwd = #{secondPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="transPwd != null">
+                trans_pwd = #{transPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="secondAuthType != null">
+                second_auth_type = #{secondAuthType,jdbcType=INTEGER},
+            </if>
+            <if test="authAcc != null">
+                auth_acc = #{authAcc,jdbcType=VARCHAR},
+            </if>
+            <if test="authLevel != null">
+                auth_level = #{authLevel,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="recommender != null">
+                recommender = #{recommender,jdbcType=VARCHAR},
+            </if>
+            <if test="note != null">
+                note = #{note,jdbcType=VARCHAR},
+            </if>
+            <if test="lastLoginIp != null">
+                last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+            </if>
+            <if test="lastLoginTime != null">
+                last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updareByName != null">
+                updare_by_name = #{updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                create_by_name = #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="memberSeq != null">
+                member_seq = #{memberSeq,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.member.MexcMember">
+        update t_mexc_member
+        set account = #{account,jdbcType=VARCHAR},
+            account_pwd = #{accountPwd,jdbcType=VARCHAR},
+            second_pwd = #{secondPwd,jdbcType=VARCHAR},
+            trans_pwd = #{transPwd,jdbcType=VARCHAR},
+            second_auth_type = #{secondAuthType,jdbcType=INTEGER},
+            auth_acc = #{authAcc,jdbcType=VARCHAR},
+            auth_level = #{authLevel,jdbcType=INTEGER},
+            status = #{status,jdbcType=INTEGER},
+            recommender = #{recommender,jdbcType=VARCHAR},
+            note = #{note,jdbcType=VARCHAR},
+            last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+            last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            updare_by_name = #{updareByName,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_by_name = #{createByName,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            member_seq = #{memberSeq,jdbcType=INTEGER},
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_member
+        <include refid="Param_Base_Clause"/>
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_member (id, account, account_pwd,
+        second_pwd, trans_pwd, second_auth_type,
+        auth_acc, auth_level, status,
+        recommender, note, last_login_ip,
+        last_login_time, update_by,
+        updare_by_name, update_time,
+        create_by, create_by_name, create_time,member_seq)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=VARCHAR}, #{item.account,jdbcType=VARCHAR}, #{item.accountPwd,jdbcType=VARCHAR},
+            #{item.secondPwd,jdbcType=VARCHAR}, #{item.transPwd,jdbcType=VARCHAR},
+            #{item.secondAuthType,jdbcType=INTEGER},
+            #{item.authAcc,jdbcType=VARCHAR}, #{item.authLevel,jdbcType=INTEGER}, #{item.status,jdbcType=INTEGER},
+            #{item.recommender,jdbcType=VARCHAR}, #{item.note,jdbcType=VARCHAR}, #{item.lastLoginIp,jdbcType=VARCHAR},
+            #{item.lastLoginTime,jdbcType=TIMESTAMP}, #{item.updateBy,jdbcType=VARCHAR},
+            #{item.updareByName,jdbcType=VARCHAR}, #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.createBy,jdbcType=VARCHAR}, #{item.createByName,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.memberSeq,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateByParam">
+        update t_mexc_member
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.account != null">
+                account = #{record.account,jdbcType=VARCHAR},
+            </if>
+            <if test="record.accountPwd != null">
+                account_pwd = #{record.accountPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="record.secondPwd != null">
+                second_pwd = #{record.secondPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="record.transPwd != null">
+                trans_pwd = #{record.transPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="record.secondAuthType != null">
+                second_auth_type = #{record.secondAuthType,jdbcType=INTEGER},
+            </if>
+            <if test="record.authAcc != null">
+                auth_acc = #{record.authAcc,jdbcType=VARCHAR},
+            </if>
+            <if test="record.authLevel != null">
+                auth_level = #{record.authLevel,jdbcType=INTEGER},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.recommender != null">
+                recommender = #{record.recommender,jdbcType=VARCHAR},
+            </if>
+            <if test="record.note != null">
+                note = #{record.note,jdbcType=VARCHAR},
+            </if>
+            <if test="record.lastLoginIp != null">
+                last_login_ip = #{record.lastLoginIp,jdbcType=VARCHAR},
+            </if>
+            <if test="record.lastLoginTime != null">
+                last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateBy != null">
+                update_by = #{record.updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updareByName != null">
+                updare_by_name = #{record.updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createBy != null">
+                create_by = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createByName != null">
+                create_by_name = #{record.createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.memberSeq != null">
+                member_seq = #{record.memberSeq,jdbcType=INTEGER},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause"/>
+    </update>
+
+    <delete id="deleteByParam">
+        delete from t_mexc_member
+        <include refid="Param_Base_Clause"/>
+    </delete>
+
+    <update id="truncate">
+        truncate t_mexc_member
+    </update>
+
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_member
+    </select>
+
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_member
+        <include refid="Param_Base_Clause"/>
+    </select>
+
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_member
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.account != null">
+                and account = #{record.account,jdbcType=VARCHAR}
+            </if>
+            <if test="record.accountPwd != null">
+                and account_pwd = #{record.accountPwd,jdbcType=VARCHAR}
+            </if>
+            <if test="record.secondPwd != null">
+                and second_pwd = #{record.secondPwd,jdbcType=VARCHAR}
+            </if>
+            <if test="record.transPwd != null">
+                and trans_pwd = #{record.transPwd,jdbcType=VARCHAR}
+            </if>
+            <if test="record.secondAuthType != null">
+                and second_auth_type = #{record.secondAuthType,jdbcType=INTEGER}
+            </if>
+            <if test="record.authAcc != null">
+                and auth_acc = #{record.authAcc,jdbcType=VARCHAR}
+            </if>
+            <if test="record.authLevel != null">
+                and auth_level = #{record.authLevel,jdbcType=INTEGER}
+            </if>
+            <if test="record.status != null">
+                and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.recommender != null">
+                and recommender = #{record.recommender,jdbcType=VARCHAR}
+            </if>
+            <if test="record.note != null">
+                and note = #{record.note,jdbcType=VARCHAR}
+            </if>
+            <if test="record.lastLoginIp != null">
+                and last_login_ip = #{record.lastLoginIp,jdbcType=VARCHAR}
+            </if>
+            <if test="record.lastLoginTime != null">
+                and last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.updateBy != null">
+                and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updareByName != null">
+                and updare_by_name = #{record.updareByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.memberSeq != null">
+                and member_seq = #{record.memberSeq,jdbcType=INTEGER}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_member
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.account != null">
+                and account = #{record.account,jdbcType=VARCHAR}
+            </if>
+            <if test="record.accountPwd != null">
+                and account_pwd = #{record.accountPwd,jdbcType=VARCHAR}
+            </if>
+            <if test="record.secondPwd != null">
+                and second_pwd = #{record.secondPwd,jdbcType=VARCHAR}
+            </if>
+            <if test="record.transPwd != null">
+                and trans_pwd = #{record.transPwd,jdbcType=VARCHAR}
+            </if>
+            <if test="record.secondAuthType != null">
+                and second_auth_type = #{record.secondAuthType,jdbcType=INTEGER}
+            </if>
+            <if test="record.authAcc != null">
+                and auth_acc = #{record.authAcc,jdbcType=VARCHAR}
+            </if>
+            <if test="record.authLevel != null">
+                and auth_level = #{record.authLevel,jdbcType=INTEGER}
+            </if>
+            <if test="record.status != null">
+                and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.recommender != null">
+                and recommender = #{record.recommender,jdbcType=VARCHAR}
+            </if>
+            <if test="record.note != null">
+                and note = #{record.note,jdbcType=VARCHAR}
+            </if>
+            <if test="record.lastLoginIp != null">
+                and last_login_ip = #{record.lastLoginIp,jdbcType=VARCHAR}
+            </if>
+            <if test="record.lastLoginTime != null">
+                and last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.updateBy != null">
+                and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updareByName != null">
+                and updare_by_name = #{record.updareByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.memberSeq != null">
+                and member_seq = #{record.memberSeq,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="queryMemberByAssetCondition" resultMap="BaseResultMap">
+        SELECT m.* FROM  t_mexc_member m,t_mexc_member_asset asset
+        where asset.member_id=m.id and asset.vcoin_id=#{vcoinId}
+        <![CDATA[ and asset.balance_amount>=#{value}
+        ]]>
+    </select>
+</mapper>

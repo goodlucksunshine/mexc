@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.auth.role.RoleResourceDAO">
+    
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.auth.role.RoleResource">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="resource_id" jdbcType="INTEGER" property="resourceId" />
+        <result column="role_id" jdbcType="INTEGER" property="roleId" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    </resultMap>
+    
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                 ${criteria.condition} 
+                <if test=" criteria.haveValue ">
+                     #{criteria.value} 
+                </if>
+            </foreach>
+        </if>
+    </sql>
+    
+    <sql id="Base_Column_List">
+        id, resource_id, role_id, status, create_time, create_by, update_time, update_by
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_role_resource
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_role_resource
+    </select>
+    
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_role_resource
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_role_resource
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.mexc.dao.model.auth.role.RoleResource">
+        insert into t_role_resource (id, resource_id, role_id, 
+            status, create_time, create_by, 
+            update_time, update_by)
+        values (#{id,jdbcType=INTEGER}, #{resourceId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, 
+            #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+            #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.auth.role.RoleResource">
+        insert into t_role_resource
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="resourceId != null">
+                resource_id,
+            </if>
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="resourceId != null">
+                #{resourceId,jdbcType=INTEGER},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.auth.role.RoleResource">
+        update t_role_resource
+        <set>
+            <if test="resourceId != null">
+                resource_id = #{resourceId,jdbcType=INTEGER},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.auth.role.RoleResource">
+        update t_role_resource
+        set resource_id = #{resourceId,jdbcType=INTEGER},
+            role_id = #{roleId,jdbcType=INTEGER},
+            status = #{status,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_role_resource
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_role_resource (id, resource_id, role_id, 
+            status, create_time, create_by, 
+            update_time, update_by)
+         values 
+        <foreach  collection="list" index="index" item="item" separator=",">
+             (#{item.id,jdbcType=INTEGER}, #{item.resourceId,jdbcType=INTEGER}, #{item.roleId,jdbcType=INTEGER}, 
+                #{item.status,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP}, #{item.createBy,jdbcType=VARCHAR}, 
+                #{item.updateTime,jdbcType=TIMESTAMP}, #{item.updateBy,jdbcType=VARCHAR}
+            )
+        </foreach >
+    </insert>
+    
+    <update id="updateByParam">
+        update t_role_resource
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.resourceId != null">
+                resource_id = #{record.resourceId,jdbcType=INTEGER},
+            </if>
+            <if test="record.roleId != null">
+                role_id = #{record.roleId,jdbcType=INTEGER},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createBy != null">
+                create_by = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateBy != null">
+                update_by = #{record.updateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause" />
+    </update>
+    
+    <delete id="deleteByParam">
+        delete from t_role_resource
+        <include refid="Param_Base_Clause" />
+    </delete>
+    
+    <update id="truncate">
+        truncate t_role_resource
+    </update>
+    
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_role_resource
+    </select>
+    
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_role_resource
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_role_resource
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER}
+            </if>
+            <if test="record.resourceId != null">
+                 and resource_id = #{record.resourceId,jdbcType=INTEGER}
+            </if>
+            <if test="record.roleId != null">
+                 and role_id = #{record.roleId,jdbcType=INTEGER}
+            </if>
+            <if test="record.status != null">
+                 and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.createTime != null">
+                 and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                 and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                 and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.updateBy != null">
+                 and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+        </where>
+         limit 1
+    </select>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_role_resource
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER}
+            </if>
+            <if test="record.resourceId != null">
+                 and resource_id = #{record.resourceId,jdbcType=INTEGER}
+            </if>
+            <if test="record.roleId != null">
+                 and role_id = #{record.roleId,jdbcType=INTEGER}
+            </if>
+            <if test="record.status != null">
+                 and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.createTime != null">
+                 and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                 and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                 and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.updateBy != null">
+                 and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>

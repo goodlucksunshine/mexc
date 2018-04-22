@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.quartz.JobConfigWriteDao">
+
+    <insert id="insert" parameterType="com.mexc.dao.model.quartz.JobConfig">
+        <include refid="insertSQL"/>
+    </insert>
+    <update id="updateByNameAndGroup" parameterType="com.mexc.dao.model.quartz.JobConfig">
+        <include refid="updateByNameAndGroupSQL"/>
+    </update>
+    <delete id="deleteByNameAndGroup">
+       delete from jobConfig
+       where jobName = #{jobName,jdbcType=VARCHAR} and jobGroup =#{jobGroup,jdbcType=VARCHAR}
+    </delete>
+
+    <sql id="insertSQL">
+        insert into jobConfig
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="jobName != null">
+                jobName,
+            </if>
+            <if test="jobGroup != null">
+                jobGroup,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="cronExpression != null">
+                cronExpression,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="className != null">
+                className,
+            </if>
+            <if test="methodName != null">
+                methodName,
+            </if>
+            <if test="arguments != null">
+                arguments,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="springId != null">
+                springId,
+            </if>
+            <if test="isActive != null">
+                isActive,
+            </if>
+            <if test="isConcurrent != null">
+                isConcurrent,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="createTime != null">
+                createTime,
+            </if>
+            <if test="lastUpdateTime != null">
+                lastUpdateTime,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="count != null">
+                count,
+            </if>
+            keyName,
+            <if test="jobType != null">
+                jobType,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="jobName != null">
+                #{jobName,jdbcType=VARCHAR},
+            </if>
+            <if test="jobGroup != null">
+                #{jobGroup,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="cronExpression != null">
+                #{cronExpression,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="className != null">
+                #{className,jdbcType=VARCHAR},
+            </if>
+            <if test="methodName != null">
+                #{methodName,jdbcType=VARCHAR},
+            </if>
+            <if test="arguments != null">
+                #{arguments,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="springId != null">
+                #{springId,jdbcType=VARCHAR},
+            </if>
+            <if test="isActive != null">
+                #{isActive,jdbcType=INTEGER},
+            </if>
+            <if test="isConcurrent != null">
+                #{isConcurrent,jdbcType=INTEGER},
+            </if>
+            <if test="creater != null">
+                #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateTime != null">
+                #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="count != null">
+                #{count,jdbcType=INTEGER},
+            </if>
+            #{keyName,jdbcType=VARCHAR},
+            <if test="jobType != null">
+                #{jobType,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </sql>
+    <sql id="updateByNameAndGroupSQL">
+        update jobConfig
+        <set>
+            <if test="jobName != null">
+                jobName = #{jobName,jdbcType=VARCHAR},
+            </if>
+            <if test="jobGroup != null">
+                jobGroup = #{jobGroup,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="cronExpression != null">
+                cronExpression = #{cronExpression,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="className != null">
+                className = #{className,jdbcType=VARCHAR},
+            </if>
+            <if test="methodName != null">
+                methodName = #{methodName,jdbcType=VARCHAR},
+            </if>
+            <if test="arguments != null">
+                arguments = #{arguments,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="springId != null">
+                springId = #{springId,jdbcType=VARCHAR},
+            </if>
+            <if test="isActive != null">
+                isActive = #{isActive,jdbcType=INTEGER},
+            </if>
+            <if test="isConcurrent != null">
+                isConcurrent = #{isConcurrent,jdbcType=INTEGER},
+            </if>
+            <if test="creater != null">
+                creater = #{creater,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                createTime = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdateTime != null">
+                lastUpdateTime = #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="count != null">
+                count = #{count,jdbcType=INTEGER},
+            </if>
+            <if test="jobGroup != null and jobName != null">
+                keyName =  #{keyName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where jobName = #{jobName,jdbcType=VARCHAR} and jobGroup =#{jobGroup,jdbcType=VARCHAR}
+    </sql>
+</mapper>

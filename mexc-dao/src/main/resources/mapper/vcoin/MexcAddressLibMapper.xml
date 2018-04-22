@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.vcoin.MexcAddressLibDAO">
+
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.vcoin.MexcAddressLib">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="pwd" jdbcType="VARCHAR" property="pwd"/>
+        <result column="iv" jdbcType="VARCHAR" property="iv"/>
+        <result column="phrase" jdbcType="VARCHAR" property="phrase"/>
+        <result column="filePath" jdbcType="VARCHAR" property="filepath"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="isuse" jdbcType="INTEGER" property="isuse"/>
+        <result column="member_id" jdbcType="VARCHAR" property="memberId"/>
+    </resultMap>
+
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                ${criteria.condition}
+                <if test=" criteria.haveValue ">
+                    #{criteria.value}
+                </if>
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="Base_Column_List">
+        id, type, address, pwd, iv, phrase, filePath, create_time, isuse, member_id
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_address_lib
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_address_lib
+    </select>
+
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_address_lib
+        <include refid="Param_Base_Clause"/>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_mexc_address_lib
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.mexc.dao.model.vcoin.MexcAddressLib">
+        insert into t_mexc_address_lib (id, type, address, 
+            pwd, iv, phrase, 
+            filePath, create_time, isuse, 
+            member_id)
+        values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+            #{pwd,jdbcType=VARCHAR}, #{iv,jdbcType=VARCHAR}, #{phrase,jdbcType=VARCHAR}, 
+            #{filepath,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{isuse,jdbcType=INTEGER}, 
+            #{memberId,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.vcoin.MexcAddressLib">
+        insert into t_mexc_address_lib
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="pwd != null">
+                pwd,
+            </if>
+            <if test="iv != null">
+                iv,
+            </if>
+            <if test="phrase != null">
+                phrase,
+            </if>
+            <if test="filepath != null">
+                filePath,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="isuse != null">
+                isuse,
+            </if>
+            <if test="memberId != null">
+                member_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="pwd != null">
+                #{pwd,jdbcType=VARCHAR},
+            </if>
+            <if test="iv != null">
+                #{iv,jdbcType=VARCHAR},
+            </if>
+            <if test="phrase != null">
+                #{phrase,jdbcType=VARCHAR},
+            </if>
+            <if test="filepath != null">
+                #{filepath,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isuse != null">
+                #{isuse,jdbcType=INTEGER},
+            </if>
+            <if test="memberId != null">
+                #{memberId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.vcoin.MexcAddressLib">
+        update t_mexc_address_lib
+        <set>
+            <if test="type != null">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="pwd != null">
+                pwd = #{pwd,jdbcType=VARCHAR},
+            </if>
+            <if test="iv != null">
+                iv = #{iv,jdbcType=VARCHAR},
+            </if>
+            <if test="phrase != null">
+                phrase = #{phrase,jdbcType=VARCHAR},
+            </if>
+            <if test="filepath != null">
+                filePath = #{filepath,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isuse != null">
+                isuse = #{isuse,jdbcType=INTEGER},
+            </if>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.vcoin.MexcAddressLib">
+        update t_mexc_address_lib
+        set type = #{type,jdbcType=VARCHAR},
+            address = #{address,jdbcType=VARCHAR},
+            pwd = #{pwd,jdbcType=VARCHAR},
+            iv = #{iv,jdbcType=VARCHAR},
+            phrase = #{phrase,jdbcType=VARCHAR},
+            filePath = #{filepath,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            isuse = #{isuse,jdbcType=INTEGER},
+            member_id = #{memberId,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_address_lib
+        <include refid="Param_Base_Clause"/>
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_address_lib (id, type, address,
+        pwd, iv, phrase,
+        filePath, create_time, isuse,
+        member_id)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=INTEGER}, #{item.type,jdbcType=VARCHAR}, #{item.address,jdbcType=VARCHAR},
+            #{item.pwd,jdbcType=VARCHAR}, #{item.iv,jdbcType=VARCHAR}, #{item.phrase,jdbcType=VARCHAR},
+            #{item.filepath,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, #{item.isuse,jdbcType=INTEGER},
+            #{item.memberId,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateByParam">
+        update t_mexc_address_lib
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.type != null">
+                type = #{record.type,jdbcType=VARCHAR},
+            </if>
+            <if test="record.address != null">
+                address = #{record.address,jdbcType=VARCHAR},
+            </if>
+            <if test="record.pwd != null">
+                pwd = #{record.pwd,jdbcType=VARCHAR},
+            </if>
+            <if test="record.iv != null">
+                iv = #{record.iv,jdbcType=VARCHAR},
+            </if>
+            <if test="record.phrase != null">
+                phrase = #{record.phrase,jdbcType=VARCHAR},
+            </if>
+            <if test="record.filepath != null">
+                filePath = #{record.filepath,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.isuse != null">
+                isuse = #{record.isuse,jdbcType=INTEGER},
+            </if>
+            <if test="record.memberId != null">
+                member_id = #{record.memberId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause"/>
+    </update>
+
+    <delete id="deleteByParam">
+        delete from t_mexc_address_lib
+        <include refid="Param_Base_Clause"/>
+    </delete>
+
+    <update id="truncate">
+        truncate t_mexc_address_lib
+    </update>
+
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_address_lib
+    </select>
+
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_address_lib
+        <include refid="Param_Base_Clause"/>
+    </select>
+
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_address_lib
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER}
+            </if>
+            <if test="record.type != null">
+                and type = #{record.type,jdbcType=VARCHAR}
+            </if>
+            <if test="record.address != null">
+                and address = #{record.address,jdbcType=VARCHAR}
+            </if>
+            <if test="record.pwd != null">
+                and pwd = #{record.pwd,jdbcType=VARCHAR}
+            </if>
+            <if test="record.iv != null">
+                and iv = #{record.iv,jdbcType=VARCHAR}
+            </if>
+            <if test="record.phrase != null">
+                and phrase = #{record.phrase,jdbcType=VARCHAR}
+            </if>
+            <if test="record.filepath != null">
+                and filePath = #{record.filepath,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.isuse != null">
+                and isuse = #{record.isuse,jdbcType=INTEGER}
+            </if>
+            <if test="record.memberId != null">
+                and member_id = #{record.memberId,jdbcType=VARCHAR}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_address_lib
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER}
+            </if>
+            <if test="record.type != null">
+                and type = #{record.type,jdbcType=VARCHAR}
+            </if>
+            <if test="record.address != null">
+                and address = #{record.address,jdbcType=VARCHAR}
+            </if>
+            <if test="record.pwd != null">
+                and pwd = #{record.pwd,jdbcType=VARCHAR}
+            </if>
+            <if test="record.iv != null">
+                and iv = #{record.iv,jdbcType=VARCHAR}
+            </if>
+            <if test="record.phrase != null">
+                and phrase = #{record.phrase,jdbcType=VARCHAR}
+            </if>
+            <if test="record.filepath != null">
+                and filePath = #{record.filepath,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.isuse != null">
+                and isuse = #{record.isuse,jdbcType=INTEGER}
+            </if>
+            <if test="record.memberId != null">
+                and member_id = #{record.memberId,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryUsePercent" resultType="java.util.HashMap">
+        SELECT
+			count(CASE isuse WHEN 0 THEN type END) not_use,
+			count(CASE isuse WHEN 1 THEN type END) used,
+			type
+		FROM
+			t_mexc_address_lib
+		GROUP BY
+			type
+    </select>
+
+
+    <update id="updateAssetStatus">
+        update t_mexc_address_lib set isuse=1,member_id=#{memberId} where address in
+        <foreach collection="address" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </update>
+
+</mapper>

@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.auth.admin.AdminDAO">
+    
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.auth.admin.Admin">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="admin_name" jdbcType="VARCHAR" property="adminName" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="real_name" jdbcType="VARCHAR" property="realName" />
+        <result column="head_pic" jdbcType="VARCHAR" property="headPic" />
+        <result column="login_error_count" jdbcType="INTEGER" property="loginErrorCount" />
+        <result column="login_error_time" jdbcType="TIMESTAMP" property="loginErrorTime" />
+        <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="create_ip" jdbcType="VARCHAR" property="createIp" />
+        <result column="update_pwd_count" jdbcType="INTEGER" property="updatePwdCount" />
+        <result column="limit_count" jdbcType="INTEGER" property="limitCount" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+    </resultMap>
+    
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                 ${criteria.condition} 
+                <if test=" criteria.haveValue ">
+                     #{criteria.value} 
+                </if>
+            </foreach>
+        </if>
+    </sql>
+    
+    <sql id="Base_Column_List">
+        id, admin_name, password, real_name, head_pic, login_error_count, login_error_time, 
+        last_login_time, update_by, update_time, create_by, create_time, create_ip, update_pwd_count, 
+        limit_count, status, mobile, remark
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_admin
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_admin
+    </select>
+    
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_admin
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_admin
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    
+    <insert id="insert" parameterType="com.mexc.dao.model.auth.admin.Admin" useGeneratedKeys="true" keyProperty="id">
+        insert into t_admin (id, admin_name, password, 
+            real_name, head_pic, login_error_count, 
+            login_error_time, last_login_time, update_by, 
+            update_time, create_by, create_time, 
+            create_ip, update_pwd_count, limit_count, 
+            status, mobile, remark
+            )
+        values (#{id,jdbcType=INTEGER}, #{adminName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+            #{realName,jdbcType=VARCHAR}, #{headPic,jdbcType=VARCHAR}, #{loginErrorCount,jdbcType=INTEGER}, 
+            #{loginErrorTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+            #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+            #{createIp,jdbcType=VARCHAR}, #{updatePwdCount,jdbcType=INTEGER}, #{limitCount,jdbcType=INTEGER}, 
+            #{status,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.auth.admin.Admin">
+        insert into t_admin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="adminName != null">
+                admin_name,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="realName != null">
+                real_name,
+            </if>
+            <if test="headPic != null">
+                head_pic,
+            </if>
+            <if test="loginErrorCount != null">
+                login_error_count,
+            </if>
+            <if test="loginErrorTime != null">
+                login_error_time,
+            </if>
+            <if test="lastLoginTime != null">
+                last_login_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createIp != null">
+                create_ip,
+            </if>
+            <if test="updatePwdCount != null">
+                update_pwd_count,
+            </if>
+            <if test="limitCount != null">
+                limit_count,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="adminName != null">
+                #{adminName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="realName != null">
+                #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="headPic != null">
+                #{headPic,jdbcType=VARCHAR},
+            </if>
+            <if test="loginErrorCount != null">
+                #{loginErrorCount,jdbcType=INTEGER},
+            </if>
+            <if test="loginErrorTime != null">
+                #{loginErrorTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastLoginTime != null">
+                #{lastLoginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createIp != null">
+                #{createIp,jdbcType=VARCHAR},
+            </if>
+            <if test="updatePwdCount != null">
+                #{updatePwdCount,jdbcType=INTEGER},
+            </if>
+            <if test="limitCount != null">
+                #{limitCount,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.auth.admin.Admin">
+        update t_admin
+        <set>
+            <if test="adminName != null">
+                admin_name = #{adminName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="realName != null">
+                real_name = #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="headPic != null">
+                head_pic = #{headPic,jdbcType=VARCHAR},
+            </if>
+            <if test="loginErrorCount != null">
+                login_error_count = #{loginErrorCount,jdbcType=INTEGER},
+            </if>
+            <if test="loginErrorTime != null">
+                login_error_time = #{loginErrorTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastLoginTime != null">
+                last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createIp != null">
+                create_ip = #{createIp,jdbcType=VARCHAR},
+            </if>
+            <if test="updatePwdCount != null">
+                update_pwd_count = #{updatePwdCount,jdbcType=INTEGER},
+            </if>
+            <if test="limitCount != null">
+                limit_count = #{limitCount,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.auth.admin.Admin">
+        update t_admin
+        set admin_name = #{adminName,jdbcType=VARCHAR},
+            password = #{password,jdbcType=VARCHAR},
+            real_name = #{realName,jdbcType=VARCHAR},
+            head_pic = #{headPic,jdbcType=VARCHAR},
+            login_error_count = #{loginErrorCount,jdbcType=INTEGER},
+            login_error_time = #{loginErrorTime,jdbcType=TIMESTAMP},
+            last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            create_ip = #{createIp,jdbcType=VARCHAR},
+            update_pwd_count = #{updatePwdCount,jdbcType=INTEGER},
+            limit_count = #{limitCount,jdbcType=INTEGER},
+            status = #{status,jdbcType=INTEGER},
+            mobile = #{mobile,jdbcType=VARCHAR},
+            remark = #{remark,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_admin
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_admin (id, admin_name, password, 
+            real_name, head_pic, login_error_count, 
+            login_error_time, last_login_time, 
+            update_by, update_time, create_by, 
+            create_time, create_ip, update_pwd_count, 
+            limit_count, status, mobile, 
+            remark)
+         values 
+        <foreach  collection="list" index="index" item="item" separator=",">
+             (#{item.id,jdbcType=INTEGER}, #{item.adminName,jdbcType=VARCHAR}, #{item.password,jdbcType=VARCHAR}, 
+                #{item.realName,jdbcType=VARCHAR}, #{item.headPic,jdbcType=VARCHAR}, #{item.loginErrorCount,jdbcType=INTEGER}, 
+                #{item.loginErrorTime,jdbcType=TIMESTAMP}, #{item.lastLoginTime,jdbcType=TIMESTAMP}, 
+                #{item.updateBy,jdbcType=VARCHAR}, #{item.updateTime,jdbcType=TIMESTAMP}, #{item.createBy,jdbcType=VARCHAR}, 
+                #{item.createTime,jdbcType=TIMESTAMP}, #{item.createIp,jdbcType=VARCHAR}, #{item.updatePwdCount,jdbcType=INTEGER}, 
+                #{item.limitCount,jdbcType=INTEGER}, #{item.status,jdbcType=INTEGER}, #{item.mobile,jdbcType=VARCHAR}, 
+                #{item.remark,jdbcType=VARCHAR}
+            )
+        </foreach >
+    </insert>
+    
+    <update id="updateByParam">
+        update t_admin
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.adminName != null">
+                admin_name = #{record.adminName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.password != null">
+                password = #{record.password,jdbcType=VARCHAR},
+            </if>
+            <if test="record.realName != null">
+                real_name = #{record.realName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.headPic != null">
+                head_pic = #{record.headPic,jdbcType=VARCHAR},
+            </if>
+            <if test="record.loginErrorCount != null">
+                login_error_count = #{record.loginErrorCount,jdbcType=INTEGER},
+            </if>
+            <if test="record.loginErrorTime != null">
+                login_error_time = #{record.loginErrorTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.lastLoginTime != null">
+                last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateBy != null">
+                update_by = #{record.updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createBy != null">
+                create_by = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createIp != null">
+                create_ip = #{record.createIp,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updatePwdCount != null">
+                update_pwd_count = #{record.updatePwdCount,jdbcType=INTEGER},
+            </if>
+            <if test="record.limitCount != null">
+                limit_count = #{record.limitCount,jdbcType=INTEGER},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.mobile != null">
+                mobile = #{record.mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="record.remark != null">
+                remark = #{record.remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause" />
+    </update>
+    
+    <delete id="deleteByParam">
+        delete from t_admin
+        <include refid="Param_Base_Clause" />
+    </delete>
+    
+    <update id="truncate">
+        truncate t_admin
+    </update>
+    
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_admin
+    </select>
+    
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_admin
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_admin
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER}
+            </if>
+            <if test="record.adminName != null">
+                 and admin_name = #{record.adminName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.password != null">
+                 and password = #{record.password,jdbcType=VARCHAR}
+            </if>
+            <if test="record.realName != null">
+                 and real_name = #{record.realName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.headPic != null">
+                 and head_pic = #{record.headPic,jdbcType=VARCHAR}
+            </if>
+            <if test="record.loginErrorCount != null">
+                 and login_error_count = #{record.loginErrorCount,jdbcType=INTEGER}
+            </if>
+            <if test="record.loginErrorTime != null">
+                 and login_error_time = #{record.loginErrorTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.lastLoginTime != null">
+                 and last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.updateBy != null">
+                 and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                 and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                 and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                 and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createIp != null">
+                 and create_ip = #{record.createIp,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updatePwdCount != null">
+                 and update_pwd_count = #{record.updatePwdCount,jdbcType=INTEGER}
+            </if>
+            <if test="record.limitCount != null">
+                 and limit_count = #{record.limitCount,jdbcType=INTEGER}
+            </if>
+            <if test="record.status != null">
+                 and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.mobile != null">
+                 and mobile = #{record.mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="record.remark != null">
+                 and remark = #{record.remark,jdbcType=VARCHAR}
+            </if>
+        </where>
+         limit 1
+    </select>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_admin
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER}
+            </if>
+            <if test="record.adminName != null">
+                 and admin_name = #{record.adminName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.password != null">
+                 and password = #{record.password,jdbcType=VARCHAR}
+            </if>
+            <if test="record.realName != null">
+                 and real_name = #{record.realName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.headPic != null">
+                 and head_pic = #{record.headPic,jdbcType=VARCHAR}
+            </if>
+            <if test="record.loginErrorCount != null">
+                 and login_error_count = #{record.loginErrorCount,jdbcType=INTEGER}
+            </if>
+            <if test="record.loginErrorTime != null">
+                 and login_error_time = #{record.loginErrorTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.lastLoginTime != null">
+                 and last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.updateBy != null">
+                 and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                 and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                 and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                 and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createIp != null">
+                 and create_ip = #{record.createIp,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updatePwdCount != null">
+                 and update_pwd_count = #{record.updatePwdCount,jdbcType=INTEGER}
+            </if>
+            <if test="record.limitCount != null">
+                 and limit_count = #{record.limitCount,jdbcType=INTEGER}
+            </if>
+            <if test="record.status != null">
+                 and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.mobile != null">
+                 and mobile = #{record.mobile,jdbcType=VARCHAR}
+            </if>
+            <if test="record.remark != null">
+                 and remark = #{record.remark,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+
+    <!--管理员列表-->
+    <resultMap id="AdminVoResult" type="com.mexc.dao.vo.admin.AdminVo" extends="BaseResultMap">
+        <result column="roleCode" jdbcType="VARCHAR" property="roleCode" />
+        <result column="roleName" jdbcType="VARCHAR" property="roleName" />
+    </resultMap>
+
+    <select id="queryAdminListPage" resultMap="AdminVoResult">
+        select a.*,
+               r.role_code as roleCode,
+               r.role_name as roleName
+        from t_admin a,t_admin_role ar,t_role r
+        where a.id=ar.admin_id
+            and ar.role_id=r.id
+        <if test="searchKey != null">
+            and a.real_name like  CONCAT('%',#{searchKey,jdbcType=VARCHAR},'%')
+        </if>
+        order by a.create_time
+    </select>
+
+    <update id="addLoginErrorTime">
+        update t_admin set login_error_count=login_error_count+#{time},last_login_time=now() where admin_name=#{name}
+    </update>
+    <update id="resetLoginErrorTime">
+        update t_admin set login_error_count=0 where admin_name=#{name}
+    </update>
+
+    <select id="login" resultMap="BaseResultMap">
+        select * from t_admin where admin_name=#{name} and password=#{password}
+    </select>
+</mapper>

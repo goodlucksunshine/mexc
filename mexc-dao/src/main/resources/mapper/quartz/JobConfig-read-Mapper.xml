@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.quartz.JobConfigReadDao">
+    <resultMap id="BaseMap" type="com.mexc.dao.model.quartz.JobConfig">
+        <result column="id" property="id" jdbcType="INTEGER" javaType="java.lang.Integer"></result>
+        <result column="jobName" property="jobName" jdbcType="VARCHAR" javaType="java.lang.String"></result>
+        <result column="jobGroup" property="jobGroup" jdbcType="VARCHAR" javaType="java.lang.String"></result>
+        <result column="status" property="status" jdbcType="VARCHAR" javaType="java.lang.String"></result>
+        <result column="cronExpression" property="cronExpression" jdbcType="VARCHAR"
+                javaType="java.lang.String"></result>
+        <result column="description" property="description" jdbcType="VARCHAR" javaType="java.lang.String"></result>
+        <result column="className" property="className" jdbcType="VARCHAR" javaType="java.lang.String"></result>
+        <result column="methodName" property="methodName" jdbcType="VARCHAR" javaType="java.lang.String"></result>
+        <result column="arguments" property="arguments" jdbcType="VARCHAR" javaType="java.lang.String"></result>
+        <result column="address" property="address" jdbcType="VARCHAR" javaType="java.lang.String"></result>
+        <result column="springId" property="springId" jdbcType="VARCHAR" javaType="java.lang.String"></result>
+        <result column="isActive" property="isActive" jdbcType="INTEGER" javaType="java.lang.Integer"></result>
+        <result column="isConcurrent" property="isConcurrent" jdbcType="INTEGER" javaType="java.lang.Integer"></result>
+        <result column="creater" property="creater" jdbcType="VARCHAR" javaType="java.lang.String"></result>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date"></result>
+        <result column="lastUpdateTime" property="lastUpdateTime" jdbcType="TIMESTAMP"
+                javaType="java.util.Date"></result>
+        <result column="remark" property="remark" jdbcType="VARCHAR" javaType="java.lang.String"></result>
+        <result column="count" property="count" jdbcType="INTEGER" javaType="java.lang.Integer"></result>
+        <result column="keyName" property="keyName" jdbcType="VARCHAR" javaType="java.lang.String"></result>
+        <result column="jobType" property="jobType" jdbcType="VARCHAR" javaType="java.lang.String"></result>
+    </resultMap>
+    <sql id="BaseColumn">
+id,jobName,jobGroup,status,cronExpression,description,className,methodName,arguments,address,springId,isActive,isConcurrent,creater,createTime,lastUpdateTime,remark,count,keyName,jobType
+</sql>
+    <select id="selectAll" resultMap="BaseMap">
+        SELECT
+        <include refid="BaseColumn"/>
+        from jobConfig
+        <include refid="shops"/>
+    </select>
+    <select id="selectByNameAndGroup" resultMap="BaseMap">
+        SELECT
+        <include refid="BaseColumn"/>
+        from jobConfig where jobName = #{jobName,jdbcType=VARCHAR} and jobGroup
+        =#{jobGroup,jdbcType=VARCHAR}
+        <include refid="shops"/>
+    </select>
+    <select id="selectById" resultMap="BaseMap">
+        SELECT
+        <include refid="BaseColumn"/>
+        from jobConfig where id=#{jobConfig.id,jdbcType=INTEGER}
+        <include refid="shops"/>
+    </select>
+    <select id="select" resultMap="BaseMap">
+        SELECT
+        <include refid="BaseColumn"/>
+        from jobConfig
+        where 1=1
+        <if test="jobConfig.jobName != null">
+            AND jobName = #{jobConfig.jobName,jdbcType=VARCHAR}
+        </if>
+        <if test="jobConfig.jobGroup != null">
+            AND jobGroup = #{jobConfig.jobGroup,jdbcType=VARCHAR}
+        </if>
+        <if test="jobConfig.status != null">
+            AND status = #{jobConfig.status,jdbcType=VARCHAR}
+        </if>
+        <if test="jobConfig.cronExpression != null">
+            AND cronExpression = #{jobConfig.cronExpression,jdbcType=VARCHAR}
+        </if>
+        <if test="jobConfig.description != null">
+            AND description = #{jobConfig.description,jdbcType=VARCHAR}
+        </if>
+        <if test="jobConfig.className != null">
+            AND className = #{jobConfig.className,jdbcType=VARCHAR}
+        </if>
+        <if test="jobConfig.methodName != null">
+            AND methodName = #{jobConfig.methodName,jdbcType=VARCHAR}
+        </if>
+        <if test="jobConfig.arguments != null">
+            AND arguments = #{jobConfig.arguments,jdbcType=VARCHAR}
+        </if>
+        <if test="jobConfig.address != null">
+            AND address = #{jobConfig.address,jdbcType=VARCHAR}
+        </if>
+        <if test="jobConfig.springId != null">
+            AND springId = #{jobConfig.springId,jdbcType=VARCHAR}
+        </if>
+        <if test="jobConfig.isActive != null">
+            AND isActive = #{jobConfig.isActive,jdbcType=INTEGER}
+        </if>
+        <if test="jobConfig.isConcurrent != null">
+            AND isConcurrent = #{jobConfig.isConcurrent,jdbcType=INTEGER}
+        </if>
+        <if test="jobConfig.creater != null">
+            AND creater = #{jobConfig.creater,jdbcType=VARCHAR}
+        </if>
+        <if test="jobConfig.createTime != null">
+            AND createTime = #{jobConfig.createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="jobConfig.lastUpdateTime != null">
+            AND lastUpdateTime = #{jobConfig.lastUpdaTetime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="jobConfig.remark != null">
+            AND remark = #{jobConfig.remark,jdbcType=VARCHAR}
+        </if>
+        <if test="jobConfig.count != null">
+            AND count = #{jobConfig.count,jdbcType=VARCHAR}
+        </if>
+        <if test="jobConfig.keyName != null">
+            AND keyName = #{jobConfig.keyName,jdbcType=VARCHAR}
+        </if>
+        <if test="jobConfig.jobType != null">
+            AND jobType = #{jobConfig.jobType,jdbcType=VARCHAR}
+        </if>
+        <include refid="shops"/>
+    </select>
+    <select id="selectByKey" resultMap="BaseMap">
+        SELECT
+        <include refid="BaseColumn"/>
+        from jobConfig
+        where 1=1
+        <if test="list!=null and list.size()>0">
+            AND keyName in
+            <foreach collection="list" open="(" close=")" separator="," item="itm">
+                #{itm}
+            </foreach>
+        </if>
+        <include refid="shops"/>
+    </select>
+    <select id="selectIsHave" resultType="Int">
+        select count(id) from jobConfig
+        where jobName = #{jobName,jdbcType=VARCHAR} and jobGroup =#{jobGroup,jdbcType=VARCHAR}
+        <include refid="shops"/>
+    </select>
+
+    <sql id="shops">
+        <trim prefix="AND">
+            <if test="shopIds!=null and shopIds.size>0">
+                jobGroup IN
+                <foreach collection="shopIds" item="itm" open="(" close=")" separator=",">
+                    #{itm}
+                </foreach>
+            </if>
+        </trim>
+    </sql>
+</mapper>

@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.vcoin.MexcTradeDAO">
+    
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.vcoin.MexcTrade">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="trade_no" jdbcType="VARCHAR" property="tradeNo" />
+        <result column="member_id" jdbcType="VARCHAR" property="memberId" />
+        <result column="market_id" jdbcType="VARCHAR" property="marketId" />
+        <result column="market_name" jdbcType="VARCHAR" property="marketName" />
+        <result column="trade_vcoin_id" jdbcType="VARCHAR" property="tradeVcoinId" />
+        <result column="tradel_vcoin_name_en" jdbcType="VARCHAR" property="tradelVcoinNameEn" />
+        <result column="trade_price" jdbcType="DECIMAL" property="tradePrice" />
+        <result column="trade_rate" jdbcType="DECIMAL" property="tradeRate" />
+        <result column="trade_fee" jdbcType="DECIMAL" property="tradeFee" />
+        <result column="trade_number" jdbcType="DECIMAL" property="tradeNumber" />
+        <result column="trade_total_amount" jdbcType="DECIMAL" property="tradeTotalAmount" />
+        <result column="trade_type" jdbcType="INTEGER" property="tradeType" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="note" jdbcType="VARCHAR" property="note" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="updare_by_name" jdbcType="VARCHAR" property="updareByName" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_by_name" jdbcType="VARCHAR" property="createByName" />
+        <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    </resultMap>
+
+
+    
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                 ${criteria.condition} 
+                <if test=" criteria.haveValue ">
+                     #{criteria.value} 
+                </if>
+            </foreach>
+        </if>
+    </sql>
+    
+    <sql id="Base_Column_List">
+        id, trade_no, member_id, market_id, market_name, trade_vcoin_id, tradel_vcoin_name_en, 
+        trade_price, trade_rate, trade_fee, trade_number, trade_total_amount, trade_type, 
+        status, note, update_by, updare_by_name, update_time, create_by, create_by_name, 
+        create_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_mexc_trade
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_trade
+    </select>
+    
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_trade
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_mexc_trade
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    
+    <insert id="insert" parameterType="com.mexc.dao.model.vcoin.MexcTrade">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            select replace(uuid(),'-','') from dual
+        </selectKey>
+        insert into t_mexc_trade (id, trade_no, member_id, 
+            market_id, market_name, trade_vcoin_id, 
+            tradel_vcoin_name_en, trade_price, trade_rate, 
+            trade_fee, trade_number, trade_total_amount, 
+            trade_type, status, note, 
+            update_by, updare_by_name, update_time, 
+            create_by, create_by_name, create_time
+            )
+        values (#{id,jdbcType=VARCHAR}, #{tradeNo,jdbcType=VARCHAR}, #{memberId,jdbcType=VARCHAR}, 
+            #{marketId,jdbcType=VARCHAR}, #{marketName,jdbcType=VARCHAR}, #{tradeVcoinId,jdbcType=VARCHAR}, 
+            #{tradelVcoinNameEn,jdbcType=VARCHAR}, #{tradePrice,jdbcType=DECIMAL}, #{tradeRate,jdbcType=DECIMAL}, 
+            #{tradeFee,jdbcType=DECIMAL}, #{tradeNumber,jdbcType=DECIMAL}, #{tradeTotalAmount,jdbcType=DECIMAL}, 
+            #{tradeType,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR}, 
+            #{updateBy,jdbcType=VARCHAR}, #{updareByName,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+            #{createBy,jdbcType=VARCHAR}, #{createByName,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.vcoin.MexcTrade">
+        insert into t_mexc_trade
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="tradeNo != null">
+                trade_no,
+            </if>
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="marketId != null">
+                market_id,
+            </if>
+            <if test="marketName != null">
+                market_name,
+            </if>
+            <if test="tradeVcoinId != null">
+                trade_vcoin_id,
+            </if>
+            <if test="tradelVcoinNameEn != null">
+                tradel_vcoin_name_en,
+            </if>
+            <if test="tradePrice != null">
+                trade_price,
+            </if>
+            <if test="tradeRate != null">
+                trade_rate,
+            </if>
+            <if test="tradeFee != null">
+                trade_fee,
+            </if>
+            <if test="tradeNumber != null">
+                trade_number,
+            </if>
+            <if test="tradeTotalAmount != null">
+                trade_total_amount,
+            </if>
+            <if test="tradeType != null">
+                trade_type,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="note != null">
+                note,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updareByName != null">
+                updare_by_name,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createByName != null">
+                create_by_name,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeNo != null">
+                #{tradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="memberId != null">
+                #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="marketId != null">
+                #{marketId,jdbcType=VARCHAR},
+            </if>
+            <if test="marketName != null">
+                #{marketName,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeVcoinId != null">
+                #{tradeVcoinId,jdbcType=VARCHAR},
+            </if>
+            <if test="tradelVcoinNameEn != null">
+                #{tradelVcoinNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="tradePrice != null">
+                #{tradePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeRate != null">
+                #{tradeRate,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeFee != null">
+                #{tradeFee,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeNumber != null">
+                #{tradeNumber,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeTotalAmount != null">
+                #{tradeTotalAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeType != null">
+                #{tradeType,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="note != null">
+                #{note,jdbcType=VARCHAR},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updareByName != null">
+                #{updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.vcoin.MexcTrade">
+        update t_mexc_trade
+        <set>
+            <if test="tradeNo != null">
+                trade_no = #{tradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="marketId != null">
+                market_id = #{marketId,jdbcType=VARCHAR},
+            </if>
+            <if test="marketName != null">
+                market_name = #{marketName,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeVcoinId != null">
+                trade_vcoin_id = #{tradeVcoinId,jdbcType=VARCHAR},
+            </if>
+            <if test="tradelVcoinNameEn != null">
+                tradel_vcoin_name_en = #{tradelVcoinNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="tradePrice != null">
+                trade_price = #{tradePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeRate != null">
+                trade_rate = #{tradeRate,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeFee != null">
+                trade_fee = #{tradeFee,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeNumber != null">
+                trade_number = #{tradeNumber,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeTotalAmount != null">
+                trade_total_amount = #{tradeTotalAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="tradeType != null">
+                trade_type = #{tradeType,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="note != null">
+                note = #{note,jdbcType=VARCHAR},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updareByName != null">
+                updare_by_name = #{updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                create_by_name = #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.vcoin.MexcTrade">
+        update t_mexc_trade
+        set trade_no = #{tradeNo,jdbcType=VARCHAR},
+            member_id = #{memberId,jdbcType=VARCHAR},
+            market_id = #{marketId,jdbcType=VARCHAR},
+            market_name = #{marketName,jdbcType=VARCHAR},
+            trade_vcoin_id = #{tradeVcoinId,jdbcType=VARCHAR},
+            tradel_vcoin_name_en = #{tradelVcoinNameEn,jdbcType=VARCHAR},
+            trade_price = #{tradePrice,jdbcType=DECIMAL},
+            trade_rate = #{tradeRate,jdbcType=DECIMAL},
+            trade_fee = #{tradeFee,jdbcType=DECIMAL},
+            trade_number = #{tradeNumber,jdbcType=DECIMAL},
+            trade_total_amount = #{tradeTotalAmount,jdbcType=DECIMAL},
+            trade_type = #{tradeType,jdbcType=INTEGER},
+            status = #{status,jdbcType=INTEGER},
+            note = #{note,jdbcType=VARCHAR},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            updare_by_name = #{updareByName,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_by_name = #{createByName,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_trade
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_trade (id, trade_no, member_id, 
+            market_id, market_name, trade_vcoin_id, 
+            tradel_vcoin_name_en, trade_price, 
+            trade_rate, trade_fee, trade_number, 
+            trade_total_amount, trade_type, 
+            status, note, update_by, 
+            updare_by_name, update_time, 
+            create_by, create_by_name, create_time
+            )
+         values 
+        <foreach  collection="list" index="index" item="item" separator=",">
+             (#{item.id,jdbcType=VARCHAR}, #{item.tradeNo,jdbcType=VARCHAR}, #{item.memberId,jdbcType=VARCHAR}, 
+                #{item.marketId,jdbcType=VARCHAR}, #{item.marketName,jdbcType=VARCHAR}, #{item.tradeVcoinId,jdbcType=VARCHAR}, 
+                #{item.tradelVcoinNameEn,jdbcType=VARCHAR}, #{item.tradePrice,jdbcType=DECIMAL}, 
+                #{item.tradeRate,jdbcType=DECIMAL}, #{item.tradeFee,jdbcType=DECIMAL}, #{item.tradeNumber,jdbcType=DECIMAL}, 
+                #{item.tradeTotalAmount,jdbcType=DECIMAL}, #{item.tradeType,jdbcType=INTEGER}, 
+                #{item.status,jdbcType=INTEGER}, #{item.note,jdbcType=VARCHAR}, #{item.updateBy,jdbcType=VARCHAR}, 
+                #{item.updareByName,jdbcType=VARCHAR}, #{item.updateTime,jdbcType=TIMESTAMP}, 
+                #{item.createBy,jdbcType=VARCHAR}, #{item.createByName,jdbcType=VARCHAR}, #{item.createTime,jdbcType=VARCHAR}
+                
+            )
+        </foreach >
+    </insert>
+    
+    <update id="updateByParam">
+        update t_mexc_trade
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.tradeNo != null">
+                trade_no = #{record.tradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.memberId != null">
+                member_id = #{record.memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.marketId != null">
+                market_id = #{record.marketId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.marketName != null">
+                market_name = #{record.marketName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.tradeVcoinId != null">
+                trade_vcoin_id = #{record.tradeVcoinId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.tradelVcoinNameEn != null">
+                tradel_vcoin_name_en = #{record.tradelVcoinNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="record.tradePrice != null">
+                trade_price = #{record.tradePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.tradeRate != null">
+                trade_rate = #{record.tradeRate,jdbcType=DECIMAL},
+            </if>
+            <if test="record.tradeFee != null">
+                trade_fee = #{record.tradeFee,jdbcType=DECIMAL},
+            </if>
+            <if test="record.tradeNumber != null">
+                trade_number = #{record.tradeNumber,jdbcType=DECIMAL},
+            </if>
+            <if test="record.tradeTotalAmount != null">
+                trade_total_amount = #{record.tradeTotalAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.tradeType != null">
+                trade_type = #{record.tradeType,jdbcType=INTEGER},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.note != null">
+                note = #{record.note,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateBy != null">
+                update_by = #{record.updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updareByName != null">
+                updare_by_name = #{record.updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createBy != null">
+                create_by = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createByName != null">
+                create_by_name = #{record.createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause" />
+    </update>
+    
+    <delete id="deleteByParam">
+        delete from t_mexc_trade
+        <include refid="Param_Base_Clause" />
+    </delete>
+    
+    <update id="truncate">
+        truncate t_mexc_trade
+    </update>
+    
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_trade
+    </select>
+    
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_trade
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_trade
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.tradeNo != null">
+                 and trade_no = #{record.tradeNo,jdbcType=VARCHAR}
+            </if>
+            <if test="record.memberId != null">
+                 and member_id = #{record.memberId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.marketId != null">
+                 and market_id = #{record.marketId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.marketName != null">
+                 and market_name = #{record.marketName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.tradeVcoinId != null">
+                 and trade_vcoin_id = #{record.tradeVcoinId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.tradelVcoinNameEn != null">
+                 and tradel_vcoin_name_en = #{record.tradelVcoinNameEn,jdbcType=VARCHAR}
+            </if>
+            <if test="record.tradePrice != null">
+                 and trade_price = #{record.tradePrice,jdbcType=DECIMAL}
+            </if>
+            <if test="record.tradeRate != null">
+                 and trade_rate = #{record.tradeRate,jdbcType=DECIMAL}
+            </if>
+            <if test="record.tradeFee != null">
+                 and trade_fee = #{record.tradeFee,jdbcType=DECIMAL}
+            </if>
+            <if test="record.tradeNumber != null">
+                 and trade_number = #{record.tradeNumber,jdbcType=DECIMAL}
+            </if>
+            <if test="record.tradeTotalAmount != null">
+                 and trade_total_amount = #{record.tradeTotalAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.tradeType != null">
+                 and trade_type = #{record.tradeType,jdbcType=INTEGER}
+            </if>
+            <if test="record.status != null">
+                 and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.note != null">
+                 and note = #{record.note,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateBy != null">
+                 and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updareByName != null">
+                 and updare_by_name = #{record.updareByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                 and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                 and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                 and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                 and create_time = #{record.createTime,jdbcType=VARCHAR}
+            </if>
+        </where>
+         limit 1
+    </select>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_trade
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.tradeNo != null">
+                 and trade_no = #{record.tradeNo,jdbcType=VARCHAR}
+            </if>
+            <if test="record.memberId != null">
+                 and member_id = #{record.memberId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.marketId != null">
+                 and market_id = #{record.marketId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.marketName != null">
+                 and market_name = #{record.marketName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.tradeVcoinId != null">
+                 and trade_vcoin_id = #{record.tradeVcoinId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.tradelVcoinNameEn != null">
+                 and tradel_vcoin_name_en = #{record.tradelVcoinNameEn,jdbcType=VARCHAR}
+            </if>
+            <if test="record.tradePrice != null">
+                 and trade_price = #{record.tradePrice,jdbcType=DECIMAL}
+            </if>
+            <if test="record.tradeRate != null">
+                 and trade_rate = #{record.tradeRate,jdbcType=DECIMAL}
+            </if>
+            <if test="record.tradeFee != null">
+                 and trade_fee = #{record.tradeFee,jdbcType=DECIMAL}
+            </if>
+            <if test="record.tradeNumber != null">
+                 and trade_number = #{record.tradeNumber,jdbcType=DECIMAL}
+            </if>
+            <if test="record.tradeTotalAmount != null">
+                 and trade_total_amount = #{record.tradeTotalAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.tradeType != null">
+                 and trade_type = #{record.tradeType,jdbcType=INTEGER}
+            </if>
+            <if test="record.status != null">
+                 and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.note != null">
+                 and note = #{record.note,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateBy != null">
+                 and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updareByName != null">
+                 and updare_by_name = #{record.updareByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                 and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                 and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                 and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                 and create_time = #{record.createTime,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+
+    <resultMap id="orderDto" type="com.mexc.dao.vo.vcoin.trade.TradeOrderVo">
+        <result column="trade_price" jdbcType="DECIMAL" property="tradePrice"/>
+        <result column="trade_number" jdbcType="DECIMAL" property="tradeNumber"/>
+        <result column="tradeTime" jdbcType="TIMESTAMP" property="tradeTime" />
+        <result column="trade_type" jdbcType="TIMESTAMP" property="tradeType" />
+    </resultMap>
+
+    <!--最近交易-->
+    <select id="queryTradeOrderLimit" resultMap="orderDto">
+        SELECT
+            trade_price,
+            create_time as tradeTime,
+            trade_number,
+            trade_type
+        FROM t_mexc_trade
+        <where>
+            market_id=#{query.marketId,jdbcType=VARCHAR}
+            and trade_vcoin_id=#{query.vcoinId,jdbcType=VARCHAR}
+            <if test="query.tradeType != null">
+                and trade_type = #{query.tradeType,jdbcType=INTEGER}
+            </if>
+            <if test="query.status != null">
+                and status in (#{query.status,jdbcType=INTEGER})
+            </if>
+        </where>
+        ORDER BY create_time desc
+        <if test="limit != null">
+            limit 0,#{limit}
+        </if>
+    </select>
+
+
+    <!--用户交易历史-->
+    <resultMap id="historyOrder" type="com.mexc.dao.vo.order.HistoryTradeOrderVo">
+        <result column="trade_no" jdbcType="VARCHAR" property="tradeNo" />
+        <result column="member_id" jdbcType="VARCHAR" property="memberId" />
+        <result column="market_id" jdbcType="VARCHAR" property="marketId" />
+        <result column="market_name" jdbcType="VARCHAR" property="marketName" />
+        <result column="trade_vcoin_id" jdbcType="VARCHAR" property="tradeVcoinId" />
+        <result column="tradel_vcoin_name_en" jdbcType="VARCHAR" property="tradelVcoinNameEn" />
+        <result column="trade_type" jdbcType="INTEGER" property="tradeType" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+        <result column="tradeTotalAmount" jdbcType="DECIMAL" property="tradeTotalAmount" />
+        <result column="tradeTotalNumber" jdbcType="DECIMAL" property="tradeTotalNumber" />
+        <result column="tradeTotalFee" jdbcType="DECIMAL" property="tradeTotalFee" />
+        <result column="tradeAvgPrice" jdbcType="DECIMAL" property="tradeAvgPrice" />
+    </resultMap>
+
+    <!--用户交易历史-->
+    <select id="queryTradeOrder" resultMap="historyOrder">
+        SELECT
+        trade_no,
+        member_id,
+        market_id,
+        market_name,
+        trade_vcoin_id,
+        tradel_vcoin_name_en,
+        trade_type,
+        status,
+        create_time,
+        sum(trade_total_amount) as tradeTotalAmount,
+        sum(trade_number) as tradeTotalNumber,
+        sum(trade_fee) as tradeTotalFee,
+        sum(trade_total_amount)/sum(trade_number) as tradeAvgPrice
+        FROM t_mexc_trade
+        <where>
+            member_id=#{query.memberId,jdbcType=VARCHAR}
+            <if test="query.status != null">
+                and status in (#{query.status,jdbcType=INTEGER})
+            </if>
+        </where>
+        group by trade_no
+        ORDER BY create_time desc
+    </select>
+
+
+    <resultMap id="trade24Statitics" type="com.mexc.dao.vo.vcoin.trade.Trade24HStatisticsVo">
+        <result column="minTradePrice" jdbcType="DECIMAL" property="minTradePrice"/>
+        <result column="maxTradePrice" jdbcType="DECIMAL" property="maxTradePrice"/>
+        <result column="sumTradePrice" jdbcType="DECIMAL" property="sumTradePrice" />
+    </resultMap>
+
+    <!--查24小时统计价-->
+    <select id="queryTrade24HStatistics" resultMap="trade24Statitics">
+        SELECT
+        max(trade_price) as maxTradePrice,
+        min(trade_price) as minTradePrice,
+        sum(trade_price) as sumTradePrice
+        from t_mexc_trade
+        where market_id=#{marketId,jdbcType=VARCHAR}
+              and trade_vcoin_id=#{vcoinId,jdbcType=VARCHAR}
+              and str_to_date(create_time,'%Y-%m-%d %H:%i:%s') between (NOW() -  interval 24 hour) and now()
+             <!-- <![CDATA[and create_time >=  NOW() - interval 1 hour]]>-->
+    </select>
+
+    <resultMap id="latestTrade" type="com.mexc.dao.vo.vcoin.trade.LatestTradeVo">
+        <result column="tradePrice" jdbcType="DECIMAL" property="tradePrice"/>
+        <result column="tradeNumber" jdbcType="DECIMAL" property="tradeNumber"/>
+        <result column="tradeAmount" jdbcType="DECIMAL" property="tradeAmount" />
+        <result column="tradeTime" jdbcType="TIMESTAMP" property="tradeTime" />
+    </resultMap>
+    <!--查最新价-->
+    <select id="queryLatestTrade" resultMap="latestTrade">
+        SELECT
+        max(trade_price) as tradePrice,
+        trade_number as tradeNumber,
+        trade_total_amount as tradeAmount,
+        create_time as tradeTime
+        from t_mexc_trade trade
+        where market_id=#{marketId,jdbcType=VARCHAR}
+        and trade_vcoin_id=#{vcoinId,jdbcType=VARCHAR}
+        and trade.create_time in (
+              select max(create_time) from t_mexc_trade
+                where market_id=#{marketId,jdbcType=VARCHAR}
+                and trade_vcoin_id=#{vcoinId,jdbcType=VARCHAR}
+            )
+    </select>
+
+    <!--查询24小时之前的最新价-->
+    <select id="query24HBeforePrice" resultType="java.lang.String">
+        SELECT
+        trade_price as tradePrice
+        from t_mexc_trade
+        where market_id=#{marketId,jdbcType=VARCHAR}
+        and trade_vcoin_id=#{vcoinId,jdbcType=VARCHAR}
+        <![CDATA[ and str_to_date(create_time,'%Y-%m-%d %H:%i:%s') <= (NOW() -  interval 24 hour)]]>
+        /*<![CDATA[ and unix_timestamp(create_time) <= unix_timestamp(str_to_date((NOW() -  interval 24 hour),'%Y-%m-%d %H:%i:%s'))]]>*/
+       /* <![CDATA[ and DATE_FORMAT(create_time, '%Y-%m-%d') >= DATE_SUB(curdate(),interval 1 day) ]]>*/
+        order by create_time desc limit 1
+    </select>
+
+    <!--查询最高价、最低价、成交价-->
+   <select id="queryTradeVHLPrice" resultType="java.util.HashMap">
+        select
+            max(trade_price) as h,
+            min(trade_price) as l,
+            sum(trade_price) as v
+            from
+          t_mexc_trade
+          where market_id = #{query.marketId,jdbcType=VARCHAR}
+          and trade_vcoin_id=#{query.vcoinId,jdbcType=VARCHAR}
+          <![CDATA[
+            and str_to_date(create_time,'%Y-%m-%d %H:%i:%s') <= #{query.endTime}
+            and str_to_date(create_time,'%Y-%m-%d %H:%i:%s') >= #{query.startTime}
+          ]]>
+    </select>
+
+    <!--查询开盘价-->
+    <select id="queryTradeOpenPrice" resultType="java.math.BigDecimal">
+      SELECT
+        trade_price AS o
+       FROM
+        t_mexc_trade
+      where market_id = #{query.marketId,jdbcType=VARCHAR}
+      and trade_vcoin_id=#{query.vcoinId,jdbcType=VARCHAR}
+      <![CDATA[
+            and str_to_date(create_time,'%Y-%m-%d %H:%i:%s') <= #{query.endTime}
+            and str_to_date(create_time,'%Y-%m-%d %H:%i:%s') >= #{query.startTime}
+          ]]>
+      order by create_time ASC limit 1
+    </select>
+
+    <!--查询收盘价-->
+    <select id="queryTradeClosePrice" resultType="java.math.BigDecimal">
+        SELECT
+          trade_price AS o
+        FROM
+          t_mexc_trade
+        where market_id = #{query.marketId,jdbcType=VARCHAR}
+        and trade_vcoin_id=#{query.vcoinId,jdbcType=VARCHAR}
+       <![CDATA[
+            and str_to_date(create_time,'%Y-%m-%d %H:%i:%s') <= #{query.endTime}
+            and str_to_date(create_time,'%Y-%m-%d %H:%i:%s') >= #{query.startTime}
+          ]]>
+        order by create_time DESC limit 1
+    </select>
+
+
+    <select id="queryTradeOrderPage" resultMap="BaseResultMap">
+        SELECT
+        *
+        FROM
+        t_mexc_trade trade,t_mexc_member member
+        where
+            trade.member_id=member.id
+            <if test="query.tradeNo != null and query.tradeNo != ''">
+                and trade.trade_no = #{query.tradeNo,jdbcType=VARCHAR}
+            </if>
+            <if test="query.memberId != null and query.memberId != ''">
+                and trade.member_id = #{query.memberId,jdbcType=VARCHAR}
+            </if>
+            <if test="query.tradeType != null and query.tradeType != ''">
+                and trade.trade_type = #{query.tradeType,jdbcType=INTEGER}
+            </if>
+            <if test="query.status != null and query.status != ''">
+                and trade.status in (${query.status})
+            </if>
+            <if test="query.startTime != null and query.startTime != ''">
+                <![CDATA[ and unix_timestamp(str_to_date(trade.create_time,'%Y-%m-%d %H:%i:%s'))>=unix_timestamp(str_to_date(#{query.startTime},'%Y-%m-%d %H:%i:%s'))  ]]>
+            </if>
+            <if test="query.endTime != null and query.endTime != ''">
+                <![CDATA[ and unix_timestamp(str_to_date(trade.create_time,'%Y-%m-%d %H:%i:%s'))<=unix_timestamp(str_to_date(#{query.endTime},'%Y-%m-%d %H:%i:%s'))  ]]>
+            </if>
+            <if test="query.account != null and query.account != ''">
+                and trade.create_by_name like  CONCAT('%','${query.account}','%')
+            </if>
+        ORDER BY trade.create_time desc
+    </select>
+
+</mapper>

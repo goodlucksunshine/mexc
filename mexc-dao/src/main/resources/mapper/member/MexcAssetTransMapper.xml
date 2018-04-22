@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.member.MexcAssetTransDAO">
+    
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.member.MexcAssetTrans">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="asset_id" jdbcType="VARCHAR" property="assetId" />
+        <result column="trans_amount" jdbcType="DECIMAL" property="transAmount" />
+        <result column="trans_time" jdbcType="TIMESTAMP" property="transTime" />
+        <result column="trans_receipt" jdbcType="VARCHAR" property="transReceipt" />
+        <result column="trans_type" jdbcType="INTEGER" property="transType" />
+        <result column="trans_no" jdbcType="VARCHAR" property="transNo" />
+        <result column="trade_type" jdbcType="VARCHAR" property="tradeType" />
+    </resultMap>
+    
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                 ${criteria.condition} 
+                <if test=" criteria.haveValue ">
+                     #{criteria.value} 
+                </if>
+            </foreach>
+        </if>
+    </sql>
+    
+    <sql id="Base_Column_List">
+        id, asset_id, trans_amount, trans_time, trans_receipt, trans_type, trans_no, trade_type
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_mexc_asset_trans
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_asset_trans
+    </select>
+    
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_asset_trans
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_mexc_asset_trans
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    
+    <insert id="insert" parameterType="com.mexc.dao.model.member.MexcAssetTrans" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            select replace(uuid(),'-','') from dual
+        </selectKey>
+        insert into t_mexc_asset_trans (id, asset_id, trans_amount, 
+            trans_time, trans_receipt, trans_type, 
+            trans_no, trade_type)
+        values (#{id,jdbcType=VARCHAR}, #{assetId,jdbcType=VARCHAR}, #{transAmount,jdbcType=DECIMAL}, 
+            #{transTime,jdbcType=TIMESTAMP}, #{transReceipt,jdbcType=VARCHAR}, #{transType,jdbcType=INTEGER}, 
+            #{transNo,jdbcType=VARCHAR}, #{tradeType,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.member.MexcAssetTrans">
+        insert into t_mexc_asset_trans
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="assetId != null">
+                asset_id,
+            </if>
+            <if test="transAmount != null">
+                trans_amount,
+            </if>
+            <if test="transTime != null">
+                trans_time,
+            </if>
+            <if test="transReceipt != null">
+                trans_receipt,
+            </if>
+            <if test="transType != null">
+                trans_type,
+            </if>
+            <if test="transNo != null">
+                trans_no,
+            </if>
+            <if test="tradeType != null">
+                trade_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="assetId != null">
+                #{assetId,jdbcType=VARCHAR},
+            </if>
+            <if test="transAmount != null">
+                #{transAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="transTime != null">
+                #{transTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="transReceipt != null">
+                #{transReceipt,jdbcType=VARCHAR},
+            </if>
+            <if test="transType != null">
+                #{transType,jdbcType=INTEGER},
+            </if>
+            <if test="transNo != null">
+                #{transNo,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeType != null">
+                #{tradeType,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.member.MexcAssetTrans">
+        update t_mexc_asset_trans
+        <set>
+            <if test="assetId != null">
+                asset_id = #{assetId,jdbcType=VARCHAR},
+            </if>
+            <if test="transAmount != null">
+                trans_amount = #{transAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="transTime != null">
+                trans_time = #{transTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="transReceipt != null">
+                trans_receipt = #{transReceipt,jdbcType=VARCHAR},
+            </if>
+            <if test="transType != null">
+                trans_type = #{transType,jdbcType=INTEGER},
+            </if>
+            <if test="transNo != null">
+                trans_no = #{transNo,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeType != null">
+                trade_type = #{tradeType,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.member.MexcAssetTrans">
+        update t_mexc_asset_trans
+        set asset_id = #{assetId,jdbcType=VARCHAR},
+            trans_amount = #{transAmount,jdbcType=DECIMAL},
+            trans_time = #{transTime,jdbcType=TIMESTAMP},
+            trans_receipt = #{transReceipt,jdbcType=VARCHAR},
+            trans_type = #{transType,jdbcType=INTEGER},
+            trans_no = #{transNo,jdbcType=VARCHAR},
+            trade_type = #{tradeType,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_asset_trans
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_asset_trans (id, asset_id, trans_amount, 
+            trans_time, trans_receipt, 
+            trans_type, trans_no, trade_type
+            )
+         values 
+        <foreach  collection="list" index="index" item="item" separator=",">
+             (#{item.id,jdbcType=VARCHAR}, #{item.assetId,jdbcType=VARCHAR}, #{item.transAmount,jdbcType=DECIMAL}, 
+                #{item.transTime,jdbcType=TIMESTAMP}, #{item.transReceipt,jdbcType=VARCHAR}, 
+                #{item.transType,jdbcType=INTEGER}, #{item.transNo,jdbcType=VARCHAR}, #{item.tradeType,jdbcType=VARCHAR}
+                
+            )
+        </foreach >
+    </insert>
+    
+    <update id="updateByParam">
+        update t_mexc_asset_trans
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.assetId != null">
+                asset_id = #{record.assetId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.transAmount != null">
+                trans_amount = #{record.transAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.transTime != null">
+                trans_time = #{record.transTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.transReceipt != null">
+                trans_receipt = #{record.transReceipt,jdbcType=VARCHAR},
+            </if>
+            <if test="record.transType != null">
+                trans_type = #{record.transType,jdbcType=INTEGER},
+            </if>
+            <if test="record.transNo != null">
+                trans_no = #{record.transNo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.tradeType != null">
+                trade_type = #{record.tradeType,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause" />
+    </update>
+    
+    <delete id="deleteByParam">
+        delete from t_mexc_asset_trans
+        <include refid="Param_Base_Clause" />
+    </delete>
+    
+    <update id="truncate">
+        truncate t_mexc_asset_trans
+    </update>
+    
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_asset_trans
+    </select>
+    
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_asset_trans
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_asset_trans
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.assetId != null">
+                 and asset_id = #{record.assetId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.transAmount != null">
+                 and trans_amount = #{record.transAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.transTime != null">
+                 and trans_time = #{record.transTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.transReceipt != null">
+                 and trans_receipt = #{record.transReceipt,jdbcType=VARCHAR}
+            </if>
+            <if test="record.transType != null">
+                 and trans_type = #{record.transType,jdbcType=INTEGER}
+            </if>
+            <if test="record.transNo != null">
+                 and trans_no = #{record.transNo,jdbcType=VARCHAR}
+            </if>
+            <if test="record.tradeType != null">
+                 and trade_type = #{record.tradeType,jdbcType=VARCHAR}
+            </if>
+        </where>
+         limit 1
+    </select>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_asset_trans
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.assetId != null">
+                 and asset_id = #{record.assetId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.transAmount != null">
+                 and trans_amount = #{record.transAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.transTime != null">
+                 and trans_time = #{record.transTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.transReceipt != null">
+                 and trans_receipt = #{record.transReceipt,jdbcType=VARCHAR}
+            </if>
+            <if test="record.transType != null">
+                 and trans_type = #{record.transType,jdbcType=INTEGER}
+            </if>
+            <if test="record.transNo != null">
+                 and trans_no = #{record.transNo,jdbcType=VARCHAR}
+            </if>
+            <if test="record.tradeType != null">
+                 and trade_type = #{record.tradeType,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+
+    <resultMap id="AssetTransResultMap" type="com.mexc.dao.vo.asset.AssetTransVo">
+        <result column="account" jdbcType="VARCHAR" property="account" />
+        <result column="transNo" jdbcType="VARCHAR" property="transNo" />
+        <result column="token" jdbcType="VARCHAR" property="token" />
+        <result column="transAmount" jdbcType="DECIMAL" property="transAmount" />
+        <result column="transType" jdbcType="INTEGER" property="transType" />
+        <result column="transTime" jdbcType="TIMESTAMP" property="transTime" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="tradeType" jdbcType="INTEGER" property="tradeType" />
+        <result column="balanceAmount" jdbcType="DECIMAL" property="balanceAmount" />
+        <result column="frozenAmount" jdbcType="DECIMAL" property="frozenAmount" />
+    </resultMap>
+
+
+    <select id="queryAssetTransList" resultMap="AssetTransResultMap">
+        select
+        asset.account as account,
+        trans.trans_no as transNo,
+        asset.token as token,
+        trans.trans_amount as transAmount,
+        trans.trans_type as transType,
+        trans.trans_time as transTime,
+        asset.status as status,
+        trans.trade_type as tradeType,
+        asset.balance_amount as balanceAmount,
+        asset.frozen_amount as frozenAmount
+        from t_mexc_asset_trans trans,t_mexc_member_asset asset
+        where trans.asset_id=asset.id
+        <if test="query.account != null">
+              and asset.account like  CONCAT('%','${query.account}','%')
+        </if>
+
+        <if test="query.transType != null">
+            and trans_type = #{query.transType}
+        </if>
+        <if test="query.tradeType != null">
+            and trade_type = #{query.tradeType}
+        </if>
+
+        <if test="(query.startTime != null and query.startTime != '') and (query.endTime == null or query.endTime == '')">
+            and trans.trans_time >= #{query.startTime}
+        </if>
+        <if test="(query.startTime != null and query.startTime != '') and (query.endTime != null and query.endTime != '')">
+            and trans.trans_time >= #{query.startTime} and #{query.endTime} >= trans.trans_time
+        </if>
+        <if test="(query.startTime == null or query.startTime == '') and (query.endTime != null and query.endTime != '')">
+            and #{query.endTime} >= trans.trans_time
+        </if>
+        order by trans.trans_time desc
+    </select>
+
+
+</mapper>

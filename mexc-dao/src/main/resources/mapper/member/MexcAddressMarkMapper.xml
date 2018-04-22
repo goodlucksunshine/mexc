@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.member.MexcAddressMarkDAO">
+    
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.member.MexcAddressMark">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="asset_id" jdbcType="VARCHAR" property="assetId" />
+        <result column="address_tab" jdbcType="VARCHAR" property="addressTab" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="member_id" jdbcType="VARCHAR" property="memberId" />
+    </resultMap>
+    
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                 ${criteria.condition} 
+                <if test=" criteria.haveValue ">
+                     #{criteria.value} 
+                </if>
+            </foreach>
+        </if>
+    </sql>
+    
+    <sql id="Base_Column_List">
+        id, asset_id, address_tab, address, create_time, member_id
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_mexc_address_mark
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_address_mark
+    </select>
+    
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_address_mark
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_mexc_address_mark
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    
+    <insert id="insert" parameterType="com.mexc.dao.model.member.MexcAddressMark">
+        insert into t_mexc_address_mark (id, asset_id, address_tab, 
+            address, create_time, member_id
+            )
+        values (#{id,jdbcType=VARCHAR}, #{assetId,jdbcType=VARCHAR}, #{addressTab,jdbcType=VARCHAR}, 
+            #{address,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{memberId,jdbcType=VARCHAR}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.member.MexcAddressMark">
+        insert into t_mexc_address_mark
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="assetId != null">
+                asset_id,
+            </if>
+            <if test="addressTab != null">
+                address_tab,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="memberId != null">
+                member_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="assetId != null">
+                #{assetId,jdbcType=VARCHAR},
+            </if>
+            <if test="addressTab != null">
+                #{addressTab,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="memberId != null">
+                #{memberId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.member.MexcAddressMark">
+        update t_mexc_address_mark
+        <set>
+            <if test="assetId != null">
+                asset_id = #{assetId,jdbcType=VARCHAR},
+            </if>
+            <if test="addressTab != null">
+                address_tab = #{addressTab,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.member.MexcAddressMark">
+        update t_mexc_address_mark
+        set asset_id = #{assetId,jdbcType=VARCHAR},
+            address_tab = #{addressTab,jdbcType=VARCHAR},
+            address = #{address,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            member_id = #{memberId,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_address_mark
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_address_mark (id, asset_id, address_tab, 
+            address, create_time, member_id
+            )
+         values 
+        <foreach  collection="list" index="index" item="item" separator=",">
+             (#{item.id,jdbcType=VARCHAR}, #{item.assetId,jdbcType=VARCHAR}, #{item.addressTab,jdbcType=VARCHAR}, 
+                #{item.address,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, #{item.memberId,jdbcType=VARCHAR}
+                
+            )
+        </foreach >
+    </insert>
+    
+    <update id="updateByParam">
+        update t_mexc_address_mark
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.assetId != null">
+                asset_id = #{record.assetId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.addressTab != null">
+                address_tab = #{record.addressTab,jdbcType=VARCHAR},
+            </if>
+            <if test="record.address != null">
+                address = #{record.address,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.memberId != null">
+                member_id = #{record.memberId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause" />
+    </update>
+    
+    <delete id="deleteByParam">
+        delete from t_mexc_address_mark
+        <include refid="Param_Base_Clause" />
+    </delete>
+    
+    <update id="truncate">
+        truncate t_mexc_address_mark
+    </update>
+    
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_address_mark
+    </select>
+    
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_address_mark
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_address_mark
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.assetId != null">
+                 and asset_id = #{record.assetId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.addressTab != null">
+                 and address_tab = #{record.addressTab,jdbcType=VARCHAR}
+            </if>
+            <if test="record.address != null">
+                 and address = #{record.address,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                 and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.memberId != null">
+                 and member_id = #{record.memberId,jdbcType=VARCHAR}
+            </if>
+        </where>
+         limit 1
+    </select>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_address_mark
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.assetId != null">
+                 and asset_id = #{record.assetId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.addressTab != null">
+                 and address_tab = #{record.addressTab,jdbcType=VARCHAR}
+            </if>
+            <if test="record.address != null">
+                 and address = #{record.address,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                 and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.memberId != null">
+                 and member_id = #{record.memberId,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>

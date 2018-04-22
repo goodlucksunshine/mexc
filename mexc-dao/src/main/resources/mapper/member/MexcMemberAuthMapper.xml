@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.member.MexcMemberAuthDAO">
+    
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.member.MexcMemberAuth">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="member_id" jdbcType="VARCHAR" property="memberId" />
+        <result column="account" jdbcType="VARCHAR" property="account" />
+        <result column="area_type" jdbcType="INTEGER" property="areaType" />
+        <result column="area_name" jdbcType="VARCHAR" property="areaName" />
+        <result column="auth_name" jdbcType="VARCHAR" property="authName" />
+        <result column="auth_surname" jdbcType="VARCHAR" property="authSurname" />
+        <result column="card_no" jdbcType="VARCHAR" property="cardNo" />
+        <result column="card_home" jdbcType="VARCHAR" property="cardHome" />
+        <result column="card_back" jdbcType="VARCHAR" property="cardBack" />
+        <result column="card_hand" jdbcType="VARCHAR" property="cardHand" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="note" jdbcType="VARCHAR" property="note" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="updare_by_name" jdbcType="VARCHAR" property="updareByName" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_by_name" jdbcType="VARCHAR" property="createByName" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                 ${criteria.condition} 
+                <if test=" criteria.haveValue ">
+                     #{criteria.value} 
+                </if>
+            </foreach>
+        </if>
+    </sql>
+    
+    <sql id="Base_Column_List">
+        id, member_id, account, area_type, area_name, auth_name, auth_surname, card_no, card_home, 
+        card_back, card_hand, status, note, update_by, updare_by_name, update_time, create_by, 
+        create_by_name, create_time
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_mexc_member_auth
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_member_auth
+    </select>
+    
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_member_auth
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_mexc_member_auth
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    
+    <insert id="insert" parameterType="com.mexc.dao.model.member.MexcMemberAuth" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            select replace(uuid(),'-','') from dual
+        </selectKey>
+        insert into t_mexc_member_auth (id, member_id, account, 
+            area_type, area_name, auth_name, 
+            auth_surname, card_no, card_home, 
+            card_back, card_hand, status, 
+            note, update_by, updare_by_name, 
+            update_time, create_by, create_by_name, 
+            create_time)
+        values (#{id,jdbcType=VARCHAR}, #{memberId,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
+            #{areaType,jdbcType=INTEGER}, #{areaName,jdbcType=VARCHAR}, #{authName,jdbcType=VARCHAR}, 
+            #{authSurname,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, #{cardHome,jdbcType=VARCHAR}, 
+            #{cardBack,jdbcType=VARCHAR}, #{cardHand,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+            #{note,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, #{updareByName,jdbcType=VARCHAR}, 
+            #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{createByName,jdbcType=VARCHAR}, 
+            #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.member.MexcMemberAuth">
+        insert into t_mexc_member_auth
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="areaType != null">
+                area_type,
+            </if>
+            <if test="areaName != null">
+                area_name,
+            </if>
+            <if test="authName != null">
+                auth_name,
+            </if>
+            <if test="authSurname != null">
+                auth_surname,
+            </if>
+            <if test="cardNo != null">
+                card_no,
+            </if>
+            <if test="cardHome != null">
+                card_home,
+            </if>
+            <if test="cardBack != null">
+                card_back,
+            </if>
+            <if test="cardHand != null">
+                card_hand,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="note != null">
+                note,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updareByName != null">
+                updare_by_name,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createByName != null">
+                create_by_name,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="memberId != null">
+                #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="areaType != null">
+                #{areaType,jdbcType=INTEGER},
+            </if>
+            <if test="areaName != null">
+                #{areaName,jdbcType=VARCHAR},
+            </if>
+            <if test="authName != null">
+                #{authName,jdbcType=VARCHAR},
+            </if>
+            <if test="authSurname != null">
+                #{authSurname,jdbcType=VARCHAR},
+            </if>
+            <if test="cardNo != null">
+                #{cardNo,jdbcType=VARCHAR},
+            </if>
+            <if test="cardHome != null">
+                #{cardHome,jdbcType=VARCHAR},
+            </if>
+            <if test="cardBack != null">
+                #{cardBack,jdbcType=VARCHAR},
+            </if>
+            <if test="cardHand != null">
+                #{cardHand,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="note != null">
+                #{note,jdbcType=VARCHAR},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updareByName != null">
+                #{updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.member.MexcMemberAuth">
+        update t_mexc_member_auth
+        <set>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="areaType != null">
+                area_type = #{areaType,jdbcType=INTEGER},
+            </if>
+            <if test="areaName != null">
+                area_name = #{areaName,jdbcType=VARCHAR},
+            </if>
+            <if test="authName != null">
+                auth_name = #{authName,jdbcType=VARCHAR},
+            </if>
+            <if test="authSurname != null">
+                auth_surname = #{authSurname,jdbcType=VARCHAR},
+            </if>
+            <if test="cardNo != null">
+                card_no = #{cardNo,jdbcType=VARCHAR},
+            </if>
+            <if test="cardHome != null">
+                card_home = #{cardHome,jdbcType=VARCHAR},
+            </if>
+            <if test="cardBack != null">
+                card_back = #{cardBack,jdbcType=VARCHAR},
+            </if>
+            <if test="cardHand != null">
+                card_hand = #{cardHand,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="note != null">
+                note = #{note,jdbcType=VARCHAR},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updareByName != null">
+                updare_by_name = #{updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                create_by_name = #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.member.MexcMemberAuth">
+        update t_mexc_member_auth
+        set member_id = #{memberId,jdbcType=VARCHAR},
+            account = #{account,jdbcType=VARCHAR},
+            area_type = #{areaType,jdbcType=INTEGER},
+            area_name = #{areaName,jdbcType=VARCHAR},
+            auth_name = #{authName,jdbcType=VARCHAR},
+            auth_surname = #{authSurname,jdbcType=VARCHAR},
+            card_no = #{cardNo,jdbcType=VARCHAR},
+            card_home = #{cardHome,jdbcType=VARCHAR},
+            card_back = #{cardBack,jdbcType=VARCHAR},
+            card_hand = #{cardHand,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            note = #{note,jdbcType=VARCHAR},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            updare_by_name = #{updareByName,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_by_name = #{createByName,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_member_auth
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_member_auth (id, member_id, account, 
+            area_type, area_name, auth_name, 
+            auth_surname, card_no, card_home, 
+            card_back, card_hand, status, 
+            note, update_by, updare_by_name, 
+            update_time, create_by, create_by_name, 
+            create_time)
+         values 
+        <foreach  collection="list" index="index" item="item" separator=",">
+             (#{item.id,jdbcType=VARCHAR}, #{item.memberId,jdbcType=VARCHAR}, #{item.account,jdbcType=VARCHAR}, 
+                #{item.areaType,jdbcType=INTEGER}, #{item.areaName,jdbcType=VARCHAR}, #{item.authName,jdbcType=VARCHAR}, 
+                #{item.authSurname,jdbcType=VARCHAR}, #{item.cardNo,jdbcType=VARCHAR}, #{item.cardHome,jdbcType=VARCHAR}, 
+                #{item.cardBack,jdbcType=VARCHAR}, #{item.cardHand,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, 
+                #{item.note,jdbcType=VARCHAR}, #{item.updateBy,jdbcType=VARCHAR}, #{item.updareByName,jdbcType=VARCHAR}, 
+                #{item.updateTime,jdbcType=TIMESTAMP}, #{item.createBy,jdbcType=VARCHAR}, #{item.createByName,jdbcType=VARCHAR}, 
+                #{item.createTime,jdbcType=TIMESTAMP}
+            )
+        </foreach >
+    </insert>
+    
+    <update id="updateByParam">
+        update t_mexc_member_auth
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.memberId != null">
+                member_id = #{record.memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.account != null">
+                account = #{record.account,jdbcType=VARCHAR},
+            </if>
+            <if test="record.areaType != null">
+                area_type = #{record.areaType,jdbcType=INTEGER},
+            </if>
+            <if test="record.areaName != null">
+                area_name = #{record.areaName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.authName != null">
+                auth_name = #{record.authName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.authSurname != null">
+                auth_surname = #{record.authSurname,jdbcType=VARCHAR},
+            </if>
+            <if test="record.cardNo != null">
+                card_no = #{record.cardNo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.cardHome != null">
+                card_home = #{record.cardHome,jdbcType=VARCHAR},
+            </if>
+            <if test="record.cardBack != null">
+                card_back = #{record.cardBack,jdbcType=VARCHAR},
+            </if>
+            <if test="record.cardHand != null">
+                card_hand = #{record.cardHand,jdbcType=VARCHAR},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.note != null">
+                note = #{record.note,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateBy != null">
+                update_by = #{record.updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updareByName != null">
+                updare_by_name = #{record.updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createBy != null">
+                create_by = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createByName != null">
+                create_by_name = #{record.createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause" />
+    </update>
+    
+    <delete id="deleteByParam">
+        delete from t_mexc_member_auth
+        <include refid="Param_Base_Clause" />
+    </delete>
+    
+    <update id="truncate">
+        truncate t_mexc_member_auth
+    </update>
+    
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_member_auth
+    </select>
+    
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_member_auth
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_member_auth
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.memberId != null">
+                 and member_id = #{record.memberId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.account != null">
+                 and account = #{record.account,jdbcType=VARCHAR}
+            </if>
+            <if test="record.areaType != null">
+                 and area_type = #{record.areaType,jdbcType=INTEGER}
+            </if>
+            <if test="record.areaName != null">
+                 and area_name = #{record.areaName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.authName != null">
+                 and auth_name = #{record.authName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.authSurname != null">
+                 and auth_surname = #{record.authSurname,jdbcType=VARCHAR}
+            </if>
+            <if test="record.cardNo != null">
+                 and card_no = #{record.cardNo,jdbcType=VARCHAR}
+            </if>
+            <if test="record.cardHome != null">
+                 and card_home = #{record.cardHome,jdbcType=VARCHAR}
+            </if>
+            <if test="record.cardBack != null">
+                 and card_back = #{record.cardBack,jdbcType=VARCHAR}
+            </if>
+            <if test="record.cardHand != null">
+                 and card_hand = #{record.cardHand,jdbcType=VARCHAR}
+            </if>
+            <if test="record.status != null">
+                 and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.note != null">
+                 and note = #{record.note,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateBy != null">
+                 and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updareByName != null">
+                 and updare_by_name = #{record.updareByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                 and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                 and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                 and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                 and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+         limit 1
+    </select>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_member_auth
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.memberId != null">
+                 and member_id = #{record.memberId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.account != null">
+                 and account = #{record.account,jdbcType=VARCHAR}
+            </if>
+            <if test="record.areaType != null">
+                 and area_type = #{record.areaType,jdbcType=INTEGER}
+            </if>
+            <if test="record.areaName != null">
+                 and area_name = #{record.areaName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.authName != null">
+                 and auth_name = #{record.authName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.authSurname != null">
+                 and auth_surname = #{record.authSurname,jdbcType=VARCHAR}
+            </if>
+            <if test="record.cardNo != null">
+                 and card_no = #{record.cardNo,jdbcType=VARCHAR}
+            </if>
+            <if test="record.cardHome != null">
+                 and card_home = #{record.cardHome,jdbcType=VARCHAR}
+            </if>
+            <if test="record.cardBack != null">
+                 and card_back = #{record.cardBack,jdbcType=VARCHAR}
+            </if>
+            <if test="record.cardHand != null">
+                 and card_hand = #{record.cardHand,jdbcType=VARCHAR}
+            </if>
+            <if test="record.status != null">
+                 and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.note != null">
+                 and note = #{record.note,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateBy != null">
+                 and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updareByName != null">
+                 and updare_by_name = #{record.updareByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                 and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                 and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                 and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                 and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+</mapper>

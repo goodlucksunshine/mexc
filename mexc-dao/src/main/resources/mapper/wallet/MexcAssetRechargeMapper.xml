@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.wallet.MexcAssetRechargeDAO">
+    
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.wallet.MexcAssetRecharge">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="tx_hash" jdbcType="VARCHAR" property="txHash" />
+        <result column="tx_receipt" jdbcType="VARCHAR" property="txReceipt" />
+        <result column="sync_time" jdbcType="TIMESTAMP" property="syncTime" />
+        <result column="member_id" jdbcType="VARCHAR" property="memberId" />
+        <result column="asset_address" jdbcType="VARCHAR" property="assetAddress" />
+        <result column="recharge_address" jdbcType="VARCHAR" property="rechargeAddress" />
+        <result column="recharge_value" jdbcType="DECIMAL" property="rechargeValue" />
+        <result column="receipt_time" jdbcType="TIMESTAMP" property="receiptTime" />
+        <result column="asset_id" jdbcType="VARCHAR" property="assetId" />
+        <result column="tx_token" jdbcType="VARCHAR" property="txToken" />
+        <result column="vcoin_id" jdbcType="VARCHAR" property="vcoinId" />
+    </resultMap>
+    
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                 ${criteria.condition} 
+                <if test=" criteria.haveValue ">
+                     #{criteria.value} 
+                </if>
+            </foreach>
+        </if>
+    </sql>
+    
+    <sql id="Base_Column_List">
+        id, tx_hash, tx_receipt, sync_time, member_id, asset_address, recharge_address, recharge_value, 
+        receipt_time, asset_id, tx_token,vcoin_id
+    </sql>
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_asset_recharge
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_asset_recharge
+    </select>
+    
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_asset_recharge
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_mexc_asset_recharge
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    
+    <insert id="insert" parameterType="com.mexc.dao.model.wallet.MexcAssetRecharge">
+        insert into t_mexc_asset_recharge (id, tx_hash, tx_receipt, 
+            sync_time, member_id, asset_address, 
+            recharge_address, recharge_value, receipt_time, 
+            asset_id, tx_token,vcoin_id)
+        values (#{id,jdbcType=VARCHAR}, #{txHash,jdbcType=VARCHAR}, #{txReceipt,jdbcType=VARCHAR}, 
+            #{syncTime,jdbcType=TIMESTAMP}, #{memberId,jdbcType=VARCHAR}, #{assetAddress,jdbcType=VARCHAR}, 
+            #{rechargeAddress,jdbcType=VARCHAR}, #{rechargeValue,jdbcType=DECIMAL}, #{receiptTime,jdbcType=TIMESTAMP}, 
+            #{assetId,jdbcType=VARCHAR}, #{txToken,jdbcType=VARCHAR}, #{vcoinId,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.wallet.MexcAssetRecharge">
+        insert into t_mexc_asset_recharge
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="txHash != null">
+                tx_hash,
+            </if>
+            <if test="txReceipt != null">
+                tx_receipt,
+            </if>
+            <if test="syncTime != null">
+                sync_time,
+            </if>
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="assetAddress != null">
+                asset_address,
+            </if>
+            <if test="rechargeAddress != null">
+                recharge_address,
+            </if>
+            <if test="rechargeValue != null">
+                recharge_value,
+            </if>
+            <if test="receiptTime != null">
+                receipt_time,
+            </if>
+            <if test="assetId != null">
+                asset_id,
+            </if>
+            <if test="txToken != null">
+                tx_token,
+            </if>
+            <if test="vcoinId != null">
+                vcoin_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="txHash != null">
+                #{txHash,jdbcType=VARCHAR},
+            </if>
+            <if test="txReceipt != null">
+                #{txReceipt,jdbcType=VARCHAR},
+            </if>
+            <if test="syncTime != null">
+                #{syncTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="memberId != null">
+                #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="assetAddress != null">
+                #{assetAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="rechargeAddress != null">
+                #{rechargeAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="rechargeValue != null">
+                #{rechargeValue,jdbcType=DECIMAL},
+            </if>
+            <if test="receiptTime != null">
+                #{receiptTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="assetId != null">
+                #{assetId,jdbcType=VARCHAR},
+            </if>
+            <if test="txToken != null">
+                #{txToken,jdbcType=VARCHAR},
+            </if>
+            <if test="vcoinId != null">
+                #{vcoinId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.wallet.MexcAssetRecharge">
+        update t_mexc_asset_recharge
+        <set>
+            <if test="txHash != null">
+                tx_hash = #{txHash,jdbcType=VARCHAR},
+            </if>
+            <if test="txReceipt != null">
+                tx_receipt = #{txReceipt,jdbcType=VARCHAR},
+            </if>
+            <if test="syncTime != null">
+                sync_time = #{syncTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="assetAddress != null">
+                asset_address = #{assetAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="rechargeAddress != null">
+                recharge_address = #{rechargeAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="rechargeValue != null">
+                recharge_value = #{rechargeValue,jdbcType=DECIMAL},
+            </if>
+            <if test="receiptTime != null">
+                receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="assetId != null">
+                asset_id = #{assetId,jdbcType=VARCHAR},
+            </if>
+            <if test="txToken != null">
+                tx_token = #{txToken,jdbcType=VARCHAR},
+            </if>
+            <if test="vcoinId != null">
+                vcoin_id = #{vcoinId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.wallet.MexcAssetRecharge">
+        update t_mexc_asset_recharge
+        set tx_hash = #{txHash,jdbcType=VARCHAR},
+            tx_receipt = #{txReceipt,jdbcType=VARCHAR},
+            sync_time = #{syncTime,jdbcType=TIMESTAMP},
+            member_id = #{memberId,jdbcType=VARCHAR},
+            asset_address = #{assetAddress,jdbcType=VARCHAR},
+            recharge_address = #{rechargeAddress,jdbcType=VARCHAR},
+            recharge_value = #{rechargeValue,jdbcType=DECIMAL},
+            receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
+            asset_id = #{assetId,jdbcType=VARCHAR},
+            tx_token = #{txToken,jdbcType=VARCHAR},
+            vcoin_id = #{vcoinId,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_asset_recharge
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_asset_recharge (id, tx_hash, tx_receipt, 
+            sync_time, member_id, asset_address, 
+            recharge_address, recharge_value, 
+            receipt_time, asset_id, tx_token,vcoin_id
+            )
+         values 
+        <foreach  collection="list" index="index" item="item" separator=",">
+             (#{item.id,jdbcType=VARCHAR}, #{item.txHash,jdbcType=VARCHAR}, #{item.txReceipt,jdbcType=VARCHAR}, 
+                #{item.syncTime,jdbcType=TIMESTAMP}, #{item.memberId,jdbcType=VARCHAR}, #{item.assetAddress,jdbcType=VARCHAR}, 
+                #{item.rechargeAddress,jdbcType=VARCHAR}, #{item.rechargeValue,jdbcType=DECIMAL}, 
+                #{item.receiptTime,jdbcType=TIMESTAMP}, #{item.assetId,jdbcType=VARCHAR}, #{item.txToken,jdbcType=VARCHAR},#{item.vcoinId,jdbcType=VARCHAR}
+                
+            )
+        </foreach >
+    </insert>
+    
+    <update id="updateByParam">
+        update t_mexc_asset_recharge
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.txHash != null">
+                tx_hash = #{record.txHash,jdbcType=VARCHAR},
+            </if>
+            <if test="record.txReceipt != null">
+                tx_receipt = #{record.txReceipt,jdbcType=VARCHAR},
+            </if>
+            <if test="record.syncTime != null">
+                sync_time = #{record.syncTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.memberId != null">
+                member_id = #{record.memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.assetAddress != null">
+                asset_address = #{record.assetAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.rechargeAddress != null">
+                recharge_address = #{record.rechargeAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.rechargeValue != null">
+                recharge_value = #{record.rechargeValue,jdbcType=DECIMAL},
+            </if>
+            <if test="record.receiptTime != null">
+                receipt_time = #{record.receiptTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.assetId != null">
+                asset_id = #{record.assetId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.txToken != null">
+                tx_token = #{record.txToken,jdbcType=VARCHAR},
+            </if>
+            <if test="record.vcoinId != null">
+                vcoin_id = #{record.vcoinId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause" />
+    </update>
+    
+    <delete id="deleteByParam">
+        delete from t_mexc_asset_recharge
+        <include refid="Param_Base_Clause" />
+    </delete>
+    
+    <update id="truncate">
+        truncate t_mexc_asset_recharge
+    </update>
+    
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_asset_recharge
+    </select>
+    
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_asset_recharge
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_asset_recharge
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txHash != null">
+                 and tx_hash = #{record.txHash,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txReceipt != null">
+                 and tx_receipt = #{record.txReceipt,jdbcType=VARCHAR}
+            </if>
+            <if test="record.syncTime != null">
+                 and sync_time = #{record.syncTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.memberId != null">
+                 and member_id = #{record.memberId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.assetAddress != null">
+                 and asset_address = #{record.assetAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="record.rechargeAddress != null">
+                 and recharge_address = #{record.rechargeAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="record.rechargeValue != null">
+                 and recharge_value = #{record.rechargeValue,jdbcType=DECIMAL}
+            </if>
+            <if test="record.receiptTime != null">
+                 and receipt_time = #{record.receiptTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.assetId != null">
+                 and asset_id = #{record.assetId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txToken != null">
+                 and tx_token = #{record.txToken,jdbcType=VARCHAR}
+            </if>
+            <if test="record.vcoinId != null">
+                and vcoin_id = #{record.vcoinId,jdbcType=VARCHAR}
+            </if>
+        </where>
+         limit 1
+    </select>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_asset_recharge
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txHash != null">
+                 and tx_hash = #{record.txHash,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txReceipt != null">
+                 and tx_receipt = #{record.txReceipt,jdbcType=VARCHAR}
+            </if>
+            <if test="record.syncTime != null">
+                 and sync_time = #{record.syncTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.memberId != null">
+                 and member_id = #{record.memberId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.assetAddress != null">
+                 and asset_address = #{record.assetAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="record.rechargeAddress != null">
+                 and recharge_address = #{record.rechargeAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="record.rechargeValue != null">
+                 and recharge_value = #{record.rechargeValue,jdbcType=DECIMAL}
+            </if>
+            <if test="record.receiptTime != null">
+                 and receipt_time = #{record.receiptTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.assetId != null">
+                 and asset_id = #{record.assetId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txToken != null">
+                 and tx_token = #{record.txToken,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txToken != null">
+                and vcoin_id = #{record.vcoinId,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryAssetRecharge" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_asset_recharge
+        where member_id = #{memberId,jdbcType=VARCHAR}
+    </select>
+
+
+    <resultMap id="AssetRechargeVo" type="com.mexc.dao.vo.asset.AssetRechargeVo">
+        <result column="account" jdbcType="VARCHAR" property="account" />
+        <result column="tx_token" jdbcType="VARCHAR" property="txToken" />
+        <result column="sync_time" jdbcType="TIMESTAMP" property="syncTime" />
+        <result column="recharge_address" jdbcType="VARCHAR" property="rechargeAddress" />
+        <result column="recharge_value" jdbcType="DECIMAL" property="rechargeValue" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+    </resultMap>
+
+
+    <select id="queryAssetRechargePage" resultMap="AssetRechargeVo">
+        select
+          asset.account,
+          recharge.tx_token,
+          recharge.sync_time,
+          recharge.recharge_address,
+          recharge.recharge_value,
+          asset.status
+        from t_mexc_asset_recharge recharge ,t_mexc_member_asset asset
+        where recharge.asset_id=asset.id
+        <if test="query.account != null">
+            and asset.account like CONCAT('%', #{query.account}, '%')
+        </if>
+        <if test="query.txToken != null">
+            and tx_token = #{query.txToken,jdbcType=VARCHAR}
+        </if>
+
+        <if test="(query.startTime != null and query.startTime != '') and (query.endTime == null or query.endTime == '')">
+            and recharge.tx_receipt >= #{query.startTime}
+        </if>
+        <if test="(query.startTime != null and query.startTime != '') and (query.endTime != null and query.endTime != '')">
+            and recharge.tx_receipt >= #{query.startTime} and #{query.endTime} >= recharge.tx_receipt
+        </if>
+        <if test="(query.startTime == null or query.startTime == '') and (query.endTime != null and query.endTime != '')">
+            and #{query.endTime} >= recharge.tx_receipt
+        </if>
+    </select>
+
+
+    <select id="queryAssetRechargeByCondition" resultMap="AssetRechargeVo">
+        select sum(recharge.recharge_value) recharge_value,
+        recharge.tx_token
+        from t_mexc_asset_recharge recharge,t_mexc_member member
+        where 1=1
+        <if test="query.account != null and query.account !=''">
+            and member.account = #{query.account,jdbcType=VARCHAR}
+            and recharge.member_id = member.id
+        </if>
+        <if test="query.txToken != null and query.txToken !=''">
+            and recharge.tx_token = #{query.txToken,jdbcType=INTEGER}
+        </if>
+        <if test="query.startTime != null and query.startTime !=''">
+            and date_format(recharge.receipt_time,'%Y-%m-%d') <![CDATA[>=]]> #{query.startTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="query.endTime != null and query.endTime !=''">
+            and date_format(recharge.receipt_time,'%Y-%m-%d') <![CDATA[<=]]> #{query.endTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="query.month != null and query.month !=''">
+            and date_format(recharge.receipt_time,'%m') = #{query.month,jdbcType=VARCHAR}
+        </if>
+        GROUP BY recharge.tx_token
+    </select>
+</mapper>

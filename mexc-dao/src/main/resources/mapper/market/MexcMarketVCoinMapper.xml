@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.market.MexcMarketVCoinDAO">
+
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.market.MexcMarketVCoin">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="market_id" jdbcType="VARCHAR" property="marketId" />
+        <result column="vcoin_id" jdbcType="VARCHAR" property="vcoinId" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="note" jdbcType="VARCHAR" property="note" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="updare_by_name" jdbcType="VARCHAR" property="updareByName" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_by_name" jdbcType="VARCHAR" property="createByName" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="suggest" jdbcType="INTEGER" property="suggest" />
+    </resultMap>
+
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                ${criteria.condition}
+                <if test=" criteria.haveValue ">
+                    #{criteria.value}
+                </if>
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="Base_Column_List">
+        id, market_id, vcoin_id, status, note, update_by, updare_by_name, update_time, create_by, 
+        create_by_name, create_time, suggest
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_market_vcoin
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_market_vcoin
+    </select>
+
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_market_vcoin
+        <include refid="Param_Base_Clause" />
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_mexc_market_vcoin
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.mexc.dao.model.market.MexcMarketVCoin">
+        insert into t_mexc_market_vcoin (id, market_id, vcoin_id,
+        status, note, update_by,
+        updare_by_name, update_time, create_by,
+        create_by_name, create_time, suggest
+        )
+        values (#{id,jdbcType=VARCHAR}, #{marketId,jdbcType=VARCHAR}, #{vcoinId,jdbcType=VARCHAR},
+        #{status,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR},
+        #{updareByName,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR},
+        #{createByName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{suggest,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.market.MexcMarketVCoin">
+        insert into t_mexc_market_vcoin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="marketId != null">
+                market_id,
+            </if>
+            <if test="vcoinId != null">
+                vcoin_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="note != null">
+                note,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updareByName != null">
+                updare_by_name,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createByName != null">
+                create_by_name,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="suggest != null">
+                suggest,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="marketId != null">
+                #{marketId,jdbcType=VARCHAR},
+            </if>
+            <if test="vcoinId != null">
+                #{vcoinId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="note != null">
+                #{note,jdbcType=VARCHAR},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updareByName != null">
+                #{updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="suggest != null">
+                #{suggest,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.market.MexcMarketVCoin">
+        update t_mexc_market_vcoin
+        <set>
+            <if test="marketId != null">
+                market_id = #{marketId,jdbcType=VARCHAR},
+            </if>
+            <if test="vcoinId != null">
+                vcoin_id = #{vcoinId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="note != null">
+                note = #{note,jdbcType=VARCHAR},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updareByName != null">
+                updare_by_name = #{updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                create_by_name = #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="suggest != null">
+                suggest = #{suggest,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.market.MexcMarketVCoin">
+        update t_mexc_market_vcoin
+        set market_id = #{marketId,jdbcType=VARCHAR},
+        vcoin_id = #{vcoinId,jdbcType=VARCHAR},
+        status = #{status,jdbcType=INTEGER},
+        note = #{note,jdbcType=VARCHAR},
+        update_by = #{updateBy,jdbcType=VARCHAR},
+        updare_by_name = #{updareByName,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        create_by = #{createBy,jdbcType=VARCHAR},
+        create_by_name = #{createByName,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        suggest = #{suggest,jdbcType=INTEGER}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_market_vcoin
+        <include refid="Param_Base_Clause" />
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_market_vcoin (id, market_id, vcoin_id,
+        status, note, update_by,
+        updare_by_name, update_time,
+        create_by, create_by_name, create_time,
+        suggest)
+        values
+        <foreach  collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=VARCHAR}, #{item.marketId,jdbcType=VARCHAR}, #{item.vcoinId,jdbcType=VARCHAR},
+            #{item.status,jdbcType=INTEGER}, #{item.note,jdbcType=VARCHAR}, #{item.updateBy,jdbcType=VARCHAR},
+            #{item.updareByName,jdbcType=VARCHAR}, #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.createBy,jdbcType=VARCHAR}, #{item.createByName,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.suggest,jdbcType=INTEGER}
+            )
+        </foreach >
+    </insert>
+
+    <update id="updateByParam">
+        update t_mexc_market_vcoin
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.marketId != null">
+                market_id = #{record.marketId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.vcoinId != null">
+                vcoin_id = #{record.vcoinId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.note != null">
+                note = #{record.note,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateBy != null">
+                update_by = #{record.updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updareByName != null">
+                updare_by_name = #{record.updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createBy != null">
+                create_by = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createByName != null">
+                create_by_name = #{record.createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.suggest != null">
+                suggest = #{record.suggest,jdbcType=INTEGER},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause" />
+    </update>
+
+    <delete id="deleteByParam">
+        delete from t_mexc_market_vcoin
+        <include refid="Param_Base_Clause" />
+    </delete>
+
+    <update id="truncate">
+        truncate t_mexc_market_vcoin
+    </update>
+
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_market_vcoin
+    </select>
+
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_market_vcoin
+        <include refid="Param_Base_Clause" />
+    </select>
+
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_market_vcoin
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.marketId != null">
+                and market_id = #{record.marketId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.vcoinId != null">
+                and vcoin_id = #{record.vcoinId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.status != null">
+                and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.note != null">
+                and note = #{record.note,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateBy != null">
+                and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updareByName != null">
+                and updare_by_name = #{record.updareByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.suggest != null">
+                and suggest = #{record.suggest,jdbcType=INTEGER}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_market_vcoin
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.marketId != null">
+                and market_id = #{record.marketId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.vcoinId != null">
+                and vcoin_id = #{record.vcoinId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.status != null">
+                and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.note != null">
+                and note = #{record.note,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateBy != null">
+                and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updareByName != null">
+                and updare_by_name = #{record.updareByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.suggest != null">
+                and suggest = #{record.suggest,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+</mapper>

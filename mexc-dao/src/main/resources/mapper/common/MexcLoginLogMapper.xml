@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.common.MexcLoginLogDAO">
+
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.common.MexcLoginLog">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="account" jdbcType="VARCHAR" property="account" />
+        <result column="login_ip" jdbcType="VARCHAR" property="loginIp" />
+        <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
+        <result column="login_address" jdbcType="VARCHAR" property="loginAddress" />
+    </resultMap>
+    
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                 ${criteria.condition} 
+                <if test=" criteria.haveValue ">
+                     #{criteria.value} 
+                </if>
+            </foreach>
+        </if>
+    </sql>
+    
+    <sql id="Base_Column_List">
+        id, account, login_ip, login_time, login_address
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_mexc_login_log
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_login_log
+    </select>
+    
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_login_log
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_mexc_login_log
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    
+    <insert id="insert" parameterType="com.mexc.dao.model.common.MexcLoginLog" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            select replace(uuid(),'-','') from dual
+        </selectKey>
+        insert into t_mexc_login_log (id, account, login_ip, 
+            login_time, login_address)
+        values (#{id,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{loginIp,jdbcType=VARCHAR}, 
+            #{loginTime,jdbcType=TIMESTAMP}, #{loginAddress,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.common.MexcLoginLog">
+        insert into t_mexc_login_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="loginIp != null">
+                login_ip,
+            </if>
+            <if test="loginTime != null">
+                login_time,
+            </if>
+            <if test="loginAddress != null">
+                login_address,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="loginIp != null">
+                #{loginIp,jdbcType=VARCHAR},
+            </if>
+            <if test="loginTime != null">
+                #{loginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loginAddress != null">
+                #{loginAddress,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.common.MexcLoginLog">
+        update t_mexc_login_log
+        <set>
+            <if test="account != null">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="loginIp != null">
+                login_ip = #{loginIp,jdbcType=VARCHAR},
+            </if>
+            <if test="loginTime != null">
+                login_time = #{loginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loginAddress != null">
+                login_address = #{loginAddress,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.common.MexcLoginLog">
+        update t_mexc_login_log
+        set account = #{account,jdbcType=VARCHAR},
+            login_ip = #{loginIp,jdbcType=VARCHAR},
+            login_time = #{loginTime,jdbcType=TIMESTAMP},
+            login_address = #{loginAddress,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_login_log
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_login_log (id, account, login_ip, 
+            login_time, login_address)
+         values 
+        <foreach collection="list" index="index" item="item" separator=",">
+             (#{item.id,jdbcType=VARCHAR}, #{item.account,jdbcType=VARCHAR}, #{item.loginIp,jdbcType=VARCHAR}, 
+                #{item.loginTime,jdbcType=TIMESTAMP}, #{item.loginAddress,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+    
+    <update id="updateByParam">
+        update t_mexc_login_log
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.account != null">
+                account = #{record.account,jdbcType=VARCHAR},
+            </if>
+            <if test="record.loginIp != null">
+                login_ip = #{record.loginIp,jdbcType=VARCHAR},
+            </if>
+            <if test="record.loginTime != null">
+                login_time = #{record.loginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.loginAddress != null">
+                login_address = #{record.loginAddress,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause" />
+    </update>
+    
+    <delete id="deleteByParam">
+        delete from t_mexc_login_log
+        <include refid="Param_Base_Clause" />
+    </delete>
+    
+    <update id="truncate">
+        truncate t_mexc_login_log
+    </update>
+    
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_login_log
+    </select>
+    
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_login_log
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_login_log
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.account != null">
+                 and account = #{record.account,jdbcType=VARCHAR}
+            </if>
+            <if test="record.loginIp != null">
+                 and login_ip = #{record.loginIp,jdbcType=VARCHAR}
+            </if>
+            <if test="record.loginTime != null">
+                 and login_time = #{record.loginTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.loginAddress != null">
+                 and login_address = #{record.loginAddress,jdbcType=VARCHAR}
+            </if>
+        </where>
+         limit 1
+    </select>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_login_log
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.account != null">
+                 and account = #{record.account,jdbcType=VARCHAR}
+            </if>
+            <if test="record.loginIp != null">
+                 and login_ip = #{record.loginIp,jdbcType=VARCHAR}
+            </if>
+            <if test="record.loginTime != null">
+                 and login_time = #{record.loginTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.loginAddress != null">
+                 and login_address = #{record.loginAddress,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>

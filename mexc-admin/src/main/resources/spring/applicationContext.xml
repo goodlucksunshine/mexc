@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+    <context:component-scan base-package="com.mexc">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!-- properties加载 -->
+    <bean class="com.laile.esf.common.config.PropertyPlaceholderConfigurer">
+        <property name="fileEncoding" value="utf-8"/>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath*:/properties/*.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager">
+            <ref bean="securityManager"></ref>
+        </property>
+    </bean>
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/"/>
+        <property name="successUrl" value="/index"/>
+        <property name="unauthorizedUrl" value="/toLogin"/>
+        <property name="filterChainDefinitions">
+            <value>
+                /static/images/** = anon
+                /static/css/** = anon
+                /static/layui/** = anon
+                /static/js/** = anon
+                /code.do = anon
+                /file/download/** = anon
+                /loginIn.do = anon
+                /toLogin = anon
+                /** = authc
+            </value>
+        </property>
+    </bean>
+
+    <import resource="classpath*:/spring/spring-config*.xml"/>
+
+</beans>

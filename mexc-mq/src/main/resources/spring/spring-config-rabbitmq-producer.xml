@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/rabbit
+                http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">
+
+    <!--  <context:property-placeholder location="classpath:rabbitmq.properties" />-->
+
+    <rabbit:connection-factory id="connectionFactory"
+                               host="${mq.host}"
+                               port="${mq.port}"
+                               username="${mq.username}"
+                               password="${mq.password}"/>
+
+    <rabbit:admin connection-factory="connectionFactory"/>
+     
+    <!-- 资产创建队列 -->
+    <rabbit:queue id="asset" name="${mq.queue.asset}" durable="true"/>
+    <!-- 提现队列 -->
+    <rabbit:queue id="cash" name="${mq.queue.cash}" durable="true"/>
+    <!-- BTC市场队列 -->
+    <rabbit:queue id="btcMarket" name="${mq.queue.btc.market.trade}" durable="true"/> 
+    <!-- ETH市场队列 -->
+    <rabbit:queue id="ethMarket" name="${mq.queue.eth.market.trade}" durable="true"/>
+    
+    <rabbit:direct-exchange id="pmq-exchange" durable="true" auto-delete="false" name="pmq-exchange">
+        <rabbit:bindings>
+            <rabbit:binding queue="cash" key="${mq.queue.cash}"/>
+            <rabbit:binding queue="asset" key="${mq.queue.asset}"/>
+            <rabbit:binding queue="btcMarket" key="${mq.queue.btc.market.trade}"/>
+            <rabbit:binding queue="ethMarket" key="${mq.queue.eth.market.trade}"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+    <bean id="jsonMessageConverter" class="com.mexc.mq.util.FastJsonMessageConverter"></bean>
+
+
+    <rabbit:template exchange="pmq-exchange" id="amqpTemplate"
+            connection-factory="connectionFactory" message-converter="jsonMessageConverter"/>
+
+</beans>

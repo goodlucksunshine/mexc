@@ -1,0 +1,37 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%-20(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{80} - %msg%n</pattern>
+        </layout>
+    </appender>
+
+    <logger name="java.sql.PreparedStatement" level="DEBUG" />
+    <logger name="org.springframework.ui.freemarker" level="DEBUG" />
+    <logger name="dao" level="DEBUG">
+        &lt;!&ndash;daoFILE为实际定义的appender&ndash;&gt;
+        &lt;!&ndash;<appender-ref ref="stdout" />&ndash;&gt;
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="stdout" />
+    </root>
+
+</configuration>-->
+
+
+<configuration>
+<appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>/home/admin/logs/xxx.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>/home/admin/logs/xxx.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+    </rollingPolicy>
+    <layout class="ch.qos.logback.classic.PatternLayout">
+        <pattern>%-20(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{80} - %msg%n</pattern>
+    </layout>
+</appender>
+
+<root level="WARN">
+    <appender-ref ref="file" />
+</root>
+</configuration>

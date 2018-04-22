@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL Map Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <settings>
+        <setting name="cacheEnabled" value="true"/><!-- 全局映射器启用缓存 -->
+        <setting name="useGeneratedKeys" value="true" /><!--生成key-->
+        <setting name="defaultExecutorType" value="REUSE"/><!--默认Excutor为ReuseExcutor-->
+       <!-- <setting name="logPrefix" value="dao."/>-->
+        <!--<setting name="logImpl" value="STDOUT_LOGGING"/>-->
+
+    </settings>
+
+    <typeAliases>
+        <!-- 分页 -->
+        <typeAlias type="com.laile.esf.common.util.Page" alias="Page"/>
+    </typeAliases>
+
+    <plugins>
+        <plugin interceptor="com.mexc.common.plugin.PagePlugin">
+            <property name="dialect" value="MySQL"/>
+        </plugin>
+        <plugin interceptor="com.mexc.common.plugin.ResultPlugin">
+            <property name="dialect" value="MySQL"/>
+        </plugin>
+    </plugins>
+</configuration>

@@ -1,0 +1,816 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.member.MexcMemberAssetDAO">
+
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.member.MexcMemberAsset">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="member_id" jdbcType="VARCHAR" property="memberId"/>
+        <result column="account" jdbcType="VARCHAR" property="account"/>
+        <result column="vcoin_id" jdbcType="VARCHAR" property="vcoinId"/>
+        <result column="total_amount" jdbcType="DECIMAL" property="totalAmount"/>
+        <result column="balance_amount" jdbcType="DECIMAL" property="balanceAmount"/>
+        <result column="frozen_amount" jdbcType="DECIMAL" property="frozenAmount"/>
+        <result column="btc_amount" jdbcType="DECIMAL" property="btcAmount"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="note" jdbcType="VARCHAR" property="note"/>
+        <result column="wallet_address" jdbcType="VARCHAR" property="walletAddress"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="updare_by_name" jdbcType="VARCHAR" property="updareByName"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_by_name" jdbcType="VARCHAR" property="createByName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="account_phrase" jdbcType="VARCHAR" property="accountPhrase"/>
+        <result column="account_pwd" jdbcType="VARCHAR" property="accountPwd"/>
+        <result column="iv" jdbcType="VARCHAR" property="iv"/>
+        <result column="wallet_id" jdbcType="VARCHAR" property="walletId"/>
+        <result column="file_path" jdbcType="VARCHAR" property="filePath"/>
+        <result column="token" jdbcType="VARCHAR" property="token"/>
+    </resultMap>
+
+    <resultMap id="balanceCheckDto" type="com.mexc.dao.dto.asset.AssetBalanceCheckDto">
+        <result column="account" jdbcType="VARCHAR" property="account"/>
+        <result column="wallet_address" jdbcType="VARCHAR" property="walletAddress"/>
+        <result column="iv" jdbcType="VARCHAR" property="iv"/>
+        <result column="account_pwd" jdbcType="VARCHAR" property="accountPwd"/>
+        <result column="account_phrase" jdbcType="VARCHAR" property="accountPhrase"/>
+        <result column="member_seq" jdbcType="INTEGER" property="memberSeq"/>
+        <result column="wallet_id" jdbcType="VARCHAR" property="walletId"/>
+        <result column="asset_id" jdbcType="VARCHAR" property="assetId"/>
+        <result column="vcoin_token" jdbcType="VARCHAR" property="vcoinToken"/>
+        <result column="contract_address" jdbcType="VARCHAR" property="contractAddress"/>
+        <result column="file_path" jdbcType="VARCHAR" property="filePath"/>
+        <result column="member_id" jdbcType="VARCHAR" property="memberId"/>
+        <result column="main_coin" jdbcType="VARCHAR" property="mainCoin"/>
+        <result column="scale" jdbcType="INTEGER" property="scale"/>
+        <result column="vcoin_id" jdbcType="VARCHAR" property="vCoinId"/>
+    </resultMap>
+
+    <resultMap id="assetDto" type="com.mexc.dao.dto.asset.AssetDto">
+        <result column="member_id" jdbcType="VARCHAR" property="memberId"/>
+        <result column="account" jdbcType="VARCHAR" property="account"/>
+        <result column="vcoin_id" jdbcType="VARCHAR" property="vcoinId"/>
+        <result column="total_amount" jdbcType="DECIMAL" property="totalAmount"/>
+        <result column="balance_amount" jdbcType="DECIMAL" property="balanceAmount"/>
+        <result column="frozen_amount" jdbcType="DECIMAL" property="frozenAmount"/>
+        <result column="btc_amount" jdbcType="DECIMAL" property="btcAmount"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="wallet_address" jdbcType="VARCHAR" property="walletAddress"/>
+        <result column="vcoin_name" jdbcType="VARCHAR" property="vcoinName"/>
+        <result column="vcoin_name_en" jdbcType="VARCHAR" property="vcoinNameEn"/>
+        <result column="vcoin_name_full" jdbcType="VARCHAR" property="vcoinNameFull"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="vcoin_status" jdbcType="VARCHAR" property="vcoinStatus"/>
+        <result column="iv" jdbcType="VARCHAR" property="iv"/>
+        <result column="wallet_id" jdbcType="VARCHAR" property="walletId"/>
+        <result column="file_path" jdbcType="VARCHAR" property="filePath"/>
+        <result column="asset_id" jdbcType="VARCHAR" property="assetId"/>
+        <result column="can_cash" jdbcType="INTEGER" property="canCash"/>
+        <result column="can_recharge" jdbcType="INTEGER" property="canRecharge"/>
+        <result column="cash_fee" jdbcType="DECIMAL" property="cashFee"/>
+        <result column="cash_min" jdbcType="DECIMAL" property="cashMin"/>
+        <result column="cash_max" jdbcType="DECIMAL" property="cashMax"/>
+        <result column="sys_recharge_block" jdbcType="INTEGER" property="sysRechargeBlock"/>
+        <result column="sys_cash_block" jdbcType="INTEGER" property="sysCashBlock"/>
+        <result column="threshold_hot_to_cold" jdbcType="VARCHAR" property="thresholdHotToCold"/>
+    </resultMap>
+
+
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                ${criteria.condition}
+                <if test=" criteria.haveValue ">
+                    #{criteria.value}
+                </if>
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="Base_Column_List">
+        id, member_id, account, vcoin_id, total_amount, balance_amount, frozen_amount, btc_amount, 
+        status, note, update_by, updare_by_name, update_time, wallet_address,create_by, create_by_name,
+        create_time,account_phrase,account_pwd,iv,wallet_id,file_path,token
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_member_asset
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_member_asset
+    </select>
+
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_member_asset
+        <include refid="Param_Base_Clause"/>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_mexc_member_asset
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.mexc.dao.model.member.MexcMemberAsset">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            select replace(uuid(),'-','') from dual
+        </selectKey>
+        insert into t_mexc_member_asset (id, member_id, account,
+        vcoin_id, total_amount, balance_amount,
+        frozen_amount, btc_amount, status, wallet_address,
+        note, update_by, updare_by_name,
+        update_time, create_by, create_by_name,
+        create_time,account_phrase,account_pwd,iv,wallet_id,file_path,token)
+        values (#{id,jdbcType=VARCHAR}, #{memberId,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR},
+        #{vcoinId,jdbcType=VARCHAR}, #{totalAmount,jdbcType=DECIMAL}, #{balanceAmount,jdbcType=DECIMAL},
+        #{frozenAmount,jdbcType=DECIMAL}, #{btcAmount,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER},
+        #{walletAddress,jdbcType=VARCHAR},
+        #{note,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR}, #{updareByName,jdbcType=VARCHAR},
+        #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{createByName,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP},#{accountPhrase,jdbcType=VARCHAR},#{accountPwd,jdbcType=VARCHAR},
+        #{iv,jdbcType=VARCHAR},#{wallet_id,jdbcType=VARCHAR},#{file_path,jdbcType=VARCHAR},#{token,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.member.MexcMemberAsset">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            select replace(uuid(),'-','') from dual
+        </selectKey>
+        insert into t_mexc_member_asset
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="vcoinId != null">
+                vcoin_id,
+            </if>
+            <if test="totalAmount != null">
+                total_amount,
+            </if>
+            <if test="balanceAmount != null">
+                balance_amount,
+            </if>
+            <if test="frozenAmount != null">
+                frozen_amount,
+            </if>
+            <if test="btcAmount != null">
+                btc_amount,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="walletAddress != null">
+                wallet_address,
+            </if>
+            <if test="note != null">
+                note,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updareByName != null">
+                updare_by_name,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createByName != null">
+                create_by_name,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="accountPhrase != null">
+                account_phrase,
+            </if>
+            <if test="accountPwd != null">
+                account_pwd,
+            </if>
+            <if test="iv != null">
+                iv,
+            </if>
+            <if test="walletId != null">
+                wallet_id,
+            </if>
+            <if test="filePath != null">
+                file_path,
+            </if>
+            <if test="token != null">
+                token,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="memberId != null">
+                #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="vcoinId != null">
+                #{vcoinId,jdbcType=VARCHAR},
+            </if>
+            <if test="totalAmount != null">
+                #{totalAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="balanceAmount != null">
+                #{balanceAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="frozenAmount != null">
+                #{frozenAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="btcAmount != null">
+                #{btcAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="walletAddress != null">
+                #{walletAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="note != null">
+                #{note,jdbcType=VARCHAR},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updareByName != null">
+                #{updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="accountPhrase != null">
+                #{accountPhrase,jdbcType=VARCHAR},
+            </if>
+            <if test="accountPwd != null">
+                #{accountPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="iv != null">
+                #{iv,jdbcType=VARCHAR},
+            </if>
+            <if test="walletId != null">
+                #{walletId,jdbcType=VARCHAR},
+            </if>
+            <if test="filePath != null">
+                #{filePath,jdbcType=VARCHAR},
+            </if>
+            <if test="token != null">
+                #{token,jdbcType=VARCHAR},
+            </if>
+
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.member.MexcMemberAsset">
+        update t_mexc_member_asset
+        <set>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="vcoinId != null">
+                vcoin_id = #{vcoinId,jdbcType=VARCHAR},
+            </if>
+            <if test="totalAmount != null">
+                total_amount = #{totalAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="balanceAmount != null">
+                balance_amount = #{balanceAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="frozenAmount != null">
+                frozen_amount = #{frozenAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="btcAmount != null">
+                btc_amount = #{btcAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="walletAddress != null">
+                wallet_address=#{walletAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="note != null">
+                note = #{note,jdbcType=VARCHAR},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updareByName != null">
+                updare_by_name = #{updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                create_by_name = #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="accountPhrase != null">
+                account_phrase = #{accountPhrase,jdbcType=VARCHAR},
+            </if>
+            <if test="accountPwd != null">
+                account_pwd = #{accountPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="iv != null">
+                iv = #{iv,jdbcType=VARCHAR},
+            </if>
+            <if test="walletId != null">
+                wallet_id= #{walletId,jdbcType=VARCHAR},
+            </if>
+            <if test="filePath != null">
+                file_path = #{filePath,jdbcType=VARCHAR},
+            </if>
+            <if test="token != null">
+                token = #{token,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.member.MexcMemberAsset">
+        update t_mexc_member_asset
+        set member_id = #{memberId,jdbcType=VARCHAR},
+            account = #{account,jdbcType=VARCHAR},
+            vcoin_id = #{vcoinId,jdbcType=VARCHAR},
+            total_amount = #{totalAmount,jdbcType=DECIMAL},
+            balance_amount = #{balanceAmount,jdbcType=DECIMAL},
+            frozen_amount = #{frozenAmount,jdbcType=DECIMAL},
+            btc_amount = #{btcAmount,jdbcType=DECIMAL},
+            status = #{status,jdbcType=INTEGER},
+            wallet_address=#{walletAddress,jdbcType=VARCHAR},
+            note = #{note,jdbcType=VARCHAR},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            updare_by_name = #{updareByName,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_by_name = #{createByName,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            account_phrase = #{accountPhrase,jdbcType=VARCHAR},
+            account_pwd = #{accountPwd,jdbcType=VARCHAR},
+            iv=#{iv,jdbcType=VARCHAR},
+            wallet_id= #{walletId,jdbcType=VARCHAR},
+            file_path = #{filePath,jdbcType=VARCHAR},
+            token = #{token,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_member_asset
+        <include refid="Param_Base_Clause"/>
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_member_asset (id, member_id, account,
+        vcoin_id, total_amount, balance_amount,
+        frozen_amount, btc_amount, status,wallet_address,
+        note, update_by, updare_by_name,
+        update_time, create_by, create_by_name,
+        create_time,account_phrase,account_pwd,iv,wallet_id,file_path,token)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=VARCHAR}, #{item.memberId,jdbcType=VARCHAR}, #{item.account,jdbcType=VARCHAR},
+            #{item.vcoinId,jdbcType=VARCHAR}, #{item.totalAmount,jdbcType=DECIMAL},
+            #{item.balanceAmount,jdbcType=DECIMAL},
+            #{item.frozenAmount,jdbcType=DECIMAL}, #{item.btcAmount,jdbcType=DECIMAL}, #{item.status,jdbcType=INTEGER},
+            #{item.walletAddress,jdbcType=VARCHAR},
+            #{item.note,jdbcType=VARCHAR}, #{item.updateBy,jdbcType=VARCHAR}, #{item.updareByName,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP}, #{item.createBy,jdbcType=VARCHAR},
+            #{item.createByName,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},#{item.accountPhrase,jdbcType=VARCHAR},#{item.accountPwd,jdbcType=VARCHAR},
+            #{item.iv,jdbcType=VARCHAR},#{item.walletId,jdbcType=VARCHAR},
+            #{item.filePath,jdbcType=VARCHAR},#{item.token,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateByParam">
+        update t_mexc_member_asset
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.memberId != null">
+                member_id = #{record.memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.account != null">
+                account = #{record.account,jdbcType=VARCHAR},
+            </if>
+            <if test="record.vcoinId != null">
+                vcoin_id = #{record.vcoinId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.totalAmount != null">
+                total_amount = #{record.totalAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.balanceAmount != null">
+                balance_amount = #{record.balanceAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.frozenAmount != null">
+                frozen_amount = #{record.frozenAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.btcAmount != null">
+                btc_amount = #{record.btcAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.wallet_address != null">
+                wallet_address = #{record.walletAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.note != null">
+                note = #{record.note,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateBy != null">
+                update_by = #{record.updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updareByName != null">
+                updare_by_name = #{record.updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createBy != null">
+                create_by = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createByName != null">
+                create_by_name = #{record.createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.accountPhrase != null">
+                account_phrase = #{record.accountPhrase,jdbcType=VARCHAR},
+            </if>
+            <if test="record.accountPwd != null">
+                account_pwd = #{record.accountPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="record.iv != null">
+                iv = #{record.iv,jdbcType=VARCHAR},
+            </if>
+            <if test="record.walletId != null">
+                wallet_id = #{record.walletId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.filePath != null">
+                file_path = #{record.filePath,jdbcType=VARCHAR},
+            </if>
+            <if test="record.token != null">
+                token = #{record.token,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause"/>
+    </update>
+
+    <delete id="deleteByParam">
+        delete from t_mexc_member_asset
+        <include refid="Param_Base_Clause"/>
+    </delete>
+
+    <update id="truncate">
+        truncate t_mexc_member_asset
+    </update>
+
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_member_asset
+    </select>
+
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_member_asset
+        <include refid="Param_Base_Clause"/>
+    </select>
+
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_member_asset
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.memberId != null">
+                and member_id = #{record.memberId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.account != null">
+                and account = #{record.account,jdbcType=VARCHAR}
+            </if>
+            <if test="record.vcoinId != null">
+                and vcoin_id = #{record.vcoinId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.totalAmount != null">
+                and total_amount = #{record.totalAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.balanceAmount != null">
+                and balance_amount = #{record.balanceAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.frozenAmount != null">
+                and frozen_amount = #{record.frozenAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.btcAmount != null">
+                and btc_amount = #{record.btcAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.status != null">
+                and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.wallet_address != null">
+                and wallet_address = #{record.walletAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.note != null">
+                and note = #{record.note,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateBy != null">
+                and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updareByName != null">
+                and updare_by_name = #{record.updareByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.accountPhrase != null">
+                and account_phrase = #{record.accountPhrase,jdbcType=VARCHAR}
+            </if>
+            <if test="record.accountPwd != null">
+                and account_pwd = #{record.accountPwd,jdbcType=VARCHAR}
+            </if>
+            <if test="record.iv != null">
+                and iv = #{record.iv,jdbcType=VARCHAR}
+            </if>
+            <if test="record.walletId != null">
+                and wallet_id = #{record.walletId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.filePath != null">
+                and file_path = #{record.filePath,jdbcType=VARCHAR}
+            </if>
+            <if test="record.token != null">
+                and token = #{record.token,jdbcType=VARCHAR}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_member_asset
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.memberId != null">
+                and member_id = #{record.memberId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.account != null">
+                and account = #{record.account,jdbcType=VARCHAR}
+            </if>
+            <if test="record.vcoinId != null">
+                and vcoin_id = #{record.vcoinId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.totalAmount != null">
+                and total_amount = #{record.totalAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.balanceAmount != null">
+                and balance_amount = #{record.balanceAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.frozenAmount != null">
+                and frozen_amount = #{record.frozenAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.btcAmount != null">
+                and btc_amount = #{record.btcAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.status != null">
+                and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.wallet_address != null">
+                and wallet_address = #{record.walletAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.note != null">
+                and note = #{record.note,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateBy != null">
+                and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updareByName != null">
+                and updare_by_name = #{record.updareByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.accountPhrase != null">
+                and account_phrase = #{record.accountPhrase,jdbcType=VARCHAR}
+            </if>
+            <if test="record.accountPwd != null">
+                and account_pwd = #{record.accountPwd,jdbcType=VARCHAR}
+            </if>
+            <if test="record.iv != null">
+                and iv = #{record.iv,jdbcType=VARCHAR}
+            </if>
+            <if test="record.walletId != null">
+                and wallet_id = #{record.walletId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.filePath != null">
+                and file_path = #{record.filePath,jdbcType=VARCHAR}
+            </if>
+            <if test="record.token != null">
+                and token = #{record.token,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryMemberAsset" resultMap="assetDto">
+        SELECT asset.member_id,asset.account,
+        asset.total_amount,asset.balance_amount,
+        asset.btc_amount,asset.wallet_address,
+        asset.status,
+        asset.frozen_amount,
+        asset.iv,
+        asset.wallet_id,
+        asset.file_path,
+        asset.id as asset_id,
+        vcoin.vcoin_name,
+        vcoin.vcoin_name_en,vcoin.vcoin_name_full,
+        vcoin.icon,vcoin.status as vcoin_status,
+        vcoin.id as vcoin_id,
+        vcoin.can_cash as can_cash,vcoin.can_recharge as can_recharge,
+        fee.cash_rate as cash_fee,fee.cash_limit_min  as cash_min,
+        fee.cash_limit_max as cash_max,
+        vcoin.sys_recharge_block,
+        vcoin.sys_cash_block,
+        vcoin.threshold_hot_to_cold
+        FROM t_mexc_vcoin vcoin
+        left join t_mexc_member_asset asset on (asset.vcoin_id=vcoin.id and asset.account=#{query.account})
+        left join t_mexc_vcoin_fee fee on asset.vcoin_id=fee.vcoin_id
+    </select>
+
+
+    <select id="queryMemberAssetPage" resultMap="assetDto">
+        SELECT asset.member_id,asset.account,
+        asset.total_amount,asset.balance_amount,
+        asset.btc_amount,asset.wallet_address,
+        asset.status,
+        asset.frozen_amount,
+        asset.iv,
+        asset.wallet_id,
+        asset.file_path,
+        asset.id as asset_id,
+        vcoin.vcoin_name,
+        vcoin.vcoin_name_en,vcoin.vcoin_name_full,
+        vcoin.icon,vcoin.status as vcoin_status,
+        vcoin.can_cash as can_cash,vcoin.can_recharge as can_recharge
+        FROM t_mexc_member_asset asset
+        left join t_mexc_vcoin vcoin on asset.vcoin_id=vcoin.id
+        <where>
+            <if test="query.account!= null and query.account!=''">
+                AND asset.account like  CONCAT('%','${query.account}','%')
+            </if>
+            <if test="query.vcoinName!= null and query.vcoinName!=''">
+                AND vcoin.vcoin_name_en like  CONCAT('%','${query.vcoinName}','%')
+            </if>
+        </where>
+        order by asset.account,asset.create_time desc
+    </select>
+
+    <select id="queryAssetFromMemberSeqLimit" resultMap="balanceCheckDto">
+        SELECT
+            asset.id AS asset_id,asset.iv AS iv,asset.account_pwd,asset.account_phrase AS accountPhrase,
+            asset.wallet_id AS wallet_id,member.member_seq AS member_seq,member.account AS account,vcoin.vcoin_token AS vcoin_token,
+            vcoin.contract_address AS contract_address,asset.file_path,member.id AS member_id,vcoin.main_coin AS main_coin,
+            asset.wallet_address AS wallet_address,vcoin.scale AS scale,vcoin.id AS vcoin_id
+        FROM
+            t_mexc_member_asset asset,t_mexc_vcoin vcoin,
+            (SELECT * FROM t_mexc_member member1 WHERE <![CDATA[ member1.member_seq >=#{memberSeq} ]]> >= 1 LIMIT #{limit}) member
+        WHERE
+            member.id = asset.member_id
+        AND asset.vcoin_id = vcoin.id
+        ORDER BY
+            vcoin.vcoin_token,
+            member.member_seq
+    </select>
+
+
+    <update id="assetIncome">
+        update t_mexc_member_asset asset
+        set asset.total_amount=asset.total_amount+#{inComeValue},asset.balance_amount=asset.balance_amount+#{inComeValue}
+        WHERE asset.id=#{assetId}
+    </update>
+
+    <update id="assetOutcome">
+        update t_mexc_member_asset asset
+        set asset.total_amount=asset.total_amount-#{outComeValue},asset.balance_amount=asset.balance_amount-#{outComeValue}
+        WHERE asset.id=#{assetId}
+        <![CDATA[ and asset.balance_amount-#{outComeValue}>=0
+
+
+
+        ]]>
+    </update>
+    <!--解冻-->
+    <update id="unfrozenAmount">
+        update t_mexc_member_asset asset
+        set balance_amount=balance_amount+#{frozenAmount},frozen_amount=frozen_amount-#{frozenAmount}
+        where <![CDATA[ frozen_amount-#{frozenAmount}>=0 ]]> and asset.id=#{assetId}
+    </update>
+    <!--冻结资金-->
+    <update id="frozenAmount">
+        update t_mexc_member_asset asset
+        set balance_amount=balance_amount-#{frozenAmount},frozen_amount=frozen_amount+#{frozenAmount}
+        where <![CDATA[ balance_amount-#{frozenAmount}>=0 ]]> and asset.id=#{assetId}
+    </update>
+
+    <update id="cashSuccess">
+        update t_mexc_member_asset asset
+        set asset.frozen_amount=asset.frozen_amount-#{frozenAmount},
+        asset.total_amount=asset.total_amount-#{frozenAmount}
+        where asset.id=#{assetId} and asset.frozen_amount-#{frozenAmount}>=0
+    </update>
+
+    <update id="cashFail">
+        update t_mexc_member_asset asset
+        set balance_amount=balance_amount+#{frozenAmount},frozen_amount=frozen_amount-#{frozenAmount}
+        where asset.id=#{assetId}
+        <![CDATA[ and frozen_amount-#{frozenAmount}>0
+
+
+        ]]>
+    </update>
+
+
+    <select id="checkExists" resultMap="BaseResultMap">
+      SELECT asset.* FROM t_mexc_member_asset asset,t_mexc_vcoin vcoin
+      where asset.wallet_address=#{address} and asset.token=#{token}
+      and vcoin.id=asset.vcoin_id and vcoin.contract_address=#{contract}
+    </select>
+
+    <resultMap id="MemberAssetCheckVo" type="com.mexc.dao.vo.wallet.MemberAssetCheckVo">
+        <result column="member_id" jdbcType="VARCHAR" property="memberId" />
+        <result column="vcoin_id" jdbcType="VARCHAR" property="vcoinId" />
+        <result column="vcoin_name" jdbcType="VARCHAR" property="vcoinName" />
+        <result column="cash_amount" jdbcType="INTEGER" property="cashAmount" />
+        <result column="recharge_amount" jdbcType="INTEGER" property="rechargeAmount" />
+        <result column="balance_amount " jdbcType="INTEGER" property="assetBalanceAmount" />
+    </resultMap>
+
+    <select id="queryMemberAssetCheck" resultMap="MemberAssetCheckVo">
+        SELECT asset.member_id ,asset.vcoin_id, vcoin.vcoin_name,SUM(cash.tx_amount) cash_amount ,SUM(recharge.recharge_value) recharge_amount, asset.balance_amount
+        FROM
+        t_mexc_asset_cash cash ,t_mexc_member_asset asset ,t_mexc_asset_recharge recharge, t_mexc_vcoin vcoin
+        WHERE
+        cash.member_id = asset.member_id
+        AND cash.member_id = recharge.member_id
+        AND asset.vcoin_id = cash.vcoin_id
+        AND asset.vcoin_id = recharge.member_id
+        AND asset.vcoin_id = vcoin.id
+    </select>
+
+</mapper>

@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.activity.MexcActivityDAO">
+
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.activity.MexcActivity">
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="ACTIVITY_TITLE" jdbcType="VARCHAR" property="activityTitle"/>
+        <result column="ACTIVITY_START_TIME" jdbcType="TIMESTAMP" property="activityStartTime"/>
+        <result column="ACTIVITY_END_TIME" jdbcType="TIMESTAMP" property="activityEndTime"/>
+        <result column="ACTIVITY_TYPE" jdbcType="INTEGER" property="activityType"/>
+        <result column="ACTIVITY_MEMO" jdbcType="VARCHAR" property="activityMemo"/>
+        <result column="CREATE_BY" jdbcType="VARCHAR" property="createBy"/>
+        <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="ACTIVITY_STATUS" jdbcType="INTEGER" property="activityStatus"/>
+    </resultMap>
+
+
+
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                ${criteria.condition}
+                <if test=" criteria.haveValue ">
+                    #{criteria.value}
+                </if>
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="Base_Column_List">
+        ID, ACTIVITY_TITLE, ACTIVITY_START_TIME, ACTIVITY_END_TIME, ACTIVITY_TYPE, ACTIVITY_MEMO, 
+        CREATE_BY, CREATE_DATE, ACTIVITY_STATUS
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_activity
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_activity
+    </select>
+
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_activity
+        <include refid="Param_Base_Clause"/>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_mexc_activity
+        where ID = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.mexc.dao.model.activity.MexcActivity">
+        insert into t_mexc_activity (ID, ACTIVITY_TITLE, ACTIVITY_START_TIME, 
+            ACTIVITY_END_TIME, ACTIVITY_TYPE, ACTIVITY_MEMO, 
+            CREATE_BY, CREATE_DATE, ACTIVITY_STATUS
+            )
+        values (#{id,jdbcType=VARCHAR}, #{activityTitle,jdbcType=VARCHAR}, #{activityStartTime,jdbcType=TIMESTAMP}, 
+            #{activityEndTime,jdbcType=TIMESTAMP}, #{activityType,jdbcType=INTEGER}, #{activityMemo,jdbcType=VARCHAR}, 
+            #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{activityStatus,jdbcType=INTEGER}
+            )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.activity.MexcActivity">
+        insert into t_mexc_activity
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                ID,
+            </if>
+            <if test="activityTitle != null">
+                ACTIVITY_TITLE,
+            </if>
+            <if test="activityStartTime != null">
+                ACTIVITY_START_TIME,
+            </if>
+            <if test="activityEndTime != null">
+                ACTIVITY_END_TIME,
+            </if>
+            <if test="activityType != null">
+                ACTIVITY_TYPE,
+            </if>
+            <if test="activityMemo != null">
+                ACTIVITY_MEMO,
+            </if>
+            <if test="createBy != null">
+                CREATE_BY,
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE,
+            </if>
+            <if test="activityStatus != null">
+                ACTIVITY_STATUS,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="activityTitle != null">
+                #{activityTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="activityStartTime != null">
+                #{activityStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="activityEndTime != null">
+                #{activityEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="activityType != null">
+                #{activityType,jdbcType=INTEGER},
+            </if>
+            <if test="activityMemo != null">
+                #{activityMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="activityStatus != null">
+                #{activityStatus,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.activity.MexcActivity">
+        update t_mexc_activity
+        <set>
+            <if test="activityTitle != null">
+                ACTIVITY_TITLE = #{activityTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="activityStartTime != null">
+                ACTIVITY_START_TIME = #{activityStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="activityEndTime != null">
+                ACTIVITY_END_TIME = #{activityEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="activityType != null">
+                ACTIVITY_TYPE = #{activityType,jdbcType=INTEGER},
+            </if>
+            <if test="activityMemo != null">
+                ACTIVITY_MEMO = #{activityMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                CREATE_BY = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="activityStatus != null">
+                ACTIVITY_STATUS = #{activityStatus,jdbcType=INTEGER},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.activity.MexcActivity">
+        update t_mexc_activity
+        set ACTIVITY_TITLE = #{activityTitle,jdbcType=VARCHAR},
+            ACTIVITY_START_TIME = #{activityStartTime,jdbcType=TIMESTAMP},
+            ACTIVITY_END_TIME = #{activityEndTime,jdbcType=TIMESTAMP},
+            ACTIVITY_TYPE = #{activityType,jdbcType=INTEGER},
+            ACTIVITY_MEMO = #{activityMemo,jdbcType=VARCHAR},
+            CREATE_BY = #{createBy,jdbcType=VARCHAR},
+            CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+            ACTIVITY_STATUS = #{activityStatus,jdbcType=INTEGER}
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_activity
+        <include refid="Param_Base_Clause"/>
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_activity (ID, ACTIVITY_TITLE, ACTIVITY_START_TIME,
+        ACTIVITY_END_TIME, ACTIVITY_TYPE,
+        ACTIVITY_MEMO, CREATE_BY, CREATE_DATE,
+        ACTIVITY_STATUS)
+        values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=VARCHAR}, #{item.activityTitle,jdbcType=VARCHAR},
+            #{item.activityStartTime,jdbcType=TIMESTAMP},
+            #{item.activityEndTime,jdbcType=TIMESTAMP}, #{item.activityType,jdbcType=INTEGER},
+            #{item.activityMemo,jdbcType=VARCHAR}, #{item.createBy,jdbcType=VARCHAR},
+            #{item.createDate,jdbcType=TIMESTAMP},
+            #{item.activityStatus,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateByParam">
+        update t_mexc_activity
+        <set>
+            <if test="record.id != null">
+                ID = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.activityTitle != null">
+                ACTIVITY_TITLE = #{record.activityTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="record.activityStartTime != null">
+                ACTIVITY_START_TIME = #{record.activityStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.activityEndTime != null">
+                ACTIVITY_END_TIME = #{record.activityEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.activityType != null">
+                ACTIVITY_TYPE = #{record.activityType,jdbcType=INTEGER},
+            </if>
+            <if test="record.activityMemo != null">
+                ACTIVITY_MEMO = #{record.activityMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createBy != null">
+                CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createDate != null">
+                CREATE_DATE = #{record.createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.activityStatus != null">
+                ACTIVITY_STATUS = #{record.activityStatus,jdbcType=INTEGER},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause"/>
+    </update>
+
+    <delete id="deleteByParam">
+        delete from t_mexc_activity
+        <include refid="Param_Base_Clause"/>
+    </delete>
+
+    <update id="truncate">
+        truncate t_mexc_activity
+    </update>
+
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_activity
+    </select>
+
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_activity
+        <include refid="Param_Base_Clause"/>
+    </select>
+
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_activity
+        <where>
+            <if test="record.id != null">
+                ID = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.activityTitle != null">
+                and ACTIVITY_TITLE = #{record.activityTitle,jdbcType=VARCHAR}
+            </if>
+            <if test="record.activityStartTime != null">
+                and ACTIVITY_START_TIME = #{record.activityStartTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.activityEndTime != null">
+                and ACTIVITY_END_TIME = #{record.activityEndTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.activityType != null">
+                and ACTIVITY_TYPE = #{record.activityType,jdbcType=INTEGER}
+            </if>
+            <if test="record.activityMemo != null">
+                and ACTIVITY_MEMO = #{record.activityMemo,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createBy != null">
+                and CREATE_BY = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createDate != null">
+                and CREATE_DATE = #{record.createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.activityStatus != null">
+                and ACTIVITY_STATUS = #{record.activityStatus,jdbcType=INTEGER}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mexc_activity
+        <where>
+            <if test="record.id != null">
+                ID = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.activityTitle != null">
+                and ACTIVITY_TITLE = #{record.activityTitle,jdbcType=VARCHAR}
+            </if>
+            <if test="record.activityStartTime != null">
+                and ACTIVITY_START_TIME = #{record.activityStartTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.activityEndTime != null">
+                and ACTIVITY_END_TIME = #{record.activityEndTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.activityType != null">
+                and ACTIVITY_TYPE = #{record.activityType,jdbcType=INTEGER}
+            </if>
+            <if test="record.activityMemo != null">
+                and ACTIVITY_MEMO = #{record.activityMemo,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createBy != null">
+                and CREATE_BY = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createDate != null">
+                and CREATE_DATE = #{record.createDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.activityStatus != null">
+                and ACTIVITY_STATUS = #{record.activityStatus,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,812 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.vcoin.MexcVCoinDAO">
+
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.vcoin.MexcVCoin">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="vcoin_token" jdbcType="VARCHAR" property="vcoinToken" />
+        <result column="vcoin_name" jdbcType="VARCHAR" property="vcoinName" />
+        <result column="vcoin_name_en" jdbcType="VARCHAR" property="vcoinNameEn" />
+        <result column="vcoin_name_full" jdbcType="VARCHAR" property="vcoinNameFull" />
+        <result column="icon" jdbcType="VARCHAR" property="icon" />
+        <result column="sys_account" jdbcType="VARCHAR" property="sysAccount" />
+        <result column="trade_key" jdbcType="VARCHAR" property="tradeKey" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="sort" jdbcType="INTEGER" property="sort" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="updare_by_name" jdbcType="VARCHAR" property="updareByName" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_by_name" jdbcType="VARCHAR" property="createByName" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="main_coin" jdbcType="INTEGER" property="mainCoin" />
+        <result column="contract_address" jdbcType="VARCHAR" property="contractAddress" />
+        <result column="can_cash" jdbcType="INTEGER" property="canCash" />
+        <result column="can_recharge" jdbcType="INTEGER" property="canRecharge" />
+        <result column="scale" jdbcType="INTEGER" property="scale" />
+        <result column="sys_recharge_block" property="sysRechargeBlock" jdbcType="INTEGER" />
+        <result column="sys_cash_block" property="sysCashBlock" jdbcType="INTEGER" />
+        <result column="threshold_hot_to_cold" property="thresholdHotToCold" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.mexc.dao.model.vcoin.MexcVCoin">
+        <result column="note" jdbcType="LONGVARCHAR" property="note" />
+    </resultMap>
+
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                ${criteria.condition}
+                <if test=" criteria.haveValue ">
+                    #{criteria.value}
+                </if>
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="Base_Column_List">
+        id, vcoin_token, vcoin_name, vcoin_name_en, vcoin_name_full, icon, sys_account, trade_key,
+        status, sort, update_by, updare_by_name, update_time, create_by, create_by_name,
+        create_time, main_coin, contract_address, can_cash, can_recharge, scale, sys_recharge_block,
+    sys_cash_block, threshold_hot_to_cold
+    </sql>
+
+    <sql id="Blob_Column_List">
+        note
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_vcoin
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_vcoin
+    </select>
+
+    <select id="selectPagination" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_vcoin
+        <include refid="Param_Base_Clause" />
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_mexc_vcoin
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.mexc.dao.model.vcoin.MexcVCoin">
+        insert into t_mexc_vcoin (id, vcoin_token, vcoin_name,
+        vcoin_name_en, vcoin_name_full, icon,
+        sys_account, trade_key, status,
+        sort, update_by, updare_by_name,
+        update_time, create_by, create_by_name,
+        create_time, main_coin, contract_address,
+        can_cash, can_recharge, scale,
+        note)
+        values (#{id,jdbcType=VARCHAR}, #{vcoinToken,jdbcType=VARCHAR}, #{vcoinName,jdbcType=VARCHAR},
+        #{vcoinNameEn,jdbcType=VARCHAR}, #{vcoinNameFull,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR},
+        #{sysAccount,jdbcType=VARCHAR}, #{tradeKey,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+        #{sort,jdbcType=INTEGER}, #{updateBy,jdbcType=VARCHAR}, #{updareByName,jdbcType=VARCHAR},
+        #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{createByName,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}, #{mainCoin,jdbcType=INTEGER}, #{contractAddress,jdbcType=VARCHAR},
+        #{canCash,jdbcType=INTEGER}, #{canRecharge,jdbcType=INTEGER}, #{scale,jdbcType=INTEGER},
+        #{note,jdbcType=LONGVARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.vcoin.MexcVCoin">
+        insert into t_mexc_vcoin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="vcoinToken != null">
+                vcoin_token,
+            </if>
+            <if test="vcoinName != null">
+                vcoin_name,
+            </if>
+            <if test="vcoinNameEn != null">
+                vcoin_name_en,
+            </if>
+            <if test="vcoinNameFull != null">
+                vcoin_name_full,
+            </if>
+            <if test="icon != null">
+                icon,
+            </if>
+            <if test="sysAccount != null">
+                sys_account,
+            </if>
+            <if test="tradeKey != null">
+                trade_key,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updareByName != null">
+                updare_by_name,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createByName != null">
+                create_by_name,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="mainCoin != null">
+                main_coin,
+            </if>
+            <if test="contractAddress != null">
+                contract_address,
+            </if>
+            <if test="canCash != null">
+                can_cash,
+            </if>
+            <if test="canRecharge != null">
+                can_recharge,
+            </if>
+            <if test="scale != null">
+                scale,
+            </if>
+            <if test="note != null">
+                note,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="vcoinToken != null">
+                #{vcoinToken,jdbcType=VARCHAR},
+            </if>
+            <if test="vcoinName != null">
+                #{vcoinName,jdbcType=VARCHAR},
+            </if>
+            <if test="vcoinNameEn != null">
+                #{vcoinNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="vcoinNameFull != null">
+                #{vcoinNameFull,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAccount != null">
+                #{sysAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeKey != null">
+                #{tradeKey,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="sort != null">
+                #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updareByName != null">
+                #{updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="mainCoin != null">
+                #{mainCoin,jdbcType=INTEGER},
+            </if>
+            <if test="contractAddress != null">
+                #{contractAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="canCash != null">
+                #{canCash,jdbcType=INTEGER},
+            </if>
+            <if test="canRecharge != null">
+                #{canRecharge,jdbcType=INTEGER},
+            </if>
+            <if test="scale != null">
+                #{scale,jdbcType=INTEGER},
+            </if>
+            <if test="note != null">
+                #{note,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.vcoin.MexcVCoin">
+        update t_mexc_vcoin
+        <set>
+            <if test="vcoinToken != null">
+                vcoin_token = #{vcoinToken,jdbcType=VARCHAR},
+            </if>
+            <if test="vcoinName != null">
+                vcoin_name = #{vcoinName,jdbcType=VARCHAR},
+            </if>
+            <if test="vcoinNameEn != null">
+                vcoin_name_en = #{vcoinNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="vcoinNameFull != null">
+                vcoin_name_full = #{vcoinNameFull,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                icon = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="sysAccount != null">
+                sys_account = #{sysAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeKey != null">
+                trade_key = #{tradeKey,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updareByName != null">
+                updare_by_name = #{updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                create_by_name = #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="mainCoin != null">
+                main_coin = #{mainCoin,jdbcType=INTEGER},
+            </if>
+            <if test="contractAddress != null">
+                contract_address = #{contractAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="canCash != null">
+                can_cash = #{canCash,jdbcType=INTEGER},
+            </if>
+            <if test="canRecharge != null">
+                can_recharge = #{canRecharge,jdbcType=INTEGER},
+            </if>
+            <if test="scale != null">
+                scale = #{scale,jdbcType=INTEGER},
+            </if>
+            <if test="note != null">
+                note = #{note,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mexc.dao.model.vcoin.MexcVCoin">
+        update t_mexc_vcoin
+        set vcoin_token = #{vcoinToken,jdbcType=VARCHAR},
+        vcoin_name = #{vcoinName,jdbcType=VARCHAR},
+        vcoin_name_en = #{vcoinNameEn,jdbcType=VARCHAR},
+        vcoin_name_full = #{vcoinNameFull,jdbcType=VARCHAR},
+        icon = #{icon,jdbcType=VARCHAR},
+        sys_account = #{sysAccount,jdbcType=VARCHAR},
+        trade_key = #{tradeKey,jdbcType=VARCHAR},
+        status = #{status,jdbcType=INTEGER},
+        sort = #{sort,jdbcType=INTEGER},
+        update_by = #{updateBy,jdbcType=VARCHAR},
+        updare_by_name = #{updareByName,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        create_by = #{createBy,jdbcType=VARCHAR},
+        create_by_name = #{createByName,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        main_coin = #{mainCoin,jdbcType=INTEGER},
+        contract_address = #{contractAddress,jdbcType=VARCHAR},
+        can_cash = #{canCash,jdbcType=INTEGER},
+        can_recharge = #{canRecharge,jdbcType=INTEGER},
+        scale = #{scale,jdbcType=INTEGER},
+        note = #{note,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.vcoin.MexcVCoin">
+        update t_mexc_vcoin
+        set vcoin_token = #{vcoinToken,jdbcType=VARCHAR},
+        vcoin_name = #{vcoinName,jdbcType=VARCHAR},
+        vcoin_name_en = #{vcoinNameEn,jdbcType=VARCHAR},
+        vcoin_name_full = #{vcoinNameFull,jdbcType=VARCHAR},
+        icon = #{icon,jdbcType=VARCHAR},
+        sys_account = #{sysAccount,jdbcType=VARCHAR},
+        trade_key = #{tradeKey,jdbcType=VARCHAR},
+        status = #{status,jdbcType=INTEGER},
+        sort = #{sort,jdbcType=INTEGER},
+        update_by = #{updateBy,jdbcType=VARCHAR},
+        updare_by_name = #{updareByName,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        create_by = #{createBy,jdbcType=VARCHAR},
+        create_by_name = #{createByName,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        main_coin = #{mainCoin,jdbcType=INTEGER},
+        contract_address = #{contractAddress,jdbcType=VARCHAR},
+        can_cash = #{canCash,jdbcType=INTEGER},
+        can_recharge = #{canRecharge,jdbcType=INTEGER},
+        scale = #{scale,jdbcType=INTEGER}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByCondition" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_vcoin
+        <include refid="Param_Base_Clause" />
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_vcoin (id, vcoin_token, vcoin_name,
+        vcoin_name_en, vcoin_name_full,
+        icon, sys_account, trade_key,
+        status, sort, update_by,
+        updare_by_name, update_time,
+        create_by, create_by_name, create_time,
+        main_coin, contract_address,
+        can_cash, can_recharge, scale,
+        note)
+        values
+        <foreach  collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=VARCHAR}, #{item.vcoinToken,jdbcType=VARCHAR}, #{item.vcoinName,jdbcType=VARCHAR},
+            #{item.vcoinNameEn,jdbcType=VARCHAR}, #{item.vcoinNameFull,jdbcType=VARCHAR},
+            #{item.icon,jdbcType=VARCHAR}, #{item.sysAccount,jdbcType=VARCHAR}, #{item.tradeKey,jdbcType=VARCHAR},
+            #{item.status,jdbcType=INTEGER}, #{item.sort,jdbcType=INTEGER}, #{item.updateBy,jdbcType=VARCHAR},
+            #{item.updareByName,jdbcType=VARCHAR}, #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.createBy,jdbcType=VARCHAR}, #{item.createByName,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.mainCoin,jdbcType=INTEGER}, #{item.contractAddress,jdbcType=VARCHAR},
+            #{item.canCash,jdbcType=INTEGER}, #{item.canRecharge,jdbcType=INTEGER}, #{item.scale,jdbcType=INTEGER},
+            #{item.note,jdbcType=LONGVARCHAR}
+            )
+        </foreach >
+    </insert>
+
+    <update id="updateByParam">
+        update t_mexc_vcoin
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.vcoinToken != null">
+                vcoin_token = #{record.vcoinToken,jdbcType=VARCHAR},
+            </if>
+            <if test="record.vcoinName != null">
+                vcoin_name = #{record.vcoinName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.vcoinNameEn != null">
+                vcoin_name_en = #{record.vcoinNameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="record.vcoinNameFull != null">
+                vcoin_name_full = #{record.vcoinNameFull,jdbcType=VARCHAR},
+            </if>
+            <if test="record.icon != null">
+                icon = #{record.icon,jdbcType=VARCHAR},
+            </if>
+            <if test="record.sysAccount != null">
+                sys_account = #{record.sysAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="record.tradeKey != null">
+                trade_key = #{record.tradeKey,jdbcType=VARCHAR},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.sort != null">
+                sort = #{record.sort,jdbcType=INTEGER},
+            </if>
+            <if test="record.updateBy != null">
+                update_by = #{record.updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updareByName != null">
+                updare_by_name = #{record.updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createBy != null">
+                create_by = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createByName != null">
+                create_by_name = #{record.createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.mainCoin != null">
+                main_coin = #{record.mainCoin,jdbcType=INTEGER},
+            </if>
+            <if test="record.contractAddress != null">
+                contract_address = #{record.contractAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.canCash != null">
+                can_cash = #{record.canCash,jdbcType=INTEGER},
+            </if>
+            <if test="record.canRecharge != null">
+                can_recharge = #{record.canRecharge,jdbcType=INTEGER},
+            </if>
+            <if test="record.scale != null">
+                scale = #{record.scale,jdbcType=INTEGER},
+            </if>
+            <if test="record.note != null">
+                note = #{record.note,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause" />
+    </update>
+
+    <delete id="deleteByParam">
+        delete from t_mexc_vcoin
+        <include refid="Param_Base_Clause" />
+    </delete>
+
+    <update id="truncate">
+        truncate t_mexc_vcoin
+    </update>
+
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_vcoin
+    </select>
+
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_vcoin
+        <include refid="Param_Base_Clause" />
+    </select>
+
+    <select id="selectOne" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_vcoin
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.vcoinToken != null">
+                and vcoin_token = #{record.vcoinToken,jdbcType=VARCHAR}
+            </if>
+            <if test="record.vcoinName != null">
+                and vcoin_name = #{record.vcoinName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.vcoinNameEn != null">
+                and vcoin_name_en = #{record.vcoinNameEn,jdbcType=VARCHAR}
+            </if>
+            <if test="record.vcoinNameFull != null">
+                and vcoin_name_full = #{record.vcoinNameFull,jdbcType=VARCHAR}
+            </if>
+            <if test="record.icon != null">
+                and icon = #{record.icon,jdbcType=VARCHAR}
+            </if>
+            <if test="record.sysAccount != null">
+                and sys_account = #{record.sysAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="record.tradeKey != null">
+                and trade_key = #{record.tradeKey,jdbcType=VARCHAR}
+            </if>
+            <if test="record.status != null">
+                and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.sort != null">
+                and sort = #{record.sort,jdbcType=INTEGER}
+            </if>
+            <if test="record.updateBy != null">
+                and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updareByName != null">
+                and updare_by_name = #{record.updareByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.mainCoin != null">
+                and main_coin = #{record.mainCoin,jdbcType=INTEGER}
+            </if>
+            <if test="record.contractAddress != null">
+                and contract_address = #{record.contractAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="record.canCash != null">
+                and can_cash = #{record.canCash,jdbcType=INTEGER}
+            </if>
+            <if test="record.canRecharge != null">
+                and can_recharge = #{record.canRecharge,jdbcType=INTEGER}
+            </if>
+            <if test="record.scale != null">
+                and scale = #{record.scale,jdbcType=INTEGER}
+            </if>
+            <if test="record.note != null">
+                and note = #{record.note,jdbcType=LONGVARCHAR}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <select id="selectList" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_vcoin
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.vcoinToken != null">
+                and vcoin_token = #{record.vcoinToken,jdbcType=VARCHAR}
+            </if>
+            <if test="record.vcoinName != null">
+                and vcoin_name = #{record.vcoinName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.vcoinNameEn != null">
+                and vcoin_name_en = #{record.vcoinNameEn,jdbcType=VARCHAR}
+            </if>
+            <if test="record.vcoinNameFull != null">
+                and vcoin_name_full = #{record.vcoinNameFull,jdbcType=VARCHAR}
+            </if>
+            <if test="record.icon != null">
+                and icon = #{record.icon,jdbcType=VARCHAR}
+            </if>
+            <if test="record.sysAccount != null">
+                and sys_account = #{record.sysAccount,jdbcType=VARCHAR}
+            </if>
+            <if test="record.tradeKey != null">
+                and trade_key = #{record.tradeKey,jdbcType=VARCHAR}
+            </if>
+            <if test="record.status != null">
+                and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.sort != null">
+                and sort = #{record.sort,jdbcType=INTEGER}
+            </if>
+            <if test="record.updateBy != null">
+                and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updareByName != null">
+                and updare_by_name = #{record.updareByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.mainCoin != null">
+                and main_coin = #{record.mainCoin,jdbcType=INTEGER}
+            </if>
+            <if test="record.contractAddress != null">
+                and contract_address = #{record.contractAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="record.canCash != null">
+                and can_cash = #{record.canCash,jdbcType=INTEGER}
+            </if>
+            <if test="record.canRecharge != null">
+                and can_recharge = #{record.canRecharge,jdbcType=INTEGER}
+            </if>
+            <if test="record.scale != null">
+                and scale = #{record.scale,jdbcType=INTEGER}
+            </if>
+            <if test="record.note != null">
+                and note = #{record.note,jdbcType=LONGVARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryMarketVCoinList" resultMap="BaseResultMap">
+        select
+        v.id,
+        v.vcoin_token,
+        v.vcoin_name,
+        v.vcoin_name_en,
+        v.vcoin_name_full,
+        v.icon,
+        v.sys_account,
+        v.trade_key,
+        v.status,
+        v.sort,
+        v.update_by,
+        v.updare_by_name,
+        v.update_time,
+        v.create_by,
+        v.create_by_name,
+        v.create_time,
+        v.main_coin,
+        v.contract_address,
+        v.can_cash,
+        v.can_recharge
+        from
+        t_mexc_vcoin v,
+        t_mexc_market_vcoin mv
+        where
+        v.id=mv.vcoin_id and v.status=1
+        and mv.market_id=#{marketId,jdbcType=VARCHAR}
+    </select>
+
+    <resultMap id="marketVCoinVo" type="com.mexc.dao.vo.market.MarketVCoinVo">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="marketId" jdbcType="VARCHAR" property="marketId" />
+        <result column="marketName" jdbcType="VARCHAR" property="marketName" />
+        <result column="vcoinId" jdbcType="VARCHAR" property="vcoinId" />
+        <result column="vcoinNameEn" jdbcType="VARCHAR" property="vcoinNameEn" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="suggest" jdbcType="INTEGER" property="suggest" />
+    </resultMap>
+    <!--查询交易对分页-->
+    <select id="queryMarketVCoinListPage" resultMap="marketVCoinVo">
+        select
+        mv.id as id,
+        m.id as marketId,
+        m.market_name as marketName,
+        v.id as vcoinId,
+        v.vcoin_name_en as vcoinNameEn,
+        mv.status as status,
+        mv.suggest as suggest
+        from
+        t_mexc_vcoin v,
+        t_mexc_market_vcoin mv,
+        t_mexc_market m
+        where
+        v.id=mv.vcoin_id
+        and m.id=mv.market_id
+        and mv.market_id=#{marketId,jdbcType=VARCHAR}
+    </select>
+
+    <!--查询推荐交易对分页-->
+    <select id="queryMarketSuggestVCoinListPage" resultMap="marketVCoinVo">
+        select
+        mv.id as id,
+        m.id as marketId,
+        m.market_name as marketName,
+        v.id as vcoinId,
+        v.vcoin_name_en as vcoinNameEn,
+        mv.status as status,
+        mv.suggest as suggest
+        from
+        t_mexc_vcoin v,
+        t_mexc_market_vcoin mv,
+        t_mexc_market m
+        where
+        v.id=mv.vcoin_id
+        and m.id=mv.market_id
+        and mv.suggest=1
+        <if test="marketId != null">
+            and mv.market_id=#{marketId,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <!--查询交易对-->
+    <select id="queryMarketVCoin" resultMap="marketVCoinVo">
+        select
+        mv.id as id,
+        m.id as marketId,
+        m.market_name as marketName,
+        v.id as vcoinId,
+        v.vcoin_name_en as vcoinNameEn,
+        mv.status as status,
+        mv.suggest as suggest
+        from
+        t_mexc_vcoin v,
+        t_mexc_market_vcoin mv,
+        t_mexc_market m
+        where
+        v.id=mv.vcoin_id
+        and m.id=mv.market_id
+        and mv.id=#{marketVCoinId,jdbcType=VARCHAR}
+    </select>
+
+    <!--查询市场 主币之外未关联的币种-->
+    <select id="queryMarketVCoinExcludeMainVCoin" resultMap="BaseResultMap">
+        select
+        v.id,
+        v.vcoin_token,
+        v.vcoin_name,
+        v.vcoin_name_en,
+        v.vcoin_name_full,
+        v.icon,
+        v.sys_account,
+        v.trade_key,
+        v.status,
+        v.sort,
+        v.update_by,
+        v.updare_by_name,
+        v.update_time,
+        v.create_by,
+        v.create_by_name,
+        v.create_time,
+        v.main_coin,
+        v.contract_address,
+        v.can_cash,
+        v.can_recharge
+        from
+        t_mexc_vcoin v
+        where
+        v.id not in (
+        select temp.vcoin_id from t_mexc_market_vcoin temp where temp.market_id=#{marketId,jdbcType=VARCHAR}
+        )
+        and
+        v.id not in (
+        select m.vcoin_id from t_mexc_market m where m.id = #{marketId,jdbcType=VARCHAR}
+        )
+    </select>
+
+
+    <select id="queryMarketNoSuggestVCoinList" resultMap="BaseResultMap">
+        select
+        v.id,
+        v.vcoin_token,
+        v.vcoin_name,
+        v.vcoin_name_en,
+        v.vcoin_name_full,
+        v.icon,
+        v.sys_account,
+        v.trade_key,
+        v.status,
+        v.sort,
+        v.update_by,
+        v.updare_by_name,
+        v.update_time,
+        v.create_by,
+        v.create_by_name,
+        v.create_time,
+        v.main_coin,
+        v.contract_address,
+        v.can_cash,
+        v.can_recharge
+        from
+        t_mexc_vcoin v,t_mexc_market_vcoin mv
+        where v.id=mv.vcoin_id and mv.suggest=0 and mv.market_id=#{marketId,jdbcType=VARCHAR}
+
+    </select>
+
+</mapper>

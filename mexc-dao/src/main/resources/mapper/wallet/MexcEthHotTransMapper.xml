@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.wallet.MexcEthHotTransDAO">
+    
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.wallet.MexcEthHotTrans">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="tx_hash" jdbcType="VARCHAR" property="txHash" />
+        <result column="from_address" jdbcType="VARCHAR" property="fromAddress" />
+        <result column="to_address" jdbcType="VARCHAR" property="toAddress" />
+        <result column="gas_used" jdbcType="DECIMAL" property="gasUsed" />
+        <result column="gas_price" jdbcType="DECIMAL" property="gasPrice" />
+        <result column="create_tim" jdbcType="TIMESTAMP" property="createTim" />
+        <result column="member_id" jdbcType="VARCHAR" property="memberId" />
+        <result column="tx_receipt" jdbcType="VARCHAR" property="txReceipt" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="tx_amount" jdbcType="DECIMAL" property="txAmount" />
+        <result column="tx_token" jdbcType="VARCHAR" property="txToken" />
+        <result column="asset_id" jdbcType="VARCHAR" property="assetId" />
+        <result column="tx_type" jdbcType="INTEGER" property="txType" />
+        <result column="receipt_link" jdbcType="VARCHAR" property="receiptLink" />
+        <result column="value" jdbcType="DECIMAL" property="value" />
+        <result column="fee_amount" jdbcType="DECIMAL" property="feeAmount" />
+    </resultMap>
+    
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                 ${criteria.condition} 
+                <if test=" criteria.haveValue ">
+                     #{criteria.value} 
+                </if>
+            </foreach>
+        </if>
+    </sql>
+    
+    <sql id="Base_Column_List">
+        id, tx_hash, from_address, to_address, gas_used, gas_price, create_tim, member_id, 
+        tx_receipt, status, tx_amount, tx_token, asset_id, tx_type, receipt_link, value, 
+        fee_amount
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from t_mexc_eth_hot_trans
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_eth_hot_trans
+    </select>
+    
+    <select id="selectPagination" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_eth_hot_trans
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_mexc_eth_hot_trans
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    
+    <insert id="insert" parameterType="com.mexc.dao.model.wallet.MexcEthHotTrans">
+        insert into t_mexc_eth_hot_trans (id, tx_hash, from_address, 
+            to_address, gas_used, gas_price, 
+            create_tim, member_id, tx_receipt, 
+            status, tx_amount, tx_token, 
+            asset_id, tx_type, receipt_link, 
+            value, fee_amount)
+        values (#{id,jdbcType=VARCHAR}, #{txHash,jdbcType=VARCHAR}, #{fromAddress,jdbcType=VARCHAR}, 
+            #{toAddress,jdbcType=VARCHAR}, #{gasUsed,jdbcType=DECIMAL}, #{gasPrice,jdbcType=DECIMAL}, 
+            #{createTim,jdbcType=TIMESTAMP}, #{memberId,jdbcType=VARCHAR}, #{txReceipt,jdbcType=VARCHAR}, 
+            #{status,jdbcType=INTEGER}, #{txAmount,jdbcType=DECIMAL}, #{txToken,jdbcType=VARCHAR}, 
+            #{assetId,jdbcType=VARCHAR}, #{txType,jdbcType=INTEGER}, #{receiptLink,jdbcType=VARCHAR}, 
+            #{value,jdbcType=DECIMAL}, #{feeAmount,jdbcType=DECIMAL})
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.wallet.MexcEthHotTrans">
+        insert into t_mexc_eth_hot_trans
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="txHash != null">
+                tx_hash,
+            </if>
+            <if test="fromAddress != null">
+                from_address,
+            </if>
+            <if test="toAddress != null">
+                to_address,
+            </if>
+            <if test="gasUsed != null">
+                gas_used,
+            </if>
+            <if test="gasPrice != null">
+                gas_price,
+            </if>
+            <if test="createTim != null">
+                create_tim,
+            </if>
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="txReceipt != null">
+                tx_receipt,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="txAmount != null">
+                tx_amount,
+            </if>
+            <if test="txToken != null">
+                tx_token,
+            </if>
+            <if test="assetId != null">
+                asset_id,
+            </if>
+            <if test="txType != null">
+                tx_type,
+            </if>
+            <if test="receiptLink != null">
+                receipt_link,
+            </if>
+            <if test="value != null">
+                value,
+            </if>
+            <if test="feeAmount != null">
+                fee_amount,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="txHash != null">
+                #{txHash,jdbcType=VARCHAR},
+            </if>
+            <if test="fromAddress != null">
+                #{fromAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="toAddress != null">
+                #{toAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="gasUsed != null">
+                #{gasUsed,jdbcType=DECIMAL},
+            </if>
+            <if test="gasPrice != null">
+                #{gasPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="createTim != null">
+                #{createTim,jdbcType=TIMESTAMP},
+            </if>
+            <if test="memberId != null">
+                #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="txReceipt != null">
+                #{txReceipt,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="txAmount != null">
+                #{txAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="txToken != null">
+                #{txToken,jdbcType=VARCHAR},
+            </if>
+            <if test="assetId != null">
+                #{assetId,jdbcType=VARCHAR},
+            </if>
+            <if test="txType != null">
+                #{txType,jdbcType=INTEGER},
+            </if>
+            <if test="receiptLink != null">
+                #{receiptLink,jdbcType=VARCHAR},
+            </if>
+            <if test="value != null">
+                #{value,jdbcType=DECIMAL},
+            </if>
+            <if test="feeAmount != null">
+                #{feeAmount,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.wallet.MexcEthHotTrans">
+        update t_mexc_eth_hot_trans
+        <set>
+            <if test="txHash != null">
+                tx_hash = #{txHash,jdbcType=VARCHAR},
+            </if>
+            <if test="fromAddress != null">
+                from_address = #{fromAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="toAddress != null">
+                to_address = #{toAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="gasUsed != null">
+                gas_used = #{gasUsed,jdbcType=DECIMAL},
+            </if>
+            <if test="gasPrice != null">
+                gas_price = #{gasPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="createTim != null">
+                create_tim = #{createTim,jdbcType=TIMESTAMP},
+            </if>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="txReceipt != null">
+                tx_receipt = #{txReceipt,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="txAmount != null">
+                tx_amount = #{txAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="txToken != null">
+                tx_token = #{txToken,jdbcType=VARCHAR},
+            </if>
+            <if test="assetId != null">
+                asset_id = #{assetId,jdbcType=VARCHAR},
+            </if>
+            <if test="txType != null">
+                tx_type = #{txType,jdbcType=INTEGER},
+            </if>
+            <if test="receiptLink != null">
+                receipt_link = #{receiptLink,jdbcType=VARCHAR},
+            </if>
+            <if test="value != null">
+                value = #{value,jdbcType=DECIMAL},
+            </if>
+            <if test="feeAmount != null">
+                fee_amount = #{feeAmount,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.wallet.MexcEthHotTrans">
+        update t_mexc_eth_hot_trans
+        set tx_hash = #{txHash,jdbcType=VARCHAR},
+            from_address = #{fromAddress,jdbcType=VARCHAR},
+            to_address = #{toAddress,jdbcType=VARCHAR},
+            gas_used = #{gasUsed,jdbcType=DECIMAL},
+            gas_price = #{gasPrice,jdbcType=DECIMAL},
+            create_tim = #{createTim,jdbcType=TIMESTAMP},
+            member_id = #{memberId,jdbcType=VARCHAR},
+            tx_receipt = #{txReceipt,jdbcType=VARCHAR},
+            status = #{status,jdbcType=INTEGER},
+            tx_amount = #{txAmount,jdbcType=DECIMAL},
+            tx_token = #{txToken,jdbcType=VARCHAR},
+            asset_id = #{assetId,jdbcType=VARCHAR},
+            tx_type = #{txType,jdbcType=INTEGER},
+            receipt_link = #{receiptLink,jdbcType=VARCHAR},
+            value = #{value,jdbcType=DECIMAL},
+            fee_amount = #{feeAmount,jdbcType=DECIMAL}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_eth_hot_trans
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_eth_hot_trans (id, tx_hash, from_address, 
+            to_address, gas_used, gas_price, 
+            create_tim, member_id, tx_receipt, 
+            status, tx_amount, tx_token, 
+            asset_id, tx_type, receipt_link, 
+            value, fee_amount)
+         values 
+        <foreach  collection="list" index="index" item="item" separator=",">
+             (#{item.id,jdbcType=VARCHAR}, #{item.txHash,jdbcType=VARCHAR}, #{item.fromAddress,jdbcType=VARCHAR}, 
+                #{item.toAddress,jdbcType=VARCHAR}, #{item.gasUsed,jdbcType=DECIMAL}, #{item.gasPrice,jdbcType=DECIMAL}, 
+                #{item.createTim,jdbcType=TIMESTAMP}, #{item.memberId,jdbcType=VARCHAR}, #{item.txReceipt,jdbcType=VARCHAR}, 
+                #{item.status,jdbcType=INTEGER}, #{item.txAmount,jdbcType=DECIMAL}, #{item.txToken,jdbcType=VARCHAR}, 
+                #{item.assetId,jdbcType=VARCHAR}, #{item.txType,jdbcType=INTEGER}, #{item.receiptLink,jdbcType=VARCHAR}, 
+                #{item.value,jdbcType=DECIMAL}, #{item.feeAmount,jdbcType=DECIMAL}
+            )
+        </foreach >
+    </insert>
+    
+    <update id="updateByParam">
+        update t_mexc_eth_hot_trans
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.txHash != null">
+                tx_hash = #{record.txHash,jdbcType=VARCHAR},
+            </if>
+            <if test="record.fromAddress != null">
+                from_address = #{record.fromAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.toAddress != null">
+                to_address = #{record.toAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.gasUsed != null">
+                gas_used = #{record.gasUsed,jdbcType=DECIMAL},
+            </if>
+            <if test="record.gasPrice != null">
+                gas_price = #{record.gasPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.createTim != null">
+                create_tim = #{record.createTim,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.memberId != null">
+                member_id = #{record.memberId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.txReceipt != null">
+                tx_receipt = #{record.txReceipt,jdbcType=VARCHAR},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.txAmount != null">
+                tx_amount = #{record.txAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.txToken != null">
+                tx_token = #{record.txToken,jdbcType=VARCHAR},
+            </if>
+            <if test="record.assetId != null">
+                asset_id = #{record.assetId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.txType != null">
+                tx_type = #{record.txType,jdbcType=INTEGER},
+            </if>
+            <if test="record.receiptLink != null">
+                receipt_link = #{record.receiptLink,jdbcType=VARCHAR},
+            </if>
+            <if test="record.value != null">
+                value = #{record.value,jdbcType=DECIMAL},
+            </if>
+            <if test="record.feeAmount != null">
+                fee_amount = #{record.feeAmount,jdbcType=DECIMAL},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause" />
+    </update>
+    
+    <delete id="deleteByParam">
+        delete from t_mexc_eth_hot_trans
+        <include refid="Param_Base_Clause" />
+    </delete>
+    
+    <update id="truncate">
+        truncate t_mexc_eth_hot_trans
+    </update>
+    
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_eth_hot_trans
+    </select>
+    
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_eth_hot_trans
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <select id="selectOne" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_eth_hot_trans
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txHash != null">
+                 and tx_hash = #{record.txHash,jdbcType=VARCHAR}
+            </if>
+            <if test="record.fromAddress != null">
+                 and from_address = #{record.fromAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="record.toAddress != null">
+                 and to_address = #{record.toAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="record.gasUsed != null">
+                 and gas_used = #{record.gasUsed,jdbcType=DECIMAL}
+            </if>
+            <if test="record.gasPrice != null">
+                 and gas_price = #{record.gasPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="record.createTim != null">
+                 and create_tim = #{record.createTim,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.memberId != null">
+                 and member_id = #{record.memberId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txReceipt != null">
+                 and tx_receipt = #{record.txReceipt,jdbcType=VARCHAR}
+            </if>
+            <if test="record.status != null">
+                 and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.txAmount != null">
+                 and tx_amount = #{record.txAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.txToken != null">
+                 and tx_token = #{record.txToken,jdbcType=VARCHAR}
+            </if>
+            <if test="record.assetId != null">
+                 and asset_id = #{record.assetId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txType != null">
+                 and tx_type = #{record.txType,jdbcType=INTEGER}
+            </if>
+            <if test="record.receiptLink != null">
+                 and receipt_link = #{record.receiptLink,jdbcType=VARCHAR}
+            </if>
+            <if test="record.value != null">
+                 and value = #{record.value,jdbcType=DECIMAL}
+            </if>
+            <if test="record.feeAmount != null">
+                 and fee_amount = #{record.feeAmount,jdbcType=DECIMAL}
+            </if>
+        </where>
+         limit 1
+    </select>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_mexc_eth_hot_trans
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txHash != null">
+                 and tx_hash = #{record.txHash,jdbcType=VARCHAR}
+            </if>
+            <if test="record.fromAddress != null">
+                 and from_address = #{record.fromAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="record.toAddress != null">
+                 and to_address = #{record.toAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="record.gasUsed != null">
+                 and gas_used = #{record.gasUsed,jdbcType=DECIMAL}
+            </if>
+            <if test="record.gasPrice != null">
+                 and gas_price = #{record.gasPrice,jdbcType=DECIMAL}
+            </if>
+            <if test="record.createTim != null">
+                 and create_tim = #{record.createTim,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.memberId != null">
+                 and member_id = #{record.memberId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txReceipt != null">
+                 and tx_receipt = #{record.txReceipt,jdbcType=VARCHAR}
+            </if>
+            <if test="record.status != null">
+                 and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.txAmount != null">
+                 and tx_amount = #{record.txAmount,jdbcType=DECIMAL}
+            </if>
+            <if test="record.txToken != null">
+                 and tx_token = #{record.txToken,jdbcType=VARCHAR}
+            </if>
+            <if test="record.assetId != null">
+                 and asset_id = #{record.assetId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.txType != null">
+                 and tx_type = #{record.txType,jdbcType=INTEGER}
+            </if>
+            <if test="record.receiptLink != null">
+                 and receipt_link = #{record.receiptLink,jdbcType=VARCHAR}
+            </if>
+            <if test="record.value != null">
+                 and value = #{record.value,jdbcType=DECIMAL}
+            </if>
+            <if test="record.feeAmount != null">
+                 and fee_amount = #{record.feeAmount,jdbcType=DECIMAL}
+            </if>
+        </where>
+    </select>
+</mapper>

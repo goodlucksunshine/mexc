@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.wallet.MexcWalletDAO">
+
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.wallet.MexcWallet">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="type" jdbcType="VARCHAR" property="type" />
+        <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="rpc_port" jdbcType="VARCHAR" property="rpcPort" />
+        <result column="socket_port" jdbcType="VARCHAR" property="socketPort" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_by_name" jdbcType="VARCHAR" property="createByName" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="update_by_name" jdbcType="VARCHAR" property="updateByName" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="hot_address" jdbcType="VARCHAR" property="hotAddress" />
+        <result column="hot_pwd" jdbcType="VARCHAR" property="hotPwd" />
+        <result column="hot_file" jdbcType="VARCHAR" property="hotFile" />
+        <result column="cold_address" jdbcType="VARCHAR" property="coldAddress" />
+        <result column="last_sync_trans_hash" jdbcType="VARCHAR" property="lastSyncTransHash" />
+        <result column="block_sync" jdbcType="VARCHAR" property="blockSync" />
+        <result column="wallet_user" jdbcType="VARCHAR" property="walletUser" />
+        <result column="wallet_pwd" jdbcType="VARCHAR" property="walletPwd" />
+    </resultMap>
+
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.mexc.dao.model.wallet.MexcWallet">
+        <result column="note" jdbcType="LONGVARCHAR" property="note" />
+    </resultMap>
+
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                ${criteria.condition}
+                <if test=" criteria.haveValue ">
+                    #{criteria.value}
+                </if>
+            </foreach>
+        </if>
+    </sql>
+
+    <sql id="Base_Column_List">
+        id, name, type, url, rpc_port, socket_port, create_time, create_by, create_by_name,
+        update_time, update_by, update_by_name, status, hot_address, hot_pwd, hot_file, cold_address,
+        last_sync_trans_hash, block_sync, wallet_user, wallet_pwd
+    </sql>
+
+    <sql id="Blob_Column_List">
+        note
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_wallet
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAll" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_wallet
+    </select>
+
+    <select id="selectPagination" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_wallet
+        <include refid="Param_Base_Clause" />
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_mexc_wallet
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.mexc.dao.model.wallet.MexcWallet">
+        insert into t_mexc_wallet (id, name, type,
+        url, rpc_port, socket_port,
+        create_time, create_by, create_by_name,
+        update_time, update_by, update_by_name,
+        status, hot_address, hot_pwd,
+        hot_file, cold_address, last_sync_trans_hash,
+        block_sync, wallet_user, wallet_pwd,
+        note)
+        values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+        #{url,jdbcType=VARCHAR}, #{rpcPort,jdbcType=VARCHAR}, #{socketPort,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{createByName,jdbcType=VARCHAR},
+        #{updateTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateByName,jdbcType=VARCHAR},
+        #{status,jdbcType=INTEGER}, #{hotAddress,jdbcType=VARCHAR}, #{hotPwd,jdbcType=VARCHAR},
+        #{hotFile,jdbcType=VARCHAR}, #{coldAddress,jdbcType=VARCHAR}, #{lastSyncTransHash,jdbcType=VARCHAR},
+        #{blockSync,jdbcType=VARCHAR}, #{walletUser,jdbcType=VARCHAR}, #{walletPwd,jdbcType=VARCHAR},
+        #{note,jdbcType=LONGVARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.wallet.MexcWallet">
+        insert into t_mexc_wallet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="rpcPort != null">
+                rpc_port,
+            </if>
+            <if test="socketPort != null">
+                socket_port,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createByName != null">
+                create_by_name,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updateByName != null">
+                update_by_name,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="hotAddress != null">
+                hot_address,
+            </if>
+            <if test="hotPwd != null">
+                hot_pwd,
+            </if>
+            <if test="hotFile != null">
+                hot_file,
+            </if>
+            <if test="coldAddress != null">
+                cold_address,
+            </if>
+            <if test="lastSyncTransHash != null">
+                last_sync_trans_hash,
+            </if>
+            <if test="blockSync != null">
+                block_sync,
+            </if>
+            <if test="walletUser != null">
+                wallet_user,
+            </if>
+            <if test="walletPwd != null">
+                wallet_pwd,
+            </if>
+            <if test="note != null">
+                note,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="rpcPort != null">
+                #{rpcPort,jdbcType=VARCHAR},
+            </if>
+            <if test="socketPort != null">
+                #{socketPort,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateByName != null">
+                #{updateByName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="hotAddress != null">
+                #{hotAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="hotPwd != null">
+                #{hotPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="hotFile != null">
+                #{hotFile,jdbcType=VARCHAR},
+            </if>
+            <if test="coldAddress != null">
+                #{coldAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="lastSyncTransHash != null">
+                #{lastSyncTransHash,jdbcType=VARCHAR},
+            </if>
+            <if test="blockSync != null">
+                #{blockSync,jdbcType=VARCHAR},
+            </if>
+            <if test="walletUser != null">
+                #{walletUser,jdbcType=VARCHAR},
+            </if>
+            <if test="walletPwd != null">
+                #{walletPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="note != null">
+                #{note,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.wallet.MexcWallet">
+        update t_mexc_wallet
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="rpcPort != null">
+                rpc_port = #{rpcPort,jdbcType=VARCHAR},
+            </if>
+            <if test="socketPort != null">
+                socket_port = #{socketPort,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                create_by_name = #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateByName != null">
+                update_by_name = #{updateByName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="hotAddress != null">
+                hot_address = #{hotAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="hotPwd != null">
+                hot_pwd = #{hotPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="hotFile != null">
+                hot_file = #{hotFile,jdbcType=VARCHAR},
+            </if>
+            <if test="coldAddress != null">
+                cold_address = #{coldAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="lastSyncTransHash != null">
+                last_sync_trans_hash = #{lastSyncTransHash,jdbcType=VARCHAR},
+            </if>
+            <if test="blockSync != null">
+                block_sync = #{blockSync,jdbcType=VARCHAR},
+            </if>
+            <if test="walletUser != null">
+                wallet_user = #{walletUser,jdbcType=VARCHAR},
+            </if>
+            <if test="walletPwd != null">
+                wallet_pwd = #{walletPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="note != null">
+                note = #{note,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mexc.dao.model.wallet.MexcWallet">
+        update t_mexc_wallet
+        set name = #{name,jdbcType=VARCHAR},
+        type = #{type,jdbcType=VARCHAR},
+        url = #{url,jdbcType=VARCHAR},
+        rpc_port = #{rpcPort,jdbcType=VARCHAR},
+        socket_port = #{socketPort,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_by = #{createBy,jdbcType=VARCHAR},
+        create_by_name = #{createByName,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_by = #{updateBy,jdbcType=VARCHAR},
+        update_by_name = #{updateByName,jdbcType=VARCHAR},
+        status = #{status,jdbcType=INTEGER},
+        hot_address = #{hotAddress,jdbcType=VARCHAR},
+        hot_pwd = #{hotPwd,jdbcType=VARCHAR},
+        hot_file = #{hotFile,jdbcType=VARCHAR},
+        cold_address = #{coldAddress,jdbcType=VARCHAR},
+        last_sync_trans_hash = #{lastSyncTransHash,jdbcType=VARCHAR},
+        block_sync = #{blockSync,jdbcType=VARCHAR},
+        wallet_user = #{walletUser,jdbcType=VARCHAR},
+        wallet_pwd = #{walletPwd,jdbcType=VARCHAR},
+        note = #{note,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.wallet.MexcWallet">
+        update t_mexc_wallet
+        set name = #{name,jdbcType=VARCHAR},
+        type = #{type,jdbcType=VARCHAR},
+        url = #{url,jdbcType=VARCHAR},
+        rpc_port = #{rpcPort,jdbcType=VARCHAR},
+        socket_port = #{socketPort,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_by = #{createBy,jdbcType=VARCHAR},
+        create_by_name = #{createByName,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_by = #{updateBy,jdbcType=VARCHAR},
+        update_by_name = #{updateByName,jdbcType=VARCHAR},
+        status = #{status,jdbcType=INTEGER},
+        hot_address = #{hotAddress,jdbcType=VARCHAR},
+        hot_pwd = #{hotPwd,jdbcType=VARCHAR},
+        hot_file = #{hotFile,jdbcType=VARCHAR},
+        cold_address = #{coldAddress,jdbcType=VARCHAR},
+        last_sync_trans_hash = #{lastSyncTransHash,jdbcType=VARCHAR},
+        block_sync = #{blockSync,jdbcType=VARCHAR},
+        wallet_user = #{walletUser,jdbcType=VARCHAR},
+        wallet_pwd = #{walletPwd,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByCondition" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_wallet
+        <include refid="Param_Base_Clause" />
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_wallet (id, name, type,
+        url, rpc_port, socket_port,
+        create_time, create_by, create_by_name,
+        update_time, update_by, update_by_name,
+        status, hot_address, hot_pwd,
+        hot_file, cold_address, last_sync_trans_hash,
+        block_sync, wallet_user, wallet_pwd,
+        note)
+        values
+        <foreach  collection="list" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, #{item.type,jdbcType=VARCHAR},
+            #{item.url,jdbcType=VARCHAR}, #{item.rpcPort,jdbcType=VARCHAR}, #{item.socketPort,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP}, #{item.createBy,jdbcType=VARCHAR}, #{item.createByName,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP}, #{item.updateBy,jdbcType=VARCHAR}, #{item.updateByName,jdbcType=VARCHAR},
+            #{item.status,jdbcType=INTEGER}, #{item.hotAddress,jdbcType=VARCHAR}, #{item.hotPwd,jdbcType=VARCHAR},
+            #{item.hotFile,jdbcType=VARCHAR}, #{item.coldAddress,jdbcType=VARCHAR}, #{item.lastSyncTransHash,jdbcType=VARCHAR},
+            #{item.blockSync,jdbcType=VARCHAR}, #{item.walletUser,jdbcType=VARCHAR}, #{item.walletPwd,jdbcType=VARCHAR},
+            #{item.note,jdbcType=LONGVARCHAR}
+            )
+        </foreach >
+    </insert>
+
+    <update id="updateByParam">
+        update t_mexc_wallet
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.name != null">
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.type != null">
+                type = #{record.type,jdbcType=VARCHAR},
+            </if>
+            <if test="record.url != null">
+                url = #{record.url,jdbcType=VARCHAR},
+            </if>
+            <if test="record.rpcPort != null">
+                rpc_port = #{record.rpcPort,jdbcType=VARCHAR},
+            </if>
+            <if test="record.socketPort != null">
+                socket_port = #{record.socketPort,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createBy != null">
+                create_by = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createByName != null">
+                create_by_name = #{record.createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updateBy != null">
+                update_by = #{record.updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateByName != null">
+                update_by_name = #{record.updateByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.hotAddress != null">
+                hot_address = #{record.hotAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.hotPwd != null">
+                hot_pwd = #{record.hotPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="record.hotFile != null">
+                hot_file = #{record.hotFile,jdbcType=VARCHAR},
+            </if>
+            <if test="record.coldAddress != null">
+                cold_address = #{record.coldAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="record.lastSyncTransHash != null">
+                last_sync_trans_hash = #{record.lastSyncTransHash,jdbcType=VARCHAR},
+            </if>
+            <if test="record.blockSync != null">
+                block_sync = #{record.blockSync,jdbcType=VARCHAR},
+            </if>
+            <if test="record.walletUser != null">
+                wallet_user = #{record.walletUser,jdbcType=VARCHAR},
+            </if>
+            <if test="record.walletPwd != null">
+                wallet_pwd = #{record.walletPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="record.note != null">
+                note = #{record.note,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause" />
+    </update>
+
+    <delete id="deleteByParam">
+        delete from t_mexc_wallet
+        <include refid="Param_Base_Clause" />
+    </delete>
+
+    <update id="truncate">
+        truncate t_mexc_wallet
+    </update>
+
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_wallet
+    </select>
+
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_wallet
+        <include refid="Param_Base_Clause" />
+    </select>
+
+    <select id="selectOne" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_wallet
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.name != null">
+                and name = #{record.name,jdbcType=VARCHAR}
+            </if>
+            <if test="record.type != null">
+                and type = #{record.type,jdbcType=VARCHAR}
+            </if>
+            <if test="record.url != null">
+                and url = #{record.url,jdbcType=VARCHAR}
+            </if>
+            <if test="record.rpcPort != null">
+                and rpc_port = #{record.rpcPort,jdbcType=VARCHAR}
+            </if>
+            <if test="record.socketPort != null">
+                and socket_port = #{record.socketPort,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.updateBy != null">
+                and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateByName != null">
+                and update_by_name = #{record.updateByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.status != null">
+                and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.hotAddress != null">
+                and hot_address = #{record.hotAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="record.hotPwd != null">
+                and hot_pwd = #{record.hotPwd,jdbcType=VARCHAR}
+            </if>
+            <if test="record.hotFile != null">
+                and hot_file = #{record.hotFile,jdbcType=VARCHAR}
+            </if>
+            <if test="record.coldAddress != null">
+                and cold_address = #{record.coldAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="record.lastSyncTransHash != null">
+                and last_sync_trans_hash = #{record.lastSyncTransHash,jdbcType=VARCHAR}
+            </if>
+            <if test="record.blockSync != null">
+                and block_sync = #{record.blockSync,jdbcType=VARCHAR}
+            </if>
+            <if test="record.walletUser != null">
+                and wallet_user = #{record.walletUser,jdbcType=VARCHAR}
+            </if>
+            <if test="record.walletPwd != null">
+                and wallet_pwd = #{record.walletPwd,jdbcType=VARCHAR}
+            </if>
+            <if test="record.note != null">
+                and note = #{record.note,jdbcType=LONGVARCHAR}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <select id="selectList" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_wallet
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.name != null">
+                and name = #{record.name,jdbcType=VARCHAR}
+            </if>
+            <if test="record.type != null">
+                and type = #{record.type,jdbcType=VARCHAR}
+            </if>
+            <if test="record.url != null">
+                and url = #{record.url,jdbcType=VARCHAR}
+            </if>
+            <if test="record.rpcPort != null">
+                and rpc_port = #{record.rpcPort,jdbcType=VARCHAR}
+            </if>
+            <if test="record.socketPort != null">
+                and socket_port = #{record.socketPort,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.updateBy != null">
+                and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateByName != null">
+                and update_by_name = #{record.updateByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.status != null">
+                and status = #{record.status,jdbcType=INTEGER}
+            </if>
+            <if test="record.hotAddress != null">
+                and hot_address = #{record.hotAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="record.hotPwd != null">
+                and hot_pwd = #{record.hotPwd,jdbcType=VARCHAR}
+            </if>
+            <if test="record.hotFile != null">
+                and hot_file = #{record.hotFile,jdbcType=VARCHAR}
+            </if>
+            <if test="record.coldAddress != null">
+                and cold_address = #{record.coldAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="record.lastSyncTransHash != null">
+                and last_sync_trans_hash = #{record.lastSyncTransHash,jdbcType=VARCHAR}
+            </if>
+            <if test="record.blockSync != null">
+                and block_sync = #{record.blockSync,jdbcType=VARCHAR}
+            </if>
+            <if test="record.walletUser != null">
+                and wallet_user = #{record.walletUser,jdbcType=VARCHAR}
+            </if>
+            <if test="record.walletPwd != null">
+                and wallet_pwd = #{record.walletPwd,jdbcType=VARCHAR}
+            </if>
+            <if test="record.note != null">
+                and note = #{record.note,jdbcType=LONGVARCHAR}
+            </if>
+        </where>
+    </select>
+
+
+    <update id="syncEthBlock">
+        update t_mexc_wallet set block_sync=#{block}
+        where <![CDATA[ type='ETH' ]]>
+    </update>
+
+    <update id="syncBtcBlock">
+        update t_mexc_wallet set last_sync_trans_hash=#{lastHash}
+        where <![CDATA[ type='BTC' ]]>
+    </update>
+</mapper>

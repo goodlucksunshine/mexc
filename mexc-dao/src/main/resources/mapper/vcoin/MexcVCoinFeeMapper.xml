@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mexc.dao.dao.vcoin.MexcVCoinFeeDAO">
+    
+    <resultMap id="BaseResultMap" type="com.mexc.dao.model.vcoin.MexcVCoinFee">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="vcoin_id" jdbcType="VARCHAR" property="vcoinId" />
+        <result column="buy_rate" jdbcType="DECIMAL" property="buyRate" />
+        <result column="sell_rate" jdbcType="DECIMAL" property="sellRate" />
+        <result column="put_up_rate" jdbcType="DECIMAL" property="putUpRate" />
+        <result column="cash_rate" jdbcType="DECIMAL" property="cashRate" />
+        <result column="cash_limit_min" jdbcType="DECIMAL" property="cashLimitMin" />
+        <result column="cash_limit_max" jdbcType="DECIMAL" property="cashLimitMax" />
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+        <result column="updare_by_name" jdbcType="VARCHAR" property="updareByName" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+        <result column="create_by_name" jdbcType="VARCHAR" property="createByName" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+    
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.mexc.dao.model.vcoin.MexcVCoinFee">
+        <result column="note" jdbcType="LONGVARCHAR" property="note" />
+    </resultMap>
+    
+    <sql id="Param_Base_Clause">
+        <if test="map != null">
+            <foreach collection=" map.list " item="criteria">
+                 ${criteria.condition} 
+                <if test=" criteria.haveValue ">
+                     #{criteria.value} 
+                </if>
+            </foreach>
+        </if>
+    </sql>
+    
+    <sql id="Base_Column_List">
+        id, vcoin_id, buy_rate, sell_rate, put_up_rate, cash_rate, cash_limit_min, cash_limit_max, 
+        update_by, updare_by_name, update_time, create_by, create_by_name, create_time
+    </sql>
+    
+    <sql id="Blob_Column_List">
+        note
+    </sql>
+    
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+        select 
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_vcoin_fee
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectAll" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_vcoin_fee
+    </select>
+    
+    <select id="selectPagination" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_vcoin_fee
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from t_mexc_vcoin_fee
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    
+    <insert id="insert" parameterType="com.mexc.dao.model.vcoin.MexcVCoinFee">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            select replace(uuid(),'-','') from dual
+        </selectKey>
+        insert into t_mexc_vcoin_fee (id, vcoin_id, buy_rate, 
+            sell_rate, put_up_rate, cash_rate, 
+            cash_limit_min, cash_limit_max, update_by, 
+            updare_by_name, update_time, create_by, 
+            create_by_name, create_time, note
+            )
+        values (#{id,jdbcType=VARCHAR}, #{vcoinId,jdbcType=VARCHAR}, #{buyRate,jdbcType=DECIMAL}, 
+            #{sellRate,jdbcType=DECIMAL}, #{putUpRate,jdbcType=DECIMAL}, #{cashRate,jdbcType=DECIMAL}, 
+            #{cashLimitMin,jdbcType=DECIMAL}, #{cashLimitMax,jdbcType=DECIMAL}, #{updateBy,jdbcType=VARCHAR}, 
+            #{updareByName,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, 
+            #{createByName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{note,jdbcType=LONGVARCHAR}
+            )
+    </insert>
+    
+    <insert id="insertSelective" parameterType="com.mexc.dao.model.vcoin.MexcVCoinFee">
+        insert into t_mexc_vcoin_fee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="vcoinId != null">
+                vcoin_id,
+            </if>
+            <if test="buyRate != null">
+                buy_rate,
+            </if>
+            <if test="sellRate != null">
+                sell_rate,
+            </if>
+            <if test="putUpRate != null">
+                put_up_rate,
+            </if>
+            <if test="cashRate != null">
+                cash_rate,
+            </if>
+            <if test="cashLimitMin != null">
+                cash_limit_min,
+            </if>
+            <if test="cashLimitMax != null">
+                cash_limit_max,
+            </if>
+            <if test="updateBy != null">
+                update_by,
+            </if>
+            <if test="updareByName != null">
+                updare_by_name,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="createByName != null">
+                create_by_name,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="note != null">
+                note,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="vcoinId != null">
+                #{vcoinId,jdbcType=VARCHAR},
+            </if>
+            <if test="buyRate != null">
+                #{buyRate,jdbcType=DECIMAL},
+            </if>
+            <if test="sellRate != null">
+                #{sellRate,jdbcType=DECIMAL},
+            </if>
+            <if test="putUpRate != null">
+                #{putUpRate,jdbcType=DECIMAL},
+            </if>
+            <if test="cashRate != null">
+                #{cashRate,jdbcType=DECIMAL},
+            </if>
+            <if test="cashLimitMin != null">
+                #{cashLimitMin,jdbcType=DECIMAL},
+            </if>
+            <if test="cashLimitMax != null">
+                #{cashLimitMax,jdbcType=DECIMAL},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updareByName != null">
+                #{updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="note != null">
+                #{note,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="com.mexc.dao.model.vcoin.MexcVCoinFee">
+        update t_mexc_vcoin_fee
+        <set>
+            <if test="vcoinId != null">
+                vcoin_id = #{vcoinId,jdbcType=VARCHAR},
+            </if>
+            <if test="buyRate != null">
+                buy_rate = #{buyRate,jdbcType=DECIMAL},
+            </if>
+            <if test="sellRate != null">
+                sell_rate = #{sellRate,jdbcType=DECIMAL},
+            </if>
+            <if test="putUpRate != null">
+                put_up_rate = #{putUpRate,jdbcType=DECIMAL},
+            </if>
+            <if test="cashRate != null">
+                cash_rate = #{cashRate,jdbcType=DECIMAL},
+            </if>
+            <if test="cashLimitMin != null">
+                cash_limit_min = #{cashLimitMin,jdbcType=DECIMAL},
+            </if>
+            <if test="cashLimitMax != null">
+                cash_limit_max = #{cashLimitMax,jdbcType=DECIMAL},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updareByName != null">
+                updare_by_name = #{updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createBy != null">
+                create_by = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createByName != null">
+                create_by_name = #{createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="note != null">
+                note = #{note,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mexc.dao.model.vcoin.MexcVCoinFee">
+        update t_mexc_vcoin_fee
+        set vcoin_id = #{vcoinId,jdbcType=VARCHAR},
+            buy_rate = #{buyRate,jdbcType=DECIMAL},
+            sell_rate = #{sellRate,jdbcType=DECIMAL},
+            put_up_rate = #{putUpRate,jdbcType=DECIMAL},
+            cash_rate = #{cashRate,jdbcType=DECIMAL},
+            cash_limit_min = #{cashLimitMin,jdbcType=DECIMAL},
+            cash_limit_max = #{cashLimitMax,jdbcType=DECIMAL},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            updare_by_name = #{updareByName,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_by_name = #{createByName,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            note = #{note,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.mexc.dao.model.vcoin.MexcVCoinFee">
+        update t_mexc_vcoin_fee
+        set vcoin_id = #{vcoinId,jdbcType=VARCHAR},
+            buy_rate = #{buyRate,jdbcType=DECIMAL},
+            sell_rate = #{sellRate,jdbcType=DECIMAL},
+            put_up_rate = #{putUpRate,jdbcType=DECIMAL},
+            cash_rate = #{cashRate,jdbcType=DECIMAL},
+            cash_limit_min = #{cashLimitMin,jdbcType=DECIMAL},
+            cash_limit_max = #{cashLimitMax,jdbcType=DECIMAL},
+            update_by = #{updateBy,jdbcType=VARCHAR},
+            updare_by_name = #{updareByName,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            create_by = #{createBy,jdbcType=VARCHAR},
+            create_by_name = #{createByName,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <select id="selectByCondition" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_vcoin_fee
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into t_mexc_vcoin_fee (id, vcoin_id, buy_rate, 
+            sell_rate, put_up_rate, cash_rate, 
+            cash_limit_min, cash_limit_max, 
+            update_by, updare_by_name, update_time, 
+            create_by, create_by_name, create_time, 
+            note)
+         values 
+        <foreach  collection="list" index="index" item="item" separator=",">
+             (#{item.id,jdbcType=VARCHAR}, #{item.vcoinId,jdbcType=VARCHAR}, #{item.buyRate,jdbcType=DECIMAL}, 
+                #{item.sellRate,jdbcType=DECIMAL}, #{item.putUpRate,jdbcType=DECIMAL}, #{item.cashRate,jdbcType=DECIMAL}, 
+                #{item.cashLimitMin,jdbcType=DECIMAL}, #{item.cashLimitMax,jdbcType=DECIMAL}, 
+                #{item.updateBy,jdbcType=VARCHAR}, #{item.updareByName,jdbcType=VARCHAR}, #{item.updateTime,jdbcType=TIMESTAMP}, 
+                #{item.createBy,jdbcType=VARCHAR}, #{item.createByName,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, 
+                #{item.note,jdbcType=LONGVARCHAR}
+            )
+        </foreach >
+    </insert>
+    
+    <update id="updateByParam">
+        update t_mexc_vcoin_fee
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR},
+            </if>
+            <if test="record.vcoinId != null">
+                vcoin_id = #{record.vcoinId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.buyRate != null">
+                buy_rate = #{record.buyRate,jdbcType=DECIMAL},
+            </if>
+            <if test="record.sellRate != null">
+                sell_rate = #{record.sellRate,jdbcType=DECIMAL},
+            </if>
+            <if test="record.putUpRate != null">
+                put_up_rate = #{record.putUpRate,jdbcType=DECIMAL},
+            </if>
+            <if test="record.cashRate != null">
+                cash_rate = #{record.cashRate,jdbcType=DECIMAL},
+            </if>
+            <if test="record.cashLimitMin != null">
+                cash_limit_min = #{record.cashLimitMin,jdbcType=DECIMAL},
+            </if>
+            <if test="record.cashLimitMax != null">
+                cash_limit_max = #{record.cashLimitMax,jdbcType=DECIMAL},
+            </if>
+            <if test="record.updateBy != null">
+                update_by = #{record.updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updareByName != null">
+                updare_by_name = #{record.updareByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.createBy != null">
+                create_by = #{record.createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createByName != null">
+                create_by_name = #{record.createByName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.note != null">
+                note = #{record.note,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        <include refid="Param_Base_Clause" />
+    </update>
+    
+    <delete id="deleteByParam">
+        delete from t_mexc_vcoin_fee
+        <include refid="Param_Base_Clause" />
+    </delete>
+    
+    <update id="truncate">
+        truncate t_mexc_vcoin_fee
+    </update>
+    
+    <select id="countAll" resultType="java.lang.Long">
+        select count(*) from t_mexc_vcoin_fee
+    </select>
+    
+    <select id="countByParam" resultType="java.lang.Long">
+        select count(*) from t_mexc_vcoin_fee
+        <include refid="Param_Base_Clause" />
+    </select>
+    
+    <select id="selectOne" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_vcoin_fee
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.vcoinId != null">
+                 and vcoin_id = #{record.vcoinId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.buyRate != null">
+                 and buy_rate = #{record.buyRate,jdbcType=DECIMAL}
+            </if>
+            <if test="record.sellRate != null">
+                 and sell_rate = #{record.sellRate,jdbcType=DECIMAL}
+            </if>
+            <if test="record.putUpRate != null">
+                 and put_up_rate = #{record.putUpRate,jdbcType=DECIMAL}
+            </if>
+            <if test="record.cashRate != null">
+                 and cash_rate = #{record.cashRate,jdbcType=DECIMAL}
+            </if>
+            <if test="record.cashLimitMin != null">
+                 and cash_limit_min = #{record.cashLimitMin,jdbcType=DECIMAL}
+            </if>
+            <if test="record.cashLimitMax != null">
+                 and cash_limit_max = #{record.cashLimitMax,jdbcType=DECIMAL}
+            </if>
+            <if test="record.updateBy != null">
+                 and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updareByName != null">
+                 and updare_by_name = #{record.updareByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                 and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                 and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                 and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                 and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.note != null">
+                 and note = #{record.note,jdbcType=LONGVARCHAR}
+            </if>
+        </where>
+         limit 1
+    </select>
+    
+    <select id="selectList" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_mexc_vcoin_fee
+        <where>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=VARCHAR}
+            </if>
+            <if test="record.vcoinId != null">
+                 and vcoin_id = #{record.vcoinId,jdbcType=VARCHAR}
+            </if>
+            <if test="record.buyRate != null">
+                 and buy_rate = #{record.buyRate,jdbcType=DECIMAL}
+            </if>
+            <if test="record.sellRate != null">
+                 and sell_rate = #{record.sellRate,jdbcType=DECIMAL}
+            </if>
+            <if test="record.putUpRate != null">
+                 and put_up_rate = #{record.putUpRate,jdbcType=DECIMAL}
+            </if>
+            <if test="record.cashRate != null">
+                 and cash_rate = #{record.cashRate,jdbcType=DECIMAL}
+            </if>
+            <if test="record.cashLimitMin != null">
+                 and cash_limit_min = #{record.cashLimitMin,jdbcType=DECIMAL}
+            </if>
+            <if test="record.cashLimitMax != null">
+                 and cash_limit_max = #{record.cashLimitMax,jdbcType=DECIMAL}
+            </if>
+            <if test="record.updateBy != null">
+                 and update_by = #{record.updateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updareByName != null">
+                 and updare_by_name = #{record.updareByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.updateTime != null">
+                 and update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.createBy != null">
+                 and create_by = #{record.createBy,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createByName != null">
+                 and create_by_name = #{record.createByName,jdbcType=VARCHAR}
+            </if>
+            <if test="record.createTime != null">
+                 and create_time = #{record.createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="record.note != null">
+                 and note = #{record.note,jdbcType=LONGVARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>

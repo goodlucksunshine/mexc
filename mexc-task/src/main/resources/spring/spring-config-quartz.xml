@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="balanceCheckCronTrigger"/>
+                <ref bean="btcAssetRechargeSyncCronTrigger"/>
+                <ref bean="ethAssetRechargeSyncCronTrigger"/>
+                <ref bean="blockSyncCronTrigger"/>
+                <ref bean="addressCreateCronTrigger"/>
+                <ref bean="oneMinueSyncCronTrigger"/>
+                <ref bean="fiveMinueSyncCronTrigger"/>
+                <ref bean="fifteenMinueSyncCronTrigger"/>
+                <ref bean="thirdtyMinueSyncCronTrigger"/>
+                <ref bean="oneHourSyncCronTrigger"/>
+                <ref bean="oneDaySyncCronTrigger"/>
+                <ref bean="oneMonthSyncCronTrigger"/>
+                <ref bean="btcValueSyncCronTrigger"/>
+                <ref bean="marketAndVCoinSyncCronTrigger"/>
+                <ref bean="tradeAndEntrustOrderSyncCronTrigger"/>
+                <ref bean="tradeGroupMarketCapSyncCronTrigger"/>
+                <ref bean="btcTransactionBlockTrigger"/>
+                <ref bean="memberAssetCheckTrigger"/>
+                <ref bean="entrustOrderReSendJobTrigger"/>
+                <ref bean="syncCashStatusJobTrigger"/>
+            </list>
+        </property>
+        <property name="taskExecutor" ref="executor"/>
+
+    </bean>
+
+
+    <bean id="memberAssetCheck" class="com.mexc.task.quartz.MemberAssetCheck"/>
+    <bean id="memberAssetCheckJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="memberAssetCheck"/>
+        <property name="targetMethod" value="memberAssetCheck"/>
+    </bean>
+    <bean id="memberAssetCheckTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="memberAssetCheckJob"/>
+        <property name="cronExpression" value="10 * 0/1 * * ?"/>
+        <!--<property name="cronExpression" value="0/10 * * * * ?"/>-->
+    </bean>
+    <!-- balance check -->
+    <bean id="balanceCheckTask" class="com.mexc.task.quartz.AssetBalanceCheckTask"/>
+    <bean id="balanceCheckJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="balanceCheckTask"/>
+        <property name="targetMethod" value="balanceCheck"/>
+    </bean>
+    <bean id="balanceCheckCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="balanceCheckJob"/>
+        <property name="cronExpression" value="10 0/1 * * * ?"/>
+    </bean>
+    <!-- balance check -->
+    <!-- btc recharge sync -->
+    <bean id="btcAssetRechargeBlockTask" class="com.mexc.task.quartz.BtcAssetRechargeBlockSync"/>
+    <bean id="btcAssetRechargeSyncJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="btcAssetRechargeBlockTask"/>
+        <property name="targetMethod" value="sync"/>
+    </bean>
+    <bean id="btcAssetRechargeSyncCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="btcAssetRechargeSyncJob"/>
+        <property name="cronExpression" value="10 0/1 * * * ?"/>
+        <!--<property name="cronExpression" value="0/5 * * * * ?"/>-->
+    </bean>
+    <!--btc 交易区块确认-->
+    <bean id="btcTransactionBlockSyncJob"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="btcAssetRechargeBlockTask"/>
+        <property name="targetMethod" value="findBtcBlock"/>
+    </bean>
+    <bean id="btcTransactionBlockTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="btcTransactionBlockSyncJob"/>
+        <property name="cronExpression" value="10 * 0/1 * * ?"/>
+        <!--<property name="cronExpression" value="0/5 * * * * ?"/>-->
+    </bean>
+    <!-- btc recharge sync -->
+    <!-- eth区块同步-->
+    <bean id="ethAssetRechargeBlockSync" class="com.mexc.task.quartz.EthAssetRechargeBlockSync"/>
+    <bean id="ethAssetRechargeSyncJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="ethAssetRechargeBlockSync"/>
+        <property name="targetMethod" value="sync"/>
+    </bean>
+    <bean id="ethAssetRechargeSyncCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="ethAssetRechargeSyncJob"/>
+        <property name="cronExpression" value="10 0/1 * * * ?"/>
+        <!--<property name="cronExpression" value="0/10 * * * * ?"/>-->
+    </bean>
+
+    <!-- eth区块同步-->
+    <!-- 取块同步节点更新-->
+    <bean id="blockSyncTask" class="com.mexc.task.quartz.BlockMaxIdenUpdate"/>
+    <bean id="blockSyncSyncJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="blockSyncTask"/>
+        <property name="targetMethod" value="sync"/>
+    </bean>
+    <bean id="blockSyncCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="blockSyncSyncJob"/>
+        <property name="cronExpression" value="10 0/1 * * * ?"/>
+    </bean>
+    <!-- 取块同步节点更新-->
+
+    <bean id="addressCreate" class="com.mexc.task.quartz.AddressUsePercentCheck"/>
+    <bean id="addressCreateJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="addressCreate"/>
+        <property name="targetMethod" value="addressUseCheck"/>
+    </bean>
+    <bean id="addressCreateCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="addressCreateJob"/>
+        <property name="cronExpression" value="0 0/5 * * * ?"/>
+    </bean>
+
+
+    <!--1分钟-->
+    <bean id="oneMinueSync" class="com.mexc.task.quartz.tradingview.TradingOrderOneMinueSync"/>
+    <bean id="oneMinueSyncJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="oneMinueSync"/>
+        <property name="targetMethod" value="sync"/>
+    </bean>
+    <bean id="oneMinueSyncCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="oneMinueSyncJob"/>
+        <property name="cronExpression" value="0 0/1 * * * ?"/>
+    </bean>
+
+    <!--5分钟-->
+    <bean id="fiveMinueSync" class="com.mexc.task.quartz.tradingview.TradingOrderFiveMinueSync"/>
+    <bean id="fiveMinueSyncJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="fiveMinueSync"/>
+        <property name="targetMethod" value="sync"/>
+    </bean>
+    <bean id="fiveMinueSyncCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="fiveMinueSyncJob"/>
+        <property name="cronExpression" value="0 0/5 * * * ?"/>
+    </bean>
+
+    <!--15分钟-->
+    <bean id="fifteenMinueSync" class="com.mexc.task.quartz.tradingview.TradingOrderFifteenMinueSync"/>
+    <bean id="fifteenMinueSyncJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="fifteenMinueSync"/>
+        <property name="targetMethod" value="sync"/>
+    </bean>
+    <bean id="fifteenMinueSyncCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="fifteenMinueSyncJob"/>
+        <property name="cronExpression" value="0 0/15 * * * ?"/>
+    </bean>
+
+    <!--30分钟-->
+    <bean id="thirdtyMinueSync" class="com.mexc.task.quartz.tradingview.TradingOrderThirdtyMinueSync"/>
+    <bean id="thirdtyMinueSyncJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="thirdtyMinueSync"/>
+        <property name="targetMethod" value="sync"/>
+    </bean>
+    <bean id="thirdtyMinueSyncCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="thirdtyMinueSyncJob"/>
+        <property name="cronExpression" value="0 0/30 * * * ?"/>
+    </bean>
+
+    <!--1小时-->
+    <bean id="oneHourSync" class="com.mexc.task.quartz.tradingview.TradingOrderOneHourSync"/>
+    <bean id="oneHourSyncJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="oneHourSync"/>
+        <property name="targetMethod" value="sync"/>
+    </bean>
+    <bean id="oneHourSyncCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="oneHourSyncJob"/>
+        <property name="cronExpression" value=" 0 0 * * * ?"/>
+    </bean>
+
+    <!--1天-->
+    <bean id="oneDaySync" class="com.mexc.task.quartz.tradingview.TradingOrderOneDaySync"/>
+    <bean id="oneDaySyncJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="oneDaySync"/>
+        <property name="targetMethod" value="sync"/>
+    </bean>
+    <bean id="oneDaySyncCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="oneDaySyncJob"/>
+        <property name="cronExpression" value="0 0 0 * * ? *"/>
+    </bean>
+
+    <!--1月-->
+    <bean id="oneMonthSync" class="com.mexc.task.quartz.tradingview.TradingOrderOneMonthSync"/>
+    <bean id="oneMonthSyncJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="oneMonthSync"/>
+        <property name="targetMethod" value="sync"/>
+    </bean>
+    <bean id="oneMonthSyncCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="oneMonthSyncJob"/>
+        <property name="cronExpression" value="0 0 0 * * ? *"/>
+    </bean>
+
+    <!--每5分钟定时同步每个币种的btc估值和美元估值-->
+    <bean id="btcValueSync" class="com.mexc.task.quartz.btcvalue.BTCValueSync"/>
+    <bean id="btcValueSyncJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="btcValueSync"/>
+        <property name="targetMethod" value="sync"/>
+    </bean>
+    <bean id="btcValueSyncCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="btcValueSyncJob"/>
+        <property name="cronExpression" value="0 0/5 * * * ?"/>
+    </bean>
+
+    <!--每1秒钟定时同步市场和币种-->
+    <bean id="marketAndVCoinSync" class="com.mexc.task.quartz.trade.MarketAndVCoinSync"/>
+    <bean id="marketAndVCoinSyncJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="marketAndVCoinSync"/>
+        <property name="targetMethod" value="sync"/>
+    </bean>
+    <bean id="marketAndVCoinSyncCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="marketAndVCoinSyncJob"/>
+        <property name="cronExpression" value="* * * * * ?"/>
+    </bean>
+
+    <!--每1秒钟定时同步委托和交易订单-->
+    <bean id="tradeAndEntrustOrderSync" class="com.mexc.task.quartz.trade.TradeAndEntrustOrderSync"/>
+    <bean id="tradeAndEntrustOrderSyncJob"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="tradeAndEntrustOrderSync"/>
+        <property name="targetMethod" value="sync"/>
+    </bean>
+    <bean id="tradeAndEntrustOrderSyncCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="tradeAndEntrustOrderSyncJob"/>
+        <property name="cronExpression" value="0/1 * * * * ?"/>
+    </bean>
+
+    <!--每1秒钟定时同步市场行情-->
+    <bean id="tradeGroupMarketCapSync" class="com.mexc.task.quartz.trade.TradeGroupMarketCapSync"/>
+    <bean id="tradeGroupMarketCapSyncJob"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="tradeGroupMarketCapSync"/>
+        <property name="targetMethod" value="sync"/>
+    </bean>
+    <bean id="tradeGroupMarketCapSyncCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="tradeGroupMarketCapSyncJob"/>
+        <property name="cronExpression" value="0/1 * * * * ?"/>
+    </bean>
+
+    <!--定时补单-->
+    <bean id="entrustOrderReSend" class="com.mexc.task.quartz.EntrustOrderReSendCheck"/>
+    <bean id="entrustOrderReSendJob"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="entrustOrderReSend"/>
+        <property name="targetMethod" value="entrustCheck"/>
+    </bean>
+    <bean id="entrustOrderReSendJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="entrustOrderReSendJob"/>
+        <property name="cronExpression" value="0 0/1 * * * ?"/>
+    </bean>
+
+
+    <!--定时同步提现状态-->
+    <bean id="syncCashStatus" class="com.mexc.task.quartz.CashStatusSync"/>
+    <bean id="syncCashStatusJob"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="syncCashStatus"/>
+        <property name="targetMethod" value="cashStatusSync"/>
+    </bean>
+    <bean id="syncCashStatusJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="syncCashStatusJob"/>
+        <property name="cronExpression" value="0 0/1 * * * ?"/>
+    </bean>
+
+
+    <bean id="executor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="10"/>
+        <property name="maxPoolSize" value="100"/>
+        <property name="queueCapacity" value="500"/>
+    </bean>
+</beans>

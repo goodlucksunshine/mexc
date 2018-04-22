@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
+    <rabbit:connection-factory id="connectionFactory"
+                               host="${mq.host}"
+                               port="${mq.port}"
+                               username="${mq.username}"
+                               password="${mq.password}"/>
+
+    <bean id="rabbitTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+        <constructor-arg ref="connectionFactory"/>
+    </bean>
+    <rabbit:admin connection-factory="connectionFactory"/>
+    <!-- 提现队列 -->
+    <rabbit:queue id="${mq.queue.cash}" name="${mq.queue.cash}" durable="true" auto-delete="false" exclusive="false"/>
+    <!-- 资产队列 -->
+    <rabbit:queue id="${mq.queue.asset}" name="${mq.queue.asset}" durable="true" auto-delete="false" exclusive="false"/>
+    <!-- btc市场队列 -->
+    <rabbit:queue id="${mq.queue.btc.market.trade}" name="${mq.queue.btc.market.trade}" durable="true"
+                  auto-delete="false" exclusive="false"/>
+    <!-- eth市场队列 -->
+    <rabbit:queue id="${mq.queue.eth.market.trade}" name="${mq.queue.eth.market.trade}" durable="true"
+                  auto-delete="false" exclusive="false"/>
+
+    <rabbit:direct-exchange id="cmq-exchange" durable="true" auto-delete="false" name="amq.direct">
+        <rabbit:bindings>
+            <rabbit:binding queue="${mq.queue.asset}" key="${mq.queue.asset}"></rabbit:binding>
+            <rabbit:binding queue="${mq.queue.btc.market.trade}" key="${mq.queue.btc.market.trade}"></rabbit:binding>
+            <rabbit:binding queue="${mq.queue.eth.market.trade}" key="${mq.queue.eth.market.trade}"></rabbit:binding>
+            <rabbit:binding queue="${mq.queue.cash}" key="cash"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+    <bean id="createAssetConsumer" class="com.mexc.task.mq.CreateAssetConsumer"/>
+    <bean id="btcMarketTradeConsumer" class="com.mexc.task.mq.trade.BtcMarketTradeConsumer"/>
+    <bean id="ethMarketTradeConsumer" class="com.mexc.task.mq.trade.EthMarketTradeConsumer"/>
+    <bean id="assetCashConsumer" class="com.mexc.task.mq.AssetCashConsumer"/>
+
+    <rabbit:listener-container acknowledge="manual" connection-factory="connectionFactory">
+        <rabbit:listener ref="createAssetConsumer"  queues="${mq.queue.asset}"/>
+        <rabbit:listener ref="btcMarketTradeConsumer" queues="${mq.queue.btc.market.trade}"/>
+        <rabbit:listener ref="ethMarketTradeConsumer" queues="${mq.queue.eth.market.trade}"/>
+        <rabbit:listener ref="assetCashConsumer" queues="${mq.queue.cash}"/>
+    </rabbit:listener-container>
+
+
+</beans>
